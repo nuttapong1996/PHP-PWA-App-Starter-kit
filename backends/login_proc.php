@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    require 'includes/connect_db.php';
+    require './includes/connect_db.php';
 
     if(isset($_POST['empcode']) && isset($_POST['password'])) {
         $empcode = $_POST['empcode'];

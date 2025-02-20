@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="manifest" href="manifest.json">
     <title>Push Notif</title>
 </head>
 <body>
-    <h1>Javascript & PHP push notif demo</h1>
-    <form action="login_proc.php" method="post">
-        <label for="empcode">รหัสพนักงาน :</label>
-        <input name="empcode"></input>
-        <label for="password">รหัสผ่าน :</label>
-        <input name="password"></input>
-        <button id="BtnLogin">Login</button>
-    </form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-12 col-md-8 col-lg-6">
+        <h1 class="text-center">PHP PWA Webpush Example</h1>
+        <form action="backends/login_proc.php" method="POST">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" name="empcode" class="form-control" >
+                        <label for="empcode">Username :</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="password" class="form-control">
+                        <label for="password">Password :</label>
+                    </div>
+                   <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-75">Login</button>
+                   </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
