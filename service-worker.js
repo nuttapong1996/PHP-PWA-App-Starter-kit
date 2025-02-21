@@ -3,7 +3,7 @@ self.addEventListener("push", (event) => {
     // {"title":"Hi" , "body":"something amazing!" , "url":"./?message=123"}
     event.waitUntil(self.registration.showNotification(notification.title, {
         body: notification.body,
-        icon: "icon.png",
+        icon: "assets/icons/icon.png",
         data: {
             notifURL: notification.url
         }

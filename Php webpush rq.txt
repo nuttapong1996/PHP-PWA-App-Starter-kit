@@ -27,7 +27,7 @@ C:สร้างไฟล์ .env ในโฟลเดอร์ includes
 1.ใส่โค๊ดดังนี้ลงไป
 DB_HOST=localhost
 DB_USERNAME=root
-DB_PASSWORD="" (หากไม่มีก็ใส่ "")
+DB_PASSWORD= (หากไม่มีก็ไม่ใส่ )
 DB_DATABASE=noti_db
 
 D:โหลด Repository นี้

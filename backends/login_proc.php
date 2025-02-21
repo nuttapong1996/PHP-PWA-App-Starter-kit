@@ -1,9 +1,9 @@
 <?php 
     session_start();
-    require './includes/connect_db.php';
+    require '../includes/connect_db.php';
 
-    if(isset($_POST['empcode']) && isset($_POST['password'])) {
-        $empcode = $_POST['empcode'];
+    if(isset($_POST['username']) && isset($_POST['password'])) {
+        $username = $_POST['username'];
         $password = $_POST['password'];
     
 
@@ -11,24 +11,24 @@
     // $empcode = $data['empcode'];
     // $password = $data['password'];
 
-    $sql ="SELECT empcode FROM tbl_login WHERE empcode = :empcode AND password = :password";
+    $sql ="SELECT username FROM tbl_login WHERE username = :username AND password = :password";
     $stmt =$conn->prepare($sql);
-    $stmt->bindParam(':empcode', $empcode, PDO::PARAM_STR);
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
     $stmt->bindParam(':password', $password, PDO::PARAM_STR);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        $_SESSION['empcode'] = $empcode;
+        $_SESSION['username'] = $username;
         echo "<script> 
-                alert('Login Success');
-                window.location.href = 'main.php';
+                alert('เข้าสู่ระบบสำเร็จ');
+                window.location.href = '../main.php';
             </script>";
         // echo json_encode(['status' => 'success']);
     }else{
         // echo json_encode(['status' => 'error']);
         echo "<script> 
-            alert('Login error');
-            window.location.href = 'index.php';
+            alert('ไม่พบผู้ใช้งาน');
+            window.location.href = '../index.php';
         </script>";
     }
 }else{

@@ -13,16 +13,19 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-sm-12 col-md-8 col-lg-6">
-        <h1 class="text-center">PHP PWA Webpush Example</h1>
+        <h1 class="text-center">PHP PWA Webpush (per user)</h1>
         <form action="backends/login_proc.php" method="POST">
             <div class="card">
+                <div class="card-title">
+                    <h4 class="text-center mt-3 mb-0">Login</h4>
+                </div>
                 <div class="card-body">
                     <div class="form-floating mb-3">
-                        <input type="text" name="empcode" class="form-control" >
-                        <label for="empcode">Username :</label>
+                        <input type="text" name="username" class="form-control" >
+                        <label for="username">Username :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" name="password" class="form-control">
+                        <input type="password" name="password" class="form-control">
                         <label for="password">Password :</label>
                     </div>
                    <div class="text-center">

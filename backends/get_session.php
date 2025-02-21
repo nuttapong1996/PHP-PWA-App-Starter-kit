@@ -1,10 +1,10 @@
 <?php 
 session_start();
 header('Content-Type: application/json');
-if(isset($_SESSION['empcode'])){
+if(isset($_SESSION['username'])){
     echo json_encode([
         'status' => 'success',
-        'empcode' => $_SESSION['empcode']
+        'empcode' => $_SESSION['username']
         ]);
 }else{
     echo json_encode([

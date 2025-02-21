@@ -1,18 +1,18 @@
 {
-    "name": "My PWA App Noti",
-    "short_name": "PWAApp",
+    "name": "PHP PWA Webpush",
+    "short_name": "PHP Webpush",
     "start_url": "index.php",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "icons": [
       {
-        "src": "icon-w.png",
+        "src": "assets/icons/icon.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "icon-w.png",
+        "src": "assets/icons/icon.png",
         "sizes": "512x512",
         "type": "image/png"
       }
