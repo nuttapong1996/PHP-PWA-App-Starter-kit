@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', async ()=>{
 
+    // ทำการลงทะเบียน Service Worker กับ Browser
     navigator.serviceWorker.register("service-worker.js");
 
     const SubBtn = document.getElementById('BtnSub');
-    const BtnSend = document.getElementById('BtnSend');
-
-    BtnSend.style.display = 'none';
+    const formSend = document.getElementById('formSend');
 
     SubBtn.addEventListener('click', enableNotif);
 
@@ -15,11 +14,11 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     if(user_session) {
         if(subscribe !== true) {
             SubBtn.style.display = 'block';
-            console.warn('Not subscribe yet');
+            console.warn('User : ' + user_session + ' is not subscribe to notification yet.');
         }else{
             SubBtn.style.display = 'none';
-            BtnSend.style.display = 'block';
-            console.log('Subscribed');
+            formSend.style.display = 'block';
+            console.info('Subscribed');
         }
     }else{
         console.warn('Not login');
@@ -27,15 +26,17 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     
 });
 
-
 // Function เช็ค login session
 async function checksession(){
     // โดยดึงค่ามาจาก Session ที่ login ผ่าน backend ของ  php
     const response =  await fetch('backends/get_session.php');
+
+    // แปลงเป็น json
     const data = await response.json();
 
+    // ถ้าเป็น success ให้ return username ของผู้ใช้
     if(data['status'] === 'success') {
-        return data['empcode'];
+        return data['username'];
     }
 }
 
@@ -43,24 +44,33 @@ async function checksession(){
 async function checksub(){
      // ดึง subscription ปัจจุบันจาก Service Worker
      const registration = await navigator.serviceWorker.ready;
+    //  ดึงค่า endpoint จาก subscription
      const subscription = await registration.pushManager.getSubscription();
 
+    //  ถ้าไม่มี subscription ในเครื่อง ให้ return false
      if (!subscription) {
-        return false; // ไม่มี subscription ในเครื่อง
+        return false; 
     }
 
+    // ทำการ fetch ส่งค่า endpoint ไปเพื่อทำการเทียบกับ endpoint ในฐานข้อมูล ในไฟล์ get_sub.php
     const response =  await fetch('backends/get_sub.php', {
+        // ส่งโดยวิธี POST
         method: 'POST',
+        // ส่งเป็น JSON
         headers: {
             'Content-Type': 'application/json'
         },
+        // ส่ง ค่า endpoint(ที่ถูกสร้างบนเครื่อง) ไปเพื่อทำการเทียบกับ endpoint ในฐานข้อมูล
         body: JSON.stringify({
+            // endpoint = ค่าendpoint ที่ถูกสร้างบนเครื่อง
             endpoint: subscription.endpoint
         })
     });
 
+    // แปลงข้อมูลที่ถูกส่งกลับมาจาก get_sub.php เป็น json
     const data = await response.json();
 
+    // ถ้าเป็น success ให้ return true
     if(data ['status'] === 'success') {
         return true;
     }
@@ -98,9 +108,11 @@ async function checksub(){
     // }
 
 async function enableNotif() {
+    // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
     Notification.requestPermission().then((permission)=> {
+        // ถ้ามีการอนุญาต
         if (permission === 'granted') {
-            // get service worker
+            // เรียกใช้งาน Service Worker
             navigator.serviceWorker.ready.then((sw)=> {
                 // subscribe
                 sw.pushManager.subscribe({

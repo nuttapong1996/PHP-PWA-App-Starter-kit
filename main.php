@@ -4,7 +4,6 @@
         header('Location: index.php');
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +16,11 @@
     <script src="app.js"></script>
     <title>Push Notify</title>
 </head>
+<style>
+    #formSend {
+        display: none;
+    }
+</style>
 <body>
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -30,7 +34,23 @@
                         <div class="card">
                             <div class="card-body">
                                 <button id="BtnSub" class="btn btn-primary w-100">Enable Notification</button>
-                                <button id="BtnSend" class="btn btn-success w-100">Send</button>
+                                <form action="" id="formSend">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="title" id="title" class="form-control" required>
+                                        <label for="title">Title :</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="body" id="body" class="form-control" required>
+                                        <label for="body">Message :</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="url" id="url" class="form-control" required>
+                                        <label for="url">URL :</label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success w-100">Send Notification</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
