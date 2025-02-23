@@ -20,7 +20,14 @@
         <li><h5>Xampp (สำหรับการรันเซิฟเวอร์)</h5></li>
         <li><h5>composer (สำหรับการติดตั้ง Library)</h5></li>
     </ul>
-    
+    <h3>การติดตั้ง</h3>
+    <ol>
+        <li>clone หรือ ดาวโหลด Repository นี้</li>
+        <li>แตกไฟล์ หรือ นำไปวางที่ C:/xampp/htdocs</li>
+        <li>เปิดโปรเจ็คนี้ใน VS Code</li>
+        <li>เปิด Terminal และ พิมพ์คำสั่ง composer install (ต้องติดตั้ง composer ก่อน)</li>
+        <li>ดูหัวข้อ "ก่อนใช้งาน"</li>
+    </ol>
 <h3>ก่อนใช้งาน</h3>
 <ul>
    <li><h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5></li>
@@ -48,8 +55,3 @@
         </code>
     </ol>
 </ul>
-<h3>การใช้งาน</h3>
-    <ol>
-        <li>clone Repository นี้</li>
-        <li>พิมพ์คำสั่ง composer install ใน Terminal</li>
-    </ol>
