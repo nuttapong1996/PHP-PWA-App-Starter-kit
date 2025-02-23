@@ -36,12 +36,12 @@
         <li>ทำการ run Query นี้เพื่อสร้างตาราง</li>
         <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
         <li>ใส่โค๊ดดังนี้ลงไป</li>
-        <blockquote>
+        <code>
             DB_HOST=localhost <br>
             DB_USERNAME=root <br>
             DB_PASSWORD= (หากไม่มีก็ไม่ใส่ ) <br>
             DB_DATABASE=noti_db <br>
-        </blockquote>
+        </code>
     </ol>
 </ul>
 <h3>Usage : การใช้งาน</h3>
