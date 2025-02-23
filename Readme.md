@@ -1,12 +1,12 @@
 <h1>PHP PWA App Starter Kit</h1>
-<h3>Feature</h3>
+<h3>คุณสมบัติ</h3>
 <ul>
     <li>สามารถแสดงหน้า Offline ได้เหมือน App</li>
     <li>สามารถส่งแจ้งเตือนได้แม้จะปิดหน้าเว็บไปแล้วก็ตาม</li>
     <li>มีตัวอย่าง API สำหรับการส่งแจ้งเตือนให้ โดยสามารถเรียกใช้ได้จากโปรแกรม Postman (จะมีบรรยายไว้ที่หัวข้อ API) </li>
     <li>สามารถใช้งานได้บน Google chrome รวมทั้ง Android และ ios 16 ขึ้นไป โดยสามารถกดติดตั้ง หรือ Add to Home ได้เลย</li>
 </ul>
-<h3>Requirement : ความต้องการ</h5>
+<h3>ความต้องการ</h5>
     <ul>
         <li><h5>PHP version 8.1 ขึ้นไป </h5></li>
         <h5>PHP extensions: ส่วนเสริมของ PHP</h5>
@@ -20,7 +20,7 @@
         <li><h5>composer (สำหรับการติดตั้ง Library)</h5></li>
     </ul>
     
-<h3>Pre-install : ก่อนติดตั้ง</h3>
+<h3>ก่อนใช้งาน</h3>
 <ul>
    <li><h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5></li>
     <ol>
@@ -47,7 +47,7 @@
         </code>
     </ol>
 </ul>
-<h3>Usage : การใช้งาน</h3>
+<h3>การใช้งาน</h3>
     <ol>
         <li>clone Repository นี้</li>
         <li>พิมพ์คำสั่ง composer install ใน Terminal</li>
