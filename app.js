@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', async ()=>{
-
     // ทำการลงทะเบียน Service Worker กับ Browser
     navigator.serviceWorker.register("service-worker.js");
 
     const SubBtn = document.getElementById('BtnSub');
     const formSend = document.getElementById('formSend');
-
-    SubBtn.addEventListener('click', enableNotif);
+    const formUnsub = document.getElementById('formUnsub');
 
     const user_session = await checksession();
     const subscribe = await checksub();
+
+    SubBtn.addEventListener('click', enableNotif);
 
     if(user_session) {
         if(subscribe !== true) {
@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         }else{
             SubBtn.style.display = 'none';
             formSend.style.display = 'block';
+            formUnsub.style.display = 'block';
             console.info('Subscribed');
         }
     }else{
         console.warn('Not login');
     }
-    
 });
 
 // Function เช็ค login session
@@ -42,13 +42,13 @@ async function checksession(){
 
 // Function เช็ค การ subscription จากฐานข้อมูล
 async function checksub(){
-     // ดึง subscription ปัจจุบันจาก Service Worker
-     const registration = await navigator.serviceWorker.ready;
+    // ดึง subscription ปัจจุบันจาก Service Worker
+    const registration = await navigator.serviceWorker.ready;
     //  ดึงค่า endpoint จาก subscription
-     const subscription = await registration.pushManager.getSubscription();
+    const subscription = await registration.pushManager.getSubscription();
 
     //  ถ้าไม่มี subscription ในเครื่อง ให้ return false
-     if (!subscription) {
+    if (!subscription) {
         return false; 
     }
 
@@ -75,6 +75,44 @@ async function checksub(){
         return true;
     }
 }
+
+// Function สมัครการแจ้งเตือน
+async function enableNotif() {
+    // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
+    Notification.requestPermission().then((permission)=> {
+        // ถ้ามีการอนุญาต
+        if (permission === 'granted') {
+            // เรียกใช้งาน Service Worker
+            navigator.serviceWorker.ready.then((sw)=> {
+                // subscribe
+                sw.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: "BEQdLcaaNBD-nYLwfVdhI8bteRKHIKr4fEn9Dnz6kX5HiRLA64VZlORjXX2ExN9YHKhMmBwHBW1WZOM4zCx11p4"
+                }).then( async (subscription)=> {
+
+                    const response = await fetch('backends/subscribe.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(subscription)
+                    })
+                    const data = await response.json();
+
+                if (data['status'] === 'success') {
+                    alert('Subscribed');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 0);
+                }else if (data['status']=== 'error') {
+                    alert('Not Subscribed');
+                }
+                });
+            });
+        }
+    });
+}
+
 
 // Function สำหรับส่ง Message จาก Client-side แต่ในการใช้จริงๆ เราจะส่ง Noti ด้าน Server-side
 // จึง Comment ไว้ก่อน 
@@ -106,36 +144,3 @@ async function checksub(){
     //         console.log('Send Error');
     //     }
     // }
-
-async function enableNotif() {
-    // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
-    Notification.requestPermission().then((permission)=> {
-        // ถ้ามีการอนุญาต
-        if (permission === 'granted') {
-            // เรียกใช้งาน Service Worker
-            navigator.serviceWorker.ready.then((sw)=> {
-                // subscribe
-                sw.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: "BEQdLcaaNBD-nYLwfVdhI8bteRKHIKr4fEn9Dnz6kX5HiRLA64VZlORjXX2ExN9YHKhMmBwHBW1WZOM4zCx11p4"
-                }).then( async (subscription)=> {
-
-                    const response = await fetch('backends/subscribe.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(subscription)
-                    })
-                    const data = await response.json();
-
-                if (data['status'] === 'success') {
-                    alert('Subscribed');
-                }else if (data['status']=== 'error') {
-                    alert('Not Subscribed');
-                }
-                });
-            });
-        }
-    });
-}

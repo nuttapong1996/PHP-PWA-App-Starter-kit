@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2025 at 10:57 AM
+-- Generation Time: Feb 23, 2025 at 06:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,13 +34,6 @@ CREATE TABLE `push_subscribers` (
   `p256dh` varchar(255) DEFAULT NULL,
   `authKey` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
-
---
--- Dumping data for table `push_subscribers`
---
-
-INSERT INTO `push_subscribers` (`id`, `username`, `endpoint`, `p256dh`, `authKey`) VALUES
-(1, 'nomad', 'https://fcm.googleapis.com/fcm/send/caU7h9ZYzuI:APA91bHVar2i41ZhPKSfgfIT_vZvlULmK6Ou15MXasFHH93U_89Ay3Rm8DL_zwNW8t-DW-aO2bkaFCO5c3pnCSxXuXMslZ1XvLu4dWw7WKYc4QzXUn4Z8GIa0yjBEZtj87QuLq9oQcMl', 'BK6QeX46MB_qYTbqnzpPs3uvsmXphZaF3y2nNbrJAwM0KwSM0dx_Oo_SWS5uKroTtTAuCb8dbxK8N9T0cbaXMpk', 'yMqUMa6bInVtd2vGnj5xOw');
 
 -- --------------------------------------------------------
 
@@ -85,7 +78,7 @@ ALTER TABLE `tbl_login`
 -- AUTO_INCREMENT for table `push_subscribers`
 --
 ALTER TABLE `push_subscribers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_login`

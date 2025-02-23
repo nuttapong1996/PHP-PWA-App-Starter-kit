@@ -16,18 +16,24 @@
         $_SESSION['username'] = $username;
         echo "<script> 
                 alert('เข้าสู่ระบบสำเร็จ');
-                window.location.href = '../main.php';
+                setTimeout(()=>{
+                    window.location.href = '../main.php';
+                },0);
             </script>";
     }else{
         echo "<script> 
             alert('ไม่พบผู้ใช้งาน');
-            window.location.href = '../index.php';
+            setTimeout(()=>{
+                window.location.href = '../index.php'; 
+            },0);
         </script>";
     }
 }else{
     echo "<script>
             alert('กรุณากรอกข้อมูลให้ครบ');
-            window.location.href = 'index.php';
+            setTimeout(()=>{
+                window.location.href = '../index.php';
+            },0);
         </script>";
 }
 
