@@ -19,7 +19,8 @@
         <li><h5>composer (สำหรับการติดตั้ง Library)</h5></li>
     </ul>
 <h3>Pre-install : ก่อนติดตั้ง</h3>
-    <h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5>
+<ul>
+   <li><h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5></li>
     <ol>
         <li>ไปที่ Environment Variable</li>
         <li>ในหัวข้อของ System variables > คลิกเลือก New </li>
@@ -30,7 +31,7 @@
         </ul>
         <li>กด OK และ รีสตาร์ทคอมพิวเตอร์</li>
     </ol>
-    <h5>สร้าง Database ใน mysql</h5>
+    <li><h5>สร้าง Database ใน mysql</h5></li>
     <ol>
         <li>สร้างฐานข้อมูลชื่อ noti_db ใน mysql</li>
         <li>ทำการ run Query นี้เพื่อสร้างตาราง</li>
@@ -43,6 +44,7 @@
             DB_DATABASE=noti_db <br>
         </code>
     </ol>
+</ul>
 <h3>Usage : การใช้งาน</h3>
     <ol>
         <li>clone Repository นี้</li>
