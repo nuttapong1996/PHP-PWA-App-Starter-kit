@@ -1,21 +1,20 @@
 <?php
-// เริ่มใช้งาน session
-session_start();
-
 // เรียกใช้ Lib ของ WebPush
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
+
 // เรียกใช้ไฟล์ autoload.php ของ Composer
 require ("../vendor/autoload.php");
+header('Content-Type: application/json; charset=utf-8');
 
-// ตรวจเช็ค session ของผู้ใช้
-if(isset($_SESSION['username'])) { 
+
+if(isset($_POST['username'])) { 
     // ตรวจสอบการส่งข้อมูลจาก form
     if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
         // เรียกใช้ไฟล์ connect_db.php เชื่อมต่อฐานข้อมูล
         require '../includes/connect_db.php';
         // ประกาศตัวแปร username เพื่อเก็บชื่อผู้ใช้จาก session
-        $username = $_SESSION['username'];
+        $username = $_POST['username'];
         // คําสั่ง SQL เพื่อดึงข้อมูล endpoint , p256dh , authKey จาก push_subscribers ของผู้ใช้โดยอิงจาก username ของผู้ใช้ที่ได้สมัครเข้ามา
         $sql = "SELECT username, endpoint , p256dh , authKey FROM push_subscribers WHERE username =:username";
         $stmt = $conn->prepare($sql);
@@ -27,14 +26,14 @@ if(isset($_SESSION['username'])) {
             $auth = [
                 'VAPID' => [
                     'subject' => 'mailto:me@website.com', // can be a mailto: or your website address
-                    'publicKey' => trim(file_get_contents('../includes/public_key.text')),
-                    'privateKey' => trim(file_get_contents('../includes/private_key.text'))
+                    'publicKey' => trim(file_get_contents('../includes/key/public_key.text')),
+                    'privateKey' => trim(file_get_contents('../includes/key/private_key.text'))
                 ],
             ];
             // กำหนดตัวแปร message สำหรับใช้ในการ ส่งแจ้งเตือนโดยกําหนดค่า title , body , url จาก form
             $message = [
                 'title' => $_POST['title'],
-                'body' => $_POST['body'],
+                'body' =>$_POST['body'],
                 'url' => $_POST['url']
             ];
 
@@ -60,36 +59,20 @@ if(isset($_SESSION['username'])) {
             // วนลูปเพื่อส่งแจ้งเตือน
             foreach($webPush->flush() as $report) {
                 if($report->isSuccess()){
-                    // ทำการแจ้งว่าส่งแจ้งเตือนเรียบร้อย
-                    // และหน่วง 1 วินาที จากนั้นกลับไปหน้าหลัก
-                    echo "<script>
-                            alert('ส่งแจ้งเตือนเรียบร้อย');
-                            setTimeout(()=>{
-                                window.location.href = '../main.php';
-                            },0);
-                        </script>";
-
-                    // uncomment บรรทัดด่านล่าง เพื่อทำการส่งค่า status success กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
-                        // header('Content-Type: application/json; charset=utf-8');
-                        // echo json_encode(['status' => 'success']);
+                    //ทำการส่งค่า status success กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
+                    echo json_encode(['status' => 'success']);
+                        
                 }else{
-
-                    //บรรทัดด่านล่าง เพื่อ ทำการส่งค่า status error กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
-                    header('Content-Type: application/json; charset=utf-8');
-                    echo json_encode(['status' => 'error']);
+                    //ทำการส่งค่า status error กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
+                    echo json_encode([
+                        'status' => 'error' , 
+                        'message' => 'something went wrong'
+                    ]);
                 }
             }
     }else{
-        // ทำการแจ้งว่าข้อมูลไม่ครบ
-        // และหน่วง 1 วินาที จากนั้นกลับไปหน้าหลัก
-        echo "<script>
-                alert('ข้อมูลไม่ครบ');
-                setTimeout(() =>{
-                    window.location.href = '../main.php';
-                },0);
-            </script>";
+        echo json_encode(['status' => 'error' , 'message' => 'invalid parameter , something went wrong']);
     }
 }else{
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['status' => 'session not found']);
+    echo json_encode(['status' => 'user not found']);
 }
