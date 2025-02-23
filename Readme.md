@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
 <h3>Requirement : ความต้องการ</h5>
     <ul>
         <li><h5>PHP version 8.1 ขึ้นไป </h5></li>
@@ -17,6 +11,7 @@
         <li><h5>Xampp (สำหรับการรันเซิฟเวอร์)</h5></li>
         <li><h5>composer (สำหรับการติดตั้ง Library)</h5></li>
     </ul>
+    
 <h3>Pre-install : ก่อนติดตั้ง</h3>
 <ul>
    <li><h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5></li>
@@ -44,10 +39,9 @@
         </code>
     </ol>
 </ul>
+
 <h3>Usage : การใช้งาน</h3>
     <ol>
         <li>clone Repository นี้</li>
         <li>พิมพ์คำสั่ง composer install ใน Terminal</li>
     </ol>
-</body>
-</html>
