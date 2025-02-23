@@ -23,6 +23,12 @@ if(isset($_SESSION['username'])) {
         $stmt->execute();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // ตรวจสอบว่ามีข้อมูล endpoint หรือไม่
+        if(empty($endpoints)) {
+            echo json_encode(['status' => 'error' , 'message' => 'user not found']);
+            exit;
+        }
+                
         // กำหนดตัวแปร auth สำหรับใช้ในการ ส่งแจ้งเตือน โดยเรียกใช้งานจาก ไฟล์ public_key.text และ private_key.text ที่จัดเก็บไว้ในโฟลเดอร์ includes
             $auth = [
                 'VAPID' => [

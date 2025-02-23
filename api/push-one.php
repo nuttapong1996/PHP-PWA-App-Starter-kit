@@ -22,6 +22,12 @@ if(isset($_POST['username'])) {
         $stmt->execute();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // ตรวจสอบว่ามีข้อมูล endpoint หรือไม่
+        if(empty($endpoints)) {
+            echo json_encode(['status' => 'error' , 'message' => 'user not found']);
+            exit;
+        }
+
         // กำหนดตัวแปร auth สำหรับใช้ในการ ส่งแจ้งเตือน โดยเรียกใช้งานจาก ไฟล์ public_key.text และ private_key.text ที่จัดเก็บไว้ในโฟลเดอร์ includes
             $auth = [
                 'VAPID' => [
@@ -60,7 +66,10 @@ if(isset($_POST['username'])) {
             foreach($webPush->flush() as $report) {
                 if($report->isSuccess()){
                     //ทำการส่งค่า status success กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
-                    echo json_encode(['status' => 'success']);
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'sent notification successfully'
+                    ]);
                         
                 }else{
                     //ทำการส่งค่า status error กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน

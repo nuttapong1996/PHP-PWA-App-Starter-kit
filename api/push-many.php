@@ -31,6 +31,8 @@ if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
             // สร้างตัวแปร webPush เพื่อใช้ส่งแจ้งเตือน
             $webPush = new WebPush($auth);
 
+            $success_message =[];
+
             // วนลูปเพื่อส่งแจ้งเตือนให้แต่ละ endpoint
             foreach($endpoints as $endpoint){
                 $subscription = Subscription::create([
@@ -40,6 +42,7 @@ if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
                         'auth' => $endpoint['authKey']
                     ]
                 ]);
+
                 // กำหนดตัวแปร message สำหรับใช้ในการ ส่งแจ้งเตือนโดยกําหนดค่า title , body , url จาก form
                 $message = [
                     'title' => $_POST['title'] .' ถึงคุณ ' . $endpoint['username'],
@@ -52,21 +55,21 @@ if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
                     json_encode($message)
                 );
             }
-            
+
             // วนลูปเพื่อส่งแจ้งเตือน
             foreach($webPush->flush() as $report) {
                 if($report->isSuccess()){
-                    //ทำการส่งค่า status success กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
-                    echo json_encode(['status' => 'success']);
-                        
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'Sent notification to all users successfully'
+                    ]);
                 }else{
-                    //ทำการส่งค่า status error กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
                     echo json_encode([
                         'status' => 'error' , 
-                        'message' => 'something went wrong'
+                        'message' => 'invalid parameter , something went wrong'
                     ]);
                 }
-            }
+            }           
 }else{
     echo json_encode(['status' => 'error' , 'message' => 'invalid parameter , something went wrong']);
 }
