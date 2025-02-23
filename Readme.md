@@ -1,11 +1,10 @@
 <h1>PHP PWA App Starter Kit</h1>
 <h3>Feature</h3>
 <ul>
-    <li>Include with Service-worker and Manifest.json for edit</li>
-    <li>Include with offline page</li>
-    <li>Include with push notification</li>
-    <li>Include with push api backend</li>
-    <li>Work on both Android and ios 16+ and Chrome desktop</li>
+    <li>สามารถแสดงหน้า Offline ได้เหมือน App</li>
+    <li>สามารถส่งแจ้งเตือนได้แม้จะปิดหน้าเว็บไปแล้วก็ตาม</li>
+    <li>มีตัวอย่าง API สำหรับการส่งแจ้งเตือนให้ โดยสามารถเรียกใช้ได้จากโปรแกรม Postman (จะมีบรรยายไว้ที่หัวข้อ API) </li>
+    <li>สามารถใช้งานได้บน Google chrome รวมทั้ง Android และ ios 16 ขึ้นไป โดยสามารถกดติดตั้ง หรือ Add to Home ได้เลย</li>
 </ul>
 <h3>Requirement : ความต้องการ</h5>
     <ul>
@@ -48,7 +47,6 @@
         </code>
     </ol>
 </ul>
-
 <h3>Usage : การใช้งาน</h3>
     <ol>
         <li>clone Repository นี้</li>
