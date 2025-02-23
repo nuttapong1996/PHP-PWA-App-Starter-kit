@@ -1,3 +1,12 @@
+<h1>PHP PWA App Starter Kit</h1>
+<h3>Feature</h3>
+<ul>
+    <li>Include with Service-worker and Manifest.json for edit</li>
+    <li>Include with offline page</li>
+    <li>Include with push notification</li>
+    <li>Include with push api backend</li>
+    <li>Work on both Android and ios 16+ and Chrome desktop</li>
+</ul>
 <h3>Requirement : ความต้องการ</h5>
     <ul>
         <li><h5>PHP version 8.1 ขึ้นไป </h5></li>
