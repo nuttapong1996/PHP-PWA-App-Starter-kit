@@ -19,12 +19,16 @@ if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
         $stmt->execute();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // กำหนดตัวแปร auth สำหรับใช้ในการ ส่งแจ้งเตือน โดยเรียกใช้งานจาก ไฟล์ public_key.text และ private_key.text ที่จัดเก็บไว้ในโฟลเดอร์ includes
+        // กำหนดตัวแปร publicKey , privateKey โดยเรียกใช้งานจาก ไฟล์ .env ผ่าน function loadEnv ที่ถูกประกาศในไฟล์ connect_db.php
+        $publicKey =  $_ENV['VAPID_PUBLIC_KEY'];
+        $privateKey =  $_ENV['VAPID_PRIVATE_KEY'];
+        
+         // กำหนดตัวแปร auth สำหรับใช้ในการ ส่งแจ้งเตือน
             $auth = [
                 'VAPID' => [
                     'subject' => 'mailto:me@website.com', // can be a mailto: or your website address
-                    'publicKey' => trim(file_get_contents('../includes/key/public_key.text')),
-                    'privateKey' => trim(file_get_contents('../includes/key/private_key.text'))
+                    'publicKey' => trim($publicKey),
+                    'privateKey' => trim($privateKey)
                 ],
             ];
 
