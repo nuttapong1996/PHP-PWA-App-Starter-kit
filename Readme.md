@@ -36,15 +36,7 @@
     <li><h5>สร้าง Database ใน mysql</h5></li>
     <ol>
         <li>สร้างฐานข้อมูลชื่อ noti_db ใน mysql</li>
-        <li>ทำการ run Query นี้เพื่อสร้างตาราง</li>
-        <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
-        <li>ใส่โค๊ดดังนี้ลงไป</li>
-        <code>
-            DB_HOST=localhost <br>
-            DB_USERNAME=root <br>
-            DB_PASSWORD= (หากไม่มีก็ไม่ใส่ ) <br>
-            DB_DATABASE=noti_db <br>
-        </code>
+        <li>ทำการ import database จาก โฟลเดอร์ includes/<a href="https://github.com/nuttapong1996/PHP-PWA-App-Starter-kit/blob/main/includes/noti_db.sql">noti_db.sql</a> โดยใช้ phpmyadmin หรือ Navicat ก็ได้ </li>
     </ol>
 </ul>
 <h3>การใช้งาน</h3>
@@ -53,4 +45,14 @@
         <li>แตกไฟล์ หรือ นำไปวางที่ C:/xampp/htdocs</li>
         <li>เปิดโปรเจ็คนี้ใน VS Code</li>
         <li>เปิด Terminal และ พิมพ์คำสั่ง composer install (ต้องติดตั้ง composer ก่อน)</li>
+            <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
+        <li>ใส่โค๊ดดังนี้ลงไป</li>
+        <code>
+            DB_HOST=localhost <br>
+            DB_USERNAME=root <br>
+            DB_PASSWORD= (หากไม่มีก็ไม่ใส่ ) <br>
+            DB_DATABASE=noti_db <br>
+        </code>
+        <li>ทำการสร้าง VAPID Key โดยให้ทำการรันไฟล์ VAPID.php โดยสามารถรันจาก Browser หรือ </li>
+        
     </ol>
