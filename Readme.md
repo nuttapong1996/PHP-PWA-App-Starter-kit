@@ -45,7 +45,7 @@
         <li>แตกไฟล์ หรือ นำไปวางที่ C:/xampp/htdocs</li>
         <li>เปิดโปรเจ็คนี้ใน VS Code</li>
         <li>เปิด Terminal และ พิมพ์คำสั่ง composer install (ต้องติดตั้ง composer ก่อน)</li>
-            <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
+        <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
         <li>ใส่โค๊ดดังนี้ลงไป</li>
         <code>
             DB_HOST=localhost <br>
@@ -53,6 +53,7 @@
             DB_PASSWORD= (หากไม่มีก็ไม่ใส่ ) <br>
             DB_DATABASE=noti_db <br>
         </code>
-        <li>ทำการสร้าง VAPID Key โดยให้ทำการรันไฟล์ VAPID.php โดยสามารถรันจาก Browser หรือ </li>
+        <li>สร้างโฟลเดอร์ key ภายใน โฟลเดอร์ includes ดังนี้ includes/key</li>
+        <li>ทำการสร้าง VAPID Key โดยให้ทำการรันไฟล์ VAPID.php โดยสามารถรันจาก Browser หรือผ่าน Terminal ก็ได้โดยใช้คำสั่ง php vapid.php </li>
         
     </ol>
