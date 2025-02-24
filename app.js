@@ -78,6 +78,10 @@ async function checksub(){
 
 // Function สมัครการแจ้งเตือน
 async function enableNotif() {
+    // ทำการ fetch เพื่อดึงเอา public key สำหรับใช้ในการสร้าง subscription
+    const response = await fetch('includes/key/public_key.text');
+    const applicationServerKey = await response.text();
+
     // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
     Notification.requestPermission().then((permission)=> {
         // ถ้ามีการอนุญาต
@@ -87,7 +91,7 @@ async function enableNotif() {
                 // subscribe
                 sw.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: "BEQdLcaaNBD-nYLwfVdhI8bteRKHIKr4fEn9Dnz6kX5HiRLA64VZlORjXX2ExN9YHKhMmBwHBW1WZOM4zCx11p4"
+                    applicationServerKey: applicationServerKey.trim()
                 }).then( async (subscription)=> {
 
                     const response = await fetch('backends/subscribe.php', {
