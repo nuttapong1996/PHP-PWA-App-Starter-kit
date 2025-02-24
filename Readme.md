@@ -11,18 +11,17 @@
     <ul>
         <li><h5>PHP version 8.1 ขึ้นไป </h5></li>
         <h5>PHP extensions: ส่วนเสริมของ PHP</h5>
-            <ol>
+            <ul>
                 <li>bcmath and/or gmp (จะใช้หรือไม่ใช้ก็ได้ แต่เพื่อประสิทธิภาพที่ดีควรมี)</li>
                 <li>mbstring</li>
                 <li>curl</li>
                 <li>openssl (สำคัญ) </li>
-            </ol>
+            </ul>
         <li><h5>Xampp (สำหรับการรันเซิฟเวอร์)</h5></li>
         <li><h5>composer (สำหรับการติดตั้ง Library)</h5></li>
     </ul>
 <h3>ก่อนใช้งาน</h3>
-<ul>
-   <li><h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5></li>
+   <h5>การติดตั้ง Openssl บน Windows ( โดยใช้ Xampp)</h5>
     <ol>
         <li>ไปที่ Environment Variable</li>
         <li>ในหัวข้อของ System variables > คลิกเลือก New </li>
@@ -33,27 +32,37 @@
         </ul>
         <li>กด OK และ รีสตาร์ทคอมพิวเตอร์</li>
     </ol>
-    <li><h5>สร้าง Database ใน mysql</h5></li>
+    <h5>สร้าง Database ใน mysql</h5>
     <ol>
         <li>สร้างฐานข้อมูลชื่อ noti_db ใน mysql</li>
         <li>ทำการ import database จาก โฟลเดอร์ includes/<a href="https://github.com/nuttapong1996/PHP-PWA-App-Starter-kit/blob/main/includes/noti_db.sql">noti_db.sql</a> โดยใช้ phpmyadmin หรือ Navicat ก็ได้ </li>
     </ol>
-</ul>
 <h3>การใช้งาน</h3>
     <ol>
         <li>clone หรือ ดาวโหลด Repository นี้</li>
         <li>แตกไฟล์ หรือ นำไปวางที่ C:/xampp/htdocs</li>
         <li>เปิดโปรเจ็คนี้ใน VS Code</li>
         <li>เปิด Terminal และ พิมพ์คำสั่ง composer install (ต้องติดตั้ง composer ก่อน)</li>
+        <li>เข้าไปเปลี่ยนชื่อของแอพในไฟล์ manifest.json ในหัวข้อของ name และ short_name</li>
+        <li>เข้าไปเปลี่ยชื่อของ cache ของแอพในไฟล์ service-worker.js ในหัวข้อของ CACHE_NAME</li>
         <li>สร้างไฟล์ .env ในโฟลเดอร์ includes</li>
         <li>ใส่โค๊ดดังนี้ลงไป</li>
         <code>
             DB_HOST=localhost <br>
             DB_USERNAME=root <br>
-            DB_PASSWORD= (หากไม่มีก็ไม่ใส่ ) <br>
+            DB_PASSWORD= (หากไม่มีก็ไม่ใส่ )<br>
             DB_DATABASE=noti_db <br>
+            VAPID_PUBLIC_KEY =  
+            VAPID_PRIVATE_KEY = 
         </code>
-        <li>สร้างโฟลเดอร์ key ภายใน โฟลเดอร์ includes ดังนี้ includes/key</li>
         <li>ทำการสร้าง VAPID Key โดยให้ทำการรันไฟล์ VAPID.php โดยสามารถรันจาก Browser หรือผ่าน Terminal ก็ได้โดยใช้คำสั่ง php vapid.php </li>
-        
+        <li>คัดลอก public_key และ private_key ที่ถูกสร้างจากข้อก่อนหน้านี้ไปใส่ในไฟล์ .env ดัวอย่างนี้</li>
+        <code>
+            DB_HOST=localhost <br>
+            DB_USERNAME=root <br>
+            DB_PASSWORD= <br>
+            DB_DATABASE=noti_db <br>
+            VAPID_PUBLIC_KEY =  public_key ที่ถูกคัดลอกมา <br>
+            VAPID_PRIVATE_KEY = private_key ที่ถูกคัดลอกมา<br>
+        </code>
     </ol>
