@@ -64,10 +64,7 @@ if(!empty($_POST['title']) && !empty($_POST['body']) && !empty($_POST['url'])) {
                         'message' => 'Sent notification to all users successfully'
                     ]);
                 }else{
-                    echo json_encode([
-                        'status' => 'error' , 
-                        'message' => 'invalid parameter , something went wrong'
-                    ]);
+                   echo json_encode(['status' => 'error' ,'message' => $report->getReason()]);
                 }
             }           
 }else{
