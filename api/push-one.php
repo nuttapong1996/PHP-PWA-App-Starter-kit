@@ -75,7 +75,7 @@ if(isset($_POST['username'])) {
                     //ทำการส่งค่า status error กลับไปในกรณีที่มีการใช้ fetch api ในการเช็คสถานะการส่งแจ้งเตือน
                     echo json_encode([
                         'status' => 'error' , 
-                        'message' => 'something went wrong'
+                        echo json_encode(['status' => 'error' ,'message' => $report->getReason()]);
                     ]);
                 }
             }
