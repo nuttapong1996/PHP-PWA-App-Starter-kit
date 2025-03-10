@@ -3,7 +3,8 @@ require_once 'loadEnv.php';
 // ตั้งค่าการเชื่อมต่อฐานข้อมูล IT_HelpDesk
 try{
     // ใช้งานฟังก์ชัน loadEnv สำหรับเรียกใช้งานไฟล์ .env
-    loadEnv(__DIR__ . '/.env');
+    // loadEnv(__DIR__ . '/.env');
+    loadEnv('../../.env');
     
     //ตั้งค่าการเชื่อมต่อฐานข้อมูล
     $db_host = $_ENV['DB_HOST'];
@@ -16,11 +17,11 @@ try{
 
     //ตั้งค่าโหมดการแจ้งเตือนข้อผิดพลาด
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // echo "Connection to IT_HelpDesk successfully.<br>";
+    echo "<script>console.log('Connect to Database name ".$db_name." successfully.')</script>";
+    // echo "Connection to ".$db_name." successfully.<br>";
 }catch(Exception $e)
 {
     echo "<h1>Connection failed : </h1>";
     echo "<h3>failed to connect to Database</h3><br>";
     echo "<b>Error code : </b>" . $e->getMessage();
 }
-
