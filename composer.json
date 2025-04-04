@@ -1,5 +1,6 @@
 {
     "require": {
-        "minishlink/web-push": "^9.0"
+        "minishlink/web-push": "^9.0",
+        "firebase/php-jwt": "^6.11"
     }
 }
