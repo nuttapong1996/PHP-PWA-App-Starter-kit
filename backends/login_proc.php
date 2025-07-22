@@ -1,7 +1,18 @@
 <?php 
-    session_start();
+    // session_start();
     require '../includes/connect_db.php';
+    require '../vendor/autoload.php'; 
+    require_once '../includes/loadEnv.php';
 
+    header('Content-Type: application/json');
+
+    loadEnv(__DIR__ . '/.env');
+
+    $secret_key = $_ENV['SECRET_KEY'];
+    $issued_at = time();
+    $expire = $issued_at + (60 * 60); // 1 ชั่วโมง
+
+    // รับค่าจาก POST
     if(isset($_POST['username']) && isset($_POST['password'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -13,28 +24,36 @@
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        $_SESSION['username'] = $username;
-        echo "<script> 
-                alert('เข้าสู่ระบบสำเร็จ');
-                setTimeout(()=>{
-                    window.location.href = '../main.php';
-                },0);
-            </script>";
+        // $_SESSION['username'] = $username;
+        $payload =[
+            "iss" => "localhost",
+            "iat" => $issued_at,
+            "exp" => $expire,
+            "data" =>[
+                "username" => $username
+            ]
+        ];
+
+        $jwt = JWT::encode($payload, $secret_key, 'HS256');
+        echo json_encode([
+            'status' => 'success' , 
+            'message' => 'login success',
+            'token' => $jwt
+        ]);
+
     }else{
-        echo "<script> 
-            alert('ไม่พบผู้ใช้งาน');
-            setTimeout(()=>{
-                window.location.href = '../index.php'; 
-            },0);
-        </script>";
+        http_response_code(401);
+        echo json_encode([
+            'status' => 'fail' , 
+            'message' => 'login fail'
+        ]);
     }
 }else{
-    echo "<script>
-            alert('กรุณากรอกข้อมูลให้ครบ');
-            setTimeout(()=>{
-                window.location.href = '../index.php';
-            },0);
-        </script>";
+    http_response_code(400);
+    echo json_encode([
+        'status' => 'fail' , 
+        'message' => 'please provide username and password'
+    ]);
 }
 
 

@@ -1,11 +1,18 @@
-<?php 
-require_once 'loadEnv.php';
-// ตั้งค่าการเชื่อมต่อฐานข้อมูล IT_HelpDesk
+<?php
+
+use Dotenv\Dotenv;
+
+$root = str_replace("configs","",__DIR__);  // ตัวอย่าง C:\xampp\htdocs\PHP-PWA-App-Starter-kit\
+require_once $root ."vendor/autoload.php";
+
+
+// เรียกใช้งาน Dotenv สำหรับทำการอ่านไฟล์ .env ที่อยู่ใน root
+$dotenv = Dotenv::createImmutable($root);
+$dotenv->load();
+
+// ตั้งค่าการเชื่อมต่อฐานข้อมูล
 try{
-    // ใช้งานฟังก์ชัน loadEnv สำหรับเรียกใช้งานไฟล์ .env
-    // loadEnv(__DIR__ . '/.env');
-    loadEnv('../../.env');
-    
+
     //ตั้งค่าการเชื่อมต่อฐานข้อมูล
     $db_host = $_ENV['DB_HOST'];
     $db_user = $_ENV['DB_USERNAME'];
