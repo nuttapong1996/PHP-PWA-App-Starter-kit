@@ -1,3 +1,4 @@
+.env
 vendor
 includes/.env
 includes/key/*
