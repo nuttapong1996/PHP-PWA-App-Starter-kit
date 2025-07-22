@@ -1,5 +1,5 @@
 <?php 
-require_once 'loadEnv.php';
+$root = str_replace()
 // ตั้งค่าการเชื่อมต่อฐานข้อมูล IT_HelpDesk
 try{
     // ใช้งานฟังก์ชัน loadEnv สำหรับเรียกใช้งานไฟล์ .env
