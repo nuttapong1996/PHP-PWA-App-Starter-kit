@@ -24,7 +24,7 @@ try{
 
     //ตั้งค่าโหมดการแจ้งเตือนข้อผิดพลาด
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "<script>console.log('Connect to Database name ".$db_name." successfully.')</script>";
+    // echo "<script>console.log('Connect to Database successfully.')</script>";
     // echo "Connection to ".$db_name." successfully.<br>";
 }catch(Exception $e)
 {
