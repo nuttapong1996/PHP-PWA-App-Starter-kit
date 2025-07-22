@@ -5,6 +5,8 @@ use Dotenv\Dotenv;
 $root = str_replace("configs","",__DIR__);  // ตัวอย่าง C:\xampp\htdocs\PHP-PWA-App-Starter-kit\
 require_once $root ."vendor/autoload.php";
 
+
+// เรียกใช้งาน Dotenv สำหรับทำการอ่านไฟล์ .env ที่อยู่ใน root
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
