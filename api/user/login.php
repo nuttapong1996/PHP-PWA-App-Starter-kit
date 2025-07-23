@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 
 $root = str_replace("\api\user", "", __DIR__);
@@ -14,14 +15,24 @@ require_once $root . "\configs\connect_db.php";
 // $issued_at = time();
 // $expire = $issued_at + (60 * 60); // 1 ชั่วโมง
 
-$input =  json_decode(file_get_contents("php://input"), true);
+$input = json_decode(file_get_contents("php://input"), true);
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($input['username']) && isset($input['password'])) {
         $username = $input['username'];
         $password = $input['password'];
 
-        $sql  = "SELECT username , password FROM tbl_login WHERE username = :username AND password = :password";
+        $sql = "SELECT
+                    user.username,
+                    sub.endpoint
+                FROM
+                    tbl_login AS user
+                JOIN
+                    push_subscribers AS sub ON user.username = sub.username
+                WHERE
+                    user.username  = :username
+                AND
+                    user.password = :password";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->bindParam(':password', $password, PDO::PARAM_STR);
@@ -29,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (! empty($result)) {
+            $_SESSION['username'] = $username;
             http_response_code(200);
             echo json_encode([
                 "code"    => "200",

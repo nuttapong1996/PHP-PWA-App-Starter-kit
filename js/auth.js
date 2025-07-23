@@ -18,16 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await res.json();
 
-            if (res.ok) {
+            if (data.status === "success") {
                 console.log("Login successful:", data);
 
                 // เก็บ token ใน sessionStorage หรือ cookie (ถ้าใช้ JWT)
                 // sessionStorage.setItem("access_token", data.access_token);
 
                 // redirect ถ้าจำเป็น
-                // window.location.href = "/dashboard.html";
+                window.location.href = "?p=home";
             } else {
-                console.error("Login failed:", data);
+                window.location.href = "?p=login";
+                alert("Login failed");
+                // console.error("Login failed:", data);
             }
         } catch (err) {
             console.error("Login error:", err);
