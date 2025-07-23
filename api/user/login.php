@@ -23,16 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $password = $input['password'];
 
         $sql = "SELECT
-                    user.username,
-                    sub.endpoint
+                    username
                 FROM
-                    tbl_login AS user
-                JOIN
-                    push_subscribers AS sub ON user.username = sub.username
+                    tbl_login 
                 WHERE
-                    user.username  = :username
+                    username  = :username
                 AND
-                    user.password = :password";
+                    password = :password";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->bindParam(':password', $password, PDO::PARAM_STR);

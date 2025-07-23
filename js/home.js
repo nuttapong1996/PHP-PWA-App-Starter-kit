@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded',async ()=>{
     
     UnsubBtn.style.display="none"
 
+    SubBtn.addEventListener('click', enableNotif);
+
     const subscribe = await checksub(subName);
 
         if(subscribe !== true) {
@@ -18,33 +20,6 @@ document.addEventListener('DOMContentLoaded',async ()=>{
         }else{
             console.info('Subscribed');
         }
-
-    // const registration = await navigator.serviceWorker.ready;
-    // const subscription = await registration.pushManager.getSubscription();
-
-    //   //  ถ้าไม่มี subscription ในเครื่อง ให้ return false
-    // if (!subscription) {
-    //     return false; 
-    // }
-
-    // try {
-    //     const res = await fetch("api/push/getSub.php",{
-    //         method: "POST",
-    //         headers:{
-    //             "Content-Type" : "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //              subName :subName ,
-    //              endpoint : subscription.endpoint
-    //         })
-    //     });
-
-    //     const data = await res.json();
-    //     console.log(data);
-
-    // } catch (error) {
-        
-    // }
 });
 
 
@@ -59,7 +34,7 @@ async function checksub(subName){
         return false; 
     }
 
-    const response =  await fetch('api/push/getSub.php', {
+    const response =  await fetch('api/push/get-sub.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -109,9 +84,7 @@ async function enableNotif() {
 
                 if (data['status'] === 'success') {
                     alert('Subscribed');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 0);
+                    window.location.reload();
                 }else if (data['status']=== 'error') {
                     alert('Not Subscribed');
                 }

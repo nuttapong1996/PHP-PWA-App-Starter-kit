@@ -2,9 +2,8 @@
 
 use Dotenv\Dotenv;
 
-$root = str_replace("configs","",__DIR__);  // ตัวอย่าง C:\xampp\htdocs\PHP-PWA-App-Starter-kit\
+$root = str_replace("configs","",__DIR__); 
 require_once $root ."vendor/autoload.php";
-
 
 // เรียกใช้งาน Dotenv สำหรับทำการอ่านไฟล์ .env ที่อยู่ใน root
 $dotenv = Dotenv::createImmutable($root);
@@ -24,8 +23,6 @@ try{
 
     //ตั้งค่าโหมดการแจ้งเตือนข้อผิดพลาด
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // echo "<script>console.log('Connect to Database successfully.')</script>";
-    // echo "Connection to ".$db_name." successfully.<br>";
 }catch(Exception $e)
 {
     echo "<h1>Connection failed : </h1>";
