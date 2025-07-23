@@ -47,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 "status" => "sub",
                 "title" => "Subscribed",
                 "message" => "You are already subscribed",
-                "result" => $result,
             ]);
         } else {
            http_response_code(200);
