@@ -58,7 +58,7 @@ async function checksub(subName){
 // Function สมัครการแจ้งเตือน
 async function enableNotif() {
     // ทำการ fetch เพื่อดึงเอา public key สำหรับใช้ในการสร้าง subscription
-    const response = await fetch('configs/get-vapid.php');
+    const response = await fetch('configs/get-pk.php');
     const applicationServerKey = await response.json();
 
     // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
