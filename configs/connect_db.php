@@ -13,13 +13,15 @@ $dotenv->load();
 try{
 
     //ตั้งค่าการเชื่อมต่อฐานข้อมูล
+    $db_dsn = $_ENV['DB_DSN'];
     $db_host = $_ENV['DB_HOST'];
     $db_user = $_ENV['DB_USERNAME'];
     $db_pass = $_ENV['DB_PASSWORD'];
     $db_name = $_ENV['DB_DATABASE'];
+    $db_port = $_ENV['DB_PORT'];
 
     //สร้างตัวแปรการเชื่อมต่อฐานข้อมูล PDO Object
-    $conn = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+    $conn = new PDO("$db_dsn:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
 
     //ตั้งค่าโหมดการแจ้งเตือนข้อผิดพลาด
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

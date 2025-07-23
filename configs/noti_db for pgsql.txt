@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS push_subscribers;
+CREATE TABLE push_subscribers (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(255),
+  endpoint VARCHAR(255),
+  p256dh VARCHAR(255),
+  authKey VARCHAR(255)
+);
+
+-- ----------------------------
+-- Table structure for tbl_login
+-- ----------------------------
+DROP TABLE IF EXISTS tbl_login;
+CREATE TABLE tbl_login (
+  user_id SERIAL PRIMARY KEY,
+  username VARCHAR(255),
+  password VARCHAR(255),
+  name VARCHAR(255)
+);
