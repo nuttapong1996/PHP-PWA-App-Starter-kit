@@ -2,11 +2,11 @@
 const CACHE_NAME = "php-push-cache";
 
 // ไฟล์สำหรับแสดงหน้า offline
-const OFFLINE_URL = 'offline.php';
+const OFFLINE_URL = 'view/offline.php';
 
 // ไฟล์ที่ต้องการ cache
 const contentToCache = [
-    'offline.php',
+    'view/offline.php',
     'css/font.css'
 ];
 

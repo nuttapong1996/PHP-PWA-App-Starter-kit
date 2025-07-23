@@ -1,24 +1,25 @@
-<?php 
+<?php
 // เริ่มใช้งาน session
 session_start();
+header('Content-Type: application/json; charset=utf-8');
 // ตรวจเช็ค session
-if(isset($_SESSION['username'])){
+if (isset($_SESSION['username'])) {
+
+    $root = str_replace("\api\push", "", __DIR__);
+
     // เรียกใช้ไฟล์ connect_db.php เชื่อมต่อฐานข้อมูล
-    require '../includes/connect_db.php';
-    // ตั้งค่า header ให้เป็น json (แสดงข้อมูลในรูปแบบ json)
-    header('Content-Type: application/json; charset=utf-8');
+    require $root . "\configs\connect_db.php";
 
     // รับค่ามาจาก frontend ในรูปแบบ json
-    $json = file_get_contents('php://input');
-    $data = json_decode($json, true);
+    $input = json_decode(file_get_contents("php://input"),true);
 
     // ประกาศตัวแปร username เพื่อเก็บชื่อผู้ใช้จาก session
     $username = $_SESSION['username'];
 
     // ประกาศตัวแปร endpoint , p256dh , auth เพื่อเก็บ endpoint , p256dh , auth  ของผู้ใช้ จาก frontend
-    $enpoint = $data['endpoint'];
-    $public_key = $data['keys']['p256dh'];
-    $auth_key = $data['keys']['auth'];
+    $enpoint    = $input['endpoint'];
+    $public_key = $input['keys']['p256dh'];
+    $auth_key   = $input['keys']['auth'];
 
     // คำสั่ง SQL เพื่อเพิ่มข้อมูลในตาราง push_subscribers
     $sub_sql = "INSERT INTO push_subscribers(username,endpoint,p256dh,authKey) VALUES (:username,:endpoint,:pub_key,:auth_key)";
@@ -41,12 +42,11 @@ if(isset($_SESSION['username'])){
         // หากมีส่งข้อมูลกลับไปยัง frontend ในรูปแบบ json
         // status จะเป็น success
         echo json_encode(['status' => 'success']);
-    }else{
+    } else {
         // หากไม่มีส่งข้อมูลกลับไปยัง frontend ในรูปแบบ json
         // status จะเป็น error
         echo json_encode(['status' => 'error']);
     }
-}else{
+} else {
     echo json_encode(['status' => 'error']);
 }
-?>
