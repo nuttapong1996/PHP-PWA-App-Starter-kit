@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 // sessionStorage.setItem("access_token", data.access_token);
 
                 // redirect ถ้าจำเป็น
-                window.location.href = "?p=home";
+                window.location.href = "home";
             } else {
-                window.location.href = "?p=login";
+                window.location.href = "./";
                 alert("Login failed");
                 // console.error("Login failed:", data);
             }

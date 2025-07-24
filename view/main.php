@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (! isset($_SESSION['username'])) {
-    header('Location: ?p=login');
+    header('Location: ./');
 }
 ?>
 
@@ -62,7 +62,7 @@ if (! isset($_SESSION['username'])) {
                         </div> -->
                             </div>
                             <div class="card-footer">
-                                <a href="?p=logout" class="btn btn-danger w-100">Logout</a>
+                                <a href="logout" class="btn btn-danger w-100">Logout</a>
                             </div>
                         </div>
                     </div>
