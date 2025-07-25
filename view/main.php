@@ -1,10 +1,3 @@
-<?php
-session_start();
-if (! isset($_SESSION['username'])) {
-    header('Location: ./');
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,10 +23,10 @@ if (! isset($_SESSION['username'])) {
                         <h4 class="text-center mt-3 mb-0">PHP PWA Webpush</h4>
                     </div>
                     <div class="card-body">
-                        <h6 class="text-muted">Loged as, <?php echo $_SESSION['username']; ?></h6>
+                        <h6 class="text-muted">Loged as, <?php //echo $_SESSION['username']; ?></h6>
                         <div class="card">
                             <div class="card-body">
-                                <input type="hidden" id="userName" value="<?php echo $_SESSION['username']; ?>">
+                                <input type="hidden" id="userName" value="<?php // echo $_SESSION['username']; ?>">
                                 <button id="BtnSub" class="btn btn-primary w-100">Subscribe to Notification</button>
                                 <button id="BtnUnsub" class="btn btn-warning w-100">Unsubscribe to Notification</button>
                                 <!-- <form action="backends/send.php" method="POST" id="formSend">
@@ -76,4 +69,5 @@ if (! isset($_SESSION['username'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
+<script src="js/app.js"></script>
 <script src="js/home.js" defer></script>
