@@ -1,92 +1,59 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Feb 23, 2025 at 06:35 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+/*
+ Navicat Premium Dump SQL
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+ Source Server         : local
+ Source Server Type    : MySQL
+ Source Server Version : 100432 (10.4.32-MariaDB)
+ Source Host           : localhost:3306
+ Source Schema         : noti_db
 
+ Target Server Type    : MySQL
+ Target Server Version : 100432 (10.4.32-MariaDB)
+ File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+ Date: 26/07/2025 16:50:21
+*/
 
---
--- Database: `noti_db`
---
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Table structure for push_subscribers
+-- ----------------------------
+DROP TABLE IF EXISTS `push_subscribers`;
+CREATE TABLE `push_subscribers`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `endpoint` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `p256dh` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `authKey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
---
--- Table structure for table `push_subscribers`
---
+-- ----------------------------
+-- Table structure for refresh_tokens
+-- ----------------------------
+DROP TABLE IF EXISTS `refresh_tokens`;
+CREATE TABLE `refresh_tokens`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `expires_at` datetime NULL DEFAULT NULL,
+  `created_at` datetime NULL DEFAULT current_timestamp,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-CREATE TABLE `push_subscribers` (
-  `id` int(11) NOT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `endpoint` varchar(255) DEFAULT NULL,
-  `p256dh` varchar(255) DEFAULT NULL,
-  `authKey` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+-- ----------------------------
+-- Table structure for tbl_login
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_login`;
+CREATE TABLE `tbl_login`  (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `user_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_login`
---
-
-CREATE TABLE `tbl_login` (
-  `user_id` int(11) NOT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
-
---
--- Dumping data for table `tbl_login`
---
-
-INSERT INTO `tbl_login` (`user_id`, `username`, `password`) VALUES
-(1, 'nomad', '123456');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `push_subscribers`
---
-ALTER TABLE `push_subscribers`
-  ADD PRIMARY KEY (`id`) USING BTREE;
-
---
--- Indexes for table `tbl_login`
---
-ALTER TABLE `tbl_login`
-  ADD PRIMARY KEY (`user_id`) USING BTREE;
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `push_subscribers`
---
-ALTER TABLE `push_subscribers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tbl_login`
---
-ALTER TABLE `tbl_login`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET FOREIGN_KEY_CHECKS = 1;
