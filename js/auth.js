@@ -1,4 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    // fetch check access token
+    fetch('api/user/refresh.php', {
+        method: 'POST',
+        credentials: 'include',
+    })
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP error ' + res.status);
+            return res.json();
+        })
+        .then(data => {
+            if (data.access_token) {
+                window.location.href = "home";
+            }
+        }).catch(err => {
+            console.error('Fetch error:', err);
+        })
+
+
+    //fetch Login data
     const loginForm = document.getElementById("loginForm");
 
     loginForm.addEventListener("submit", async (e) => {
@@ -22,32 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
 
             if (data.status === "success") {
-                // console.log("Login successful:", data);
-
-                // เก็บ token ใน sessionStorage หรือ cookie (ถ้าใช้ JWT)
-                localStorage.setItem("access_token", data.access_token);
-                // localStorage.setItem("refresh_token", data.refresh_token);
-
                 // redirect ถ้าจำเป็น
-                // window.location.href = "home";
-                fetch("home", {
-                    headers: {
-                        Authorization: "Bearer " + data.access_token
-                    }
-                })
-                    .then(res => {
-                        if (!res.ok) throw new Error("Token invalid or expired");
-                        return res.text();
-                    })
-                    .then(html => {
-                        document.body.innerHTML = html;
-                    })
-                    .catch(err => {
-                        console.error("Load home failed:", err);
-                        alert("Token หมดอายุ กรุณา login ใหม่");
-                        window.location.href = "/login";
-                    });
-
+                window.location.href = "home";
             } else {
                 window.location.href = "./";
                 alert("Login failed");
@@ -58,3 +54,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+

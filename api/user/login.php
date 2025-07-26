@@ -50,6 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $access_token = JWT::encode($access_token_payload, $secret_key, 'HS256');
 
+            setcookie('access_token', $access_token, [
+                'expires'  => $access_token_expire,
+                // 'expires'  => time() + 60,
+                'path'     => '/',
+                'httponly' => true,
+                'secure'   => true, // เปลี่ยนเป็น true ถ้าใช้ HTTPS
+                'samesite' => 'Strict',
+            ]);
+
             // Generate refresh token
             $refesh_token_payload = [
                 'iat'  => $issued_at,
@@ -62,19 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $refresh_token = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
 
             // เก็บ refresh token ในฐานข้อมูล
-
-            // $check_refresh_token = $conn->prepare("SELECT * FROM refresh_tokens WHERE user_code = :usercode");
-            // $check_refresh_token->BindParam(':usercode', $user['user_code'], PDO::PARAM_STR);
-            // $check_refresh_token->execute();
-            // $refresh_token_row = $check_refresh_token->fetch(PDO::FETCH_ASSOC);
-
-            // if ($refresh_token_row['token'] !== $refresh_token || $refresh_token_row['expires_at'] < date('Y-m-d H:i:s')) {
-            //     $delete_token = $conn->prepare("DELETE FROM refresh_tokens WHERE user_code = :usercode AND token = :token LIMIT 1");
-            //     $delete_token->execute([
-            //         ':usercode' => $user['user_code'],
-            //         ':token'    => $refresh_token_row['token'],
-            //     ]);
-            // }
 
             // เช็คว่า token นี้มีอยู่แล้วไหม
             $check_token = $conn->prepare("SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token = :token");
@@ -97,19 +93,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'expires'  => $refresh_token_expire,
                 'path'     => '/',
                 'httponly' => true,
-                'secure'   => false, // ใช้ https เท่านั้น ถ้าไม่มีให้ false ชั่วคราว
+                'secure'   => true, // ใช้ https เท่านั้น ถ้าไม่มีให้ false ชั่วคราว
                 'samesite' => 'Strict',
             ]);
 
             http_response_code(200);
             echo json_encode([
-                'code'          => '200',
-                'status'        => 'success',
-                'title'         => 'Success',
-                'message'       => 'Login success',
+                'code'    => '200',
+                'status'  => 'success',
+                'title'   => 'Success',
+                'message' => 'Login success',
                 'access_token'  => $access_token,
-                'refresh_token' => $refresh_token,
-                'expires_in'    => $access_token_expire,
+                // 'refresh_token' => $refresh_token,
+                // 'expires_in'    => $access_token_expire,
             ]);
         } else {
             http_response_code(401);

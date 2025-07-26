@@ -17,20 +17,22 @@ $jwt = new JwtMiddleware($secret);
 
 
 
-$router->map('GET', '/', function () {
-   require __DIR__ .'/view/login.php';
+$router->map('GET', '/', function ()  {
+   require __DIR__ .'/view/login.html';
 });
-$router->map('GET', '/login', function () {
-   require __DIR__ .'/view/login.php';
-});
+
 $router->map('GET' ,'/logout',function(){
     require __DIR__ .'/api/user/logout.php';
 });
 
 $router->map('GET', '/home', function () use ($jwt) {
    return $jwt->handle(function(){
-        require __DIR__ .'/view/main.php';
+        require __DIR__ .'/view/main.html';
    });
+});
+
+$router->map('POST', '/refresh', function () {
+    require __DIR__ .'/api/user/refresh.php';
 });
 
 $router->map('GET', '/profile', function () {
@@ -56,5 +58,3 @@ if ($match && is_callable($match['target'])) {
 
 
 ?>
-
-

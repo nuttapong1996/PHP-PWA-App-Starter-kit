@@ -7,13 +7,16 @@ require_once $root . 'configs\connect_db.php';
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
-$input = json_decode(file_get_contents("php://input"), true);
-$refresh_token = $input['refresh_token'];
+$refresh_token = trim($_COOKIE['refresh_token'] ?? '');
 
 if ($refresh_token) {
     $stmt = $conn->prepare("DELETE FROM refresh_tokens WHERE token = :token");
     $stmt->execute([':token' => $refresh_token]);
-     echo "<script> window.location.href = './'; </script>";
+
+    setcookie('access_token', '', time() - 3600, '/', '', true, true); 
+
+    setcookie('refresh_token', '', time() - 3600, '/', '', true, true); 
+    echo "<script> window.location.href = './'; </script>";
 } else {
     http_response_code(400);
     echo json_encode(['error' => 'No refresh token']);
