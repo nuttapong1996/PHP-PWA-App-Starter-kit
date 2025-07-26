@@ -21,16 +21,16 @@ $privateKey = $_ENV['VAPID_PRIVATE_KEY'];
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-    if (isset($input['username']) && isset($input['title']) && isset($input['body']) && isset($input['url'])) {
+    if (isset($input['usercode']) && isset($input['title']) && isset($input['body']) && isset($input['url'])) {
 
-        $username = $input['username'];
+        $usercode = $input['usercode'];
         $title    = $input['title'];
         $body     = $input['body'];
         $url      = $input['url'];
 
-        $sql  = "SELECT username, endpoint , p256dh , authKey FROM push_subscribers WHERE username =:username";
+        $sql  = "SELECT user_code, endpoint , p256dh , authKey FROM push_subscribers WHERE user_code =:usercode";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':usercode', $usercode, PDO::PARAM_STR);
         $stmt->execute();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

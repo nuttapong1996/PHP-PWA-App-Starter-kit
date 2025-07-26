@@ -6,7 +6,7 @@ use Firebase\JWT\Key;
 
 header('Content-Type: application/json; charset=utf-8');
 
-$root = str_replace('\api\push', '', __DIR__);
+$root = str_replace('api\push', '', __DIR__);
 require_once $root .'vendor\autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
