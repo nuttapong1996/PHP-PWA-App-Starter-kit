@@ -73,7 +73,6 @@ try {
 
         setcookie('access_token', $access_token, [
             'expires'  => $access_token_expire,
-            // 'expires'  => time() + 60,
             'path'     => '/',
             'httponly' => true,
             'secure'   => true, // เปลี่ยนเป็น true ถ้าใช้ HTTPS

@@ -6,7 +6,7 @@ use Firebase\JWT\Key;
 
 header('Content-Type: application/json');
 
-$root = str_replace('\api\user', '', __DIR__);
+$root = str_replace('api\user', '', __DIR__);
 
 require_once $root . '\vendor\autoload.php';
 require_once $root . '\configs\connect_db.php';

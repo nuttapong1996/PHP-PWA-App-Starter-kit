@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // fetch check access token
-    fetch('api/user/refresh.php', {
+    fetch('auth/refresh', {
         method: 'POST',
         credentials: 'include',
     })
@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.access_token) {
                 window.location.href = "home";
             }
-        }).catch(err => {
+        })
+        .catch(err => {
             console.error('Fetch error:', err);
         })
 
@@ -28,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = document.getElementById("userPass").value;
 
         try {
-            const res = await fetch("api/user/login.php", {
+            // const res = await fetch("api/user/login.php", {
+            const res = await fetch("auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

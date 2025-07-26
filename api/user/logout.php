@@ -16,7 +16,7 @@ if ($refresh_token) {
     setcookie('access_token', '', time() - 3600, '/', '', true, true); 
 
     setcookie('refresh_token', '', time() - 3600, '/', '', true, true); 
-    echo "<script> window.location.href = './'; </script>";
+    echo "<script> window.location.href = '../'; </script>";
 } else {
     http_response_code(400);
     echo json_encode(['error' => 'No refresh token']);

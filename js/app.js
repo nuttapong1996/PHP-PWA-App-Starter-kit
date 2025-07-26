@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function refreshAccessToken() {
-  fetch('api/user/refresh.php', {
+  // fetch('api/user/refresh.php', {
+  fetch('auth/refresh', {
     method: 'POST',
     credentials: 'include', // สำคัญสำหรับ cookie
   })

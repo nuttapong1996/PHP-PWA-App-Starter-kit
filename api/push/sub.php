@@ -12,7 +12,7 @@ require_once $root .'vendor\autoload.php';
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
-$access_token = $_COOKIE['access_token'];
+$access_token = $_COOKIE['access_token'] ?? null;
 
 $secret_key = $_ENV['SECRET_KEY'];
 

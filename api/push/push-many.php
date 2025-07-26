@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $body     = $input['body'];
         $url      = $input['url'];
 
-        $sql  = "SELECT username, endpoint , p256dh , authKey FROM push_subscribers";
+        $sql  = "SELECT endpoint , p256dh , authKey FROM push_subscribers";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
