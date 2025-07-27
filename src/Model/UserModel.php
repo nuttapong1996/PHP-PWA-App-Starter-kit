@@ -1,0 +1,40 @@
+<?php
+namespace App\Model;
+
+use PDOException;
+use PDO;
+class UserModel
+{
+    private $conn;
+
+    public function __construct($db)
+    {
+        $this->conn = $db;
+    }
+
+    public function getAll()
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM tbl_login");
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getProfile()
+    {
+        $auth_user = $_SERVER['jwt_payload'] ?? null;
+        $usercode  = $auth_user['user_code'] ?? null;
+
+        try {
+            $stmt = $this->conn->prepare("SELECT user_code,username,name FROM tbl_login WHERE user_code = :usercode");
+            $stmt->bindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+           return false;
+        }
+    }
+}

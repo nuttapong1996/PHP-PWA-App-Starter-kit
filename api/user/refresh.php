@@ -37,12 +37,9 @@ try {
     $decoded   = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
     $user_code = $decoded->data->user_code;
 
-    // echo json_encode(['user_code' => $user_code]);
-    // exit;
 
     // ตรวจสอบว่ามี refresh token นี้ในฐานข้อมูลหรือไม่ และยังไม่หมดอายุ
     $stmt = $conn->prepare("SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token = :token AND expires_at > NOW() LIMIT 1");
-    // $stmt = $conn->prepare("SELECT * FROM refresh_tokens WHERE user_code = :usercode AND expires_at > NOW()");
     $stmt->execute([
         ':usercode' => $user_code,
         ':token'    => $refresh_token,

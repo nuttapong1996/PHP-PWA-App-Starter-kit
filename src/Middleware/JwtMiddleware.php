@@ -22,10 +22,7 @@ class JwtMiddleware
 
         if (!$access_token) {
             // กลับไป หน้า login
-            // echo '<script>window.location.href = "./";</script>';
-             http_response_code(401);
-            echo json_encode(['error' => 'Access token not provided']);
-            exit;
+            echo '<script>window.location.href = "./";</script>';
         }
         try {
             $decoded = JWT::decode($access_token, new Key($this->secret_key, 'HS256'));

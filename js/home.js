@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded',async ()=>{
             console.info('Subscribed');
         }
 
-       get_current_profile().then(profile =>{
-            document.getElementById('txUsername').innerText = profile.username;
+       get_current_profile()
+       .then(profile =>{
+            document.getElementById('txUsername').innerText = profile.response[0].name;
        });
 
 });

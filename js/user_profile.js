@@ -10,7 +10,7 @@ export function get_current_profile() {
         })
         .then(data => {
             if (data.status === 'success') {
-                return data.data;
+                return data;
             } else {
                 alert('กรุณา login ใหม่');
                 return null;
