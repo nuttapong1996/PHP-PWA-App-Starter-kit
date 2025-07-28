@@ -1,5 +1,5 @@
 <?php
-
+use App\Controllers\Auth\AuthController;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -9,7 +9,6 @@ header('Content-Type: application/json');
 $root = str_replace('api\user', '', __DIR__);
 
 require_once $root . '\vendor\autoload.php';
-require_once $root . '\configs\connect_db.php';
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
@@ -20,55 +19,56 @@ $issued_at            = time();
 $access_token_expire  = $issued_at + (60 * 15);          // 15 นาที
 $refresh_token_expire = $issued_at + (60 * 60 * 24 * 7); // 7 วัน
 
+
 $input = json_decode(file_get_contents('php://input'), true);
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($input['username']) && isset($input['password'])) {
         $username = $input['username'];
         $password = $input['password'];
 
-        $sql  = 'SELECT user_code,username FROM tbl_login WHERE username  = :username AND password = :password';
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
+        $AuthController = new AuthController();
+        $stmt = $AuthController->login($username, $password);
 
-            // Generate access token
+        if($stmt->rowCount() > 0){
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Set Access token payload
             $access_token_payload = [
                 'iss'  => 'yourdomain.com',
                 'aud'  => 'yourdomain.com',
                 'iat'  => $issued_at,
                 'exp'  => $access_token_expire,
                 'data' => [
-                    'user_code' => $user['user_code'],
-                    'username'  => $user['username'],
+                    'user_code' => $result['user_code'],
+                    'username'  => $result['username'],
                 ],
             ];
 
-            $access_token = JWT::encode($access_token_payload, $secret_key, 'HS256');
-
-            setcookie('access_token', $access_token, [
-                'expires'  => $access_token_expire,
-                // 'expires'  => time() + 60,
-                'path'     => '/',
-                'httponly' => true,
-                'secure'   => true, // เปลี่ยนเป็น true ถ้าใช้ HTTPS
-                'samesite' => 'Strict',
-            ]);
-
-            // Generate refresh token
+            // Set Refresh token payload
             $refesh_token_payload = [
                 'iat'  => $issued_at,
                 'exp'  => $refresh_token_expire,
                 'data' => [
-                    'user_code' => $user['user_code'],
+                    'user_code' => $result['user_code'],
                 ],
             ];
 
+            // Encoded
+                        $access_token = JWT::encode($access_token_payload, $secret_key, 'HS256');
             $refresh_token = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
+
+        
+            // Store Access token in cookie HttpOnly with secure
+            setcookie('access_token', $access_token, [
+                'expires'  => $access_token_expire,
+                'path'     => '/',
+                'httponly' => true,
+                'secure'   => true, 
+                'samesite' => 'Strict',
+            ]);
 
             // เก็บ refresh token ในฐานข้อมูล
 
@@ -97,6 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'samesite' => 'Strict',
             ]);
 
+        }else{
+            http_response_code(401);
+                echo json_encode(['error' => 'Invalid credentials']);
+        }
+    
+       
+
+            
             http_response_code(200);
             echo json_encode([
                 'code'    => '200',
@@ -107,15 +115,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // 'refresh_token' => $refresh_token,
                 // 'expires_in'    => $access_token_expire,
             ]);
-        } else {
-            http_response_code(401);
-            echo json_encode([
-                'code'    => 401,
-                'status'  => 'error',
-                'title'   => 'Error',
-                'message' => 'Invalid credentials',
-            ]);
-        }
+    //     } else {
+    //         http_response_code(401);
+    //         echo json_encode([
+    //             'code'    => 401,
+    //             'status'  => 'error',
+    //             'title'   => 'Error',
+    //             'message' => 'Invalid credentials',
+    //         ]);
+    //     }
     } else {
         http_response_code(400);
         echo json_encode([
@@ -125,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Uername and password required',
         ]);
     }
+
 } else {
     http_response_code(400);
     echo json_encode([

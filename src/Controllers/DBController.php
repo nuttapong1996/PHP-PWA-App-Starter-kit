@@ -17,7 +17,7 @@
             $dotenv->load();
 
             $database = new Database($_ENV['DB_DSN'],$_ENV['DB_HOST'],$_ENV['DB_USERNAME'],$_ENV['DB_PASSWORD'],$_ENV['DB_DATABASE'],$_ENV['DB_PORT']);
-            $this->db = $database->connection();
+            $this->db = $database->DBconnection();
 
         }
 

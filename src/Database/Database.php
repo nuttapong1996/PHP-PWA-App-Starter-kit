@@ -25,7 +25,7 @@ class Database
         $this->db_port = (int) ($db_port ?? 3306);
     }
 
-    public function connection()
+    public function DBconnection()
     {
         $this->conn = null;
 
