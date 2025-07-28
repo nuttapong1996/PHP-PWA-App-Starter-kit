@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         echo json_encode($arr);
     } else {
-        http_response_code(200);
+        http_response_code(204);
         echo json_encode([
             'response' => [],
             'count'    => 0,
-            'code'     => 200,
+            'code'     => 204,
             'status'   => 'success',
             'message'  => 'No records found.',
         ]);

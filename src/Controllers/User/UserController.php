@@ -24,7 +24,6 @@ class UserController extends DBController
         return $this->db;
     }
 
-
     public function getUserAll()
     {
         $this->result = null;
@@ -42,11 +41,24 @@ class UserController extends DBController
     {
         $this->result = null;
         try {
-            $userModel = new UserModel($this->db);
+            $userModel    = new UserModel($this->db);
             $this->result = $userModel->getProfile();
         } catch (PDOException $e) {
             $this->result = false;
         }
         return $this->result;
     }
+
+    public function getUserProfileByCode($usercode)
+    {
+        $this->result = null;
+        try {
+            $userModel    = new UserModel($this->db);
+            $this->result = $userModel->getProfileByCode($usercode);
+        } catch (PDOException $e) {
+            return false;
+        }
+        return $this->result;
+    }
+
 }

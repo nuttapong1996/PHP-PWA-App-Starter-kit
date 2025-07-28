@@ -1,6 +1,6 @@
 export function get_current_profile() {
 
-   return fetch('profile', {
+   return fetch('api/profile', {
         method: 'GET',
         credentials: 'include',
     })
@@ -23,7 +23,7 @@ export function get_current_profile() {
 
 export function get_profile_by_id(usercode) {
 
-   return fetch(`/profile/${usercode}`, {
+   return fetch(`api/profile/${usercode}`, {
         method: 'GET',
         credentials: 'include',
         headers:{

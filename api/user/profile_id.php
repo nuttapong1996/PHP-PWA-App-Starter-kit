@@ -1,38 +1,51 @@
 <?php
+use App\Controllers\User\UserController;
 
-header('Content-Type: application/json');
+header('Content-Type: application/json;  charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
 
 $root = str_replace('api\user', '', __DIR__);
+require_once $root . 'vendor\autoload.php';
+
+$userController = new UserController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once $root . '\configs\connect_db.php';
 
-// GET user by ID
     if (isset($_GET['usercode'])) {
-        $usercode = $_GET['usercode'];
-        $id_stmt  = $conn->prepare("SELECT * FROM tbl_login WHERE user_code = :usercode");
-        $id_stmt->bindParam(':usercode', $usercode, PDO::PARAM_STR);
-        $id_stmt->execute();
-        $id_user = $id_stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($id_user) {
+        $usercode = $_GET['usercode'];
+        $stmt     = $userController->getUserProfileByCode($usercode);
+
+        $resultCount = $stmt->rowCount();
+
+        if ($resultCount > 0) {
             http_response_code(200);
-            echo json_encode([
-                'code'    => 200,
-                'status'  => 'success',
-                'title'   => 'Success',
-                'message' => 'Token valid',
-                'data'    => $id_user,
-            ]);
+            $arr             = [];
+            $arr['response'] = [];
+            $arr['count']    = $resultCount;
+            $arr['code']     = 200;
+            $arr['status']   = 'success';
+            $arr['message']  = $resultCount . ' records';
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $r = $row;
+                array_push($arr['response'], $r);
+            }
+            echo json_encode($arr);
         } else {
-            http_response_code(401);
+            http_response_code(204);
             echo json_encode([
-                'code'    => 401,
-                'status'  => 'Unauthorized',
-                'title'   => 'Unauthorized Access',
-                'message' => 'Please login',
+                'response' => [],
+                'count'    => 0,
+                'code'     => 204,
+                'status'   => 'success',
+                'message'  => 'No records found.',
             ]);
         }
+    } else {
+        http_response_code(403);
+        echo json_encode(['error' => 'Usercode required']);
     }
 } else {
     http_response_code(405);

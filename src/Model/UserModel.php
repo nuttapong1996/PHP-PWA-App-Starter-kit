@@ -1,8 +1,9 @@
 <?php
 namespace App\Model;
 
-use PDOException;
 use PDO;
+use PDOException;
+
 class UserModel
 {
     private $conn;
@@ -34,7 +35,19 @@ class UserModel
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
-           return false;
+            return false;
+        }
+    }
+
+    public function getProfileByCode($usercode)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM tbl_login WHERE user_code = :usercode");
+            $stmt->bindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
         }
     }
 }
