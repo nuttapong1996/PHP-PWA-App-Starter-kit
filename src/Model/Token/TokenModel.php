@@ -39,4 +39,14 @@ class TokenModel
             return false;
         }
     }
+
+    public function deleteRefreshToken()
+    {
+        
+    }
+
+    public function deleteExpiresRefreshToken()
+    {
+
+    }
 }
