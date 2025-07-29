@@ -44,12 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
 
             if (data.status === "success") {
-                // redirect ถ้าจำเป็น
                 window.location.href = "home";
             } else {
                 window.location.href = "./";
                 alert("Login failed");
-                // console.error("Login failed:", data);
             }
         } catch (err) {
             console.error("Login error:", err);

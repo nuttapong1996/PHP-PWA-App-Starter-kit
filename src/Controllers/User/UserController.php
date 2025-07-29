@@ -2,7 +2,7 @@
 namespace App\Controllers\User;
 
 use App\Controllers\DBController;
-use App\Model\UserModel;
+use App\Model\User\UserModel;
 use PDOException;
 
 $root = str_replace('src\Controllers\User', '', __DIR__);

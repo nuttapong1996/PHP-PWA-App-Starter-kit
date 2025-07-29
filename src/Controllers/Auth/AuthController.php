@@ -2,7 +2,7 @@
 namespace App\Controllers\Auth;
 
 use App\Controllers\DBController;
-use App\Model\AuthModel;
+use App\Model\Auth\AuthModel;
 use PDOException;
 
 $root = str_replace('src\Controllers\Auth', '', __DIR__);
