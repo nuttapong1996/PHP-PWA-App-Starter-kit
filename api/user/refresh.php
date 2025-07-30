@@ -1,5 +1,5 @@
 <?php
-// ob_start();
+
 use App\Controllers\Token\TokenController;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
@@ -18,9 +18,9 @@ $secret_key          = $_ENV['SECRET_KEY'];
 $issued_at           = time();
 $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 
-$refresh_token = trim($_COOKIE['myapp_refresh_token']);
+$refresh_token_cookie = trim($_COOKIE['myapp_refresh_token']);
 
-if (! $refresh_token) {
+if (! $refresh_token_cookie) {
     http_response_code(400);
     echo json_encode(['error' => 'No refresh token']);
     exit;
@@ -30,16 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         // Decode Refresh token that store in cookie
-        $decoded = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
+        $decoded = JWT::decode($refresh_token_cookie, new Key($secret_key, 'HS256'));
 
         // Set $user_code from data that decoded from Refresh token
         $usercode = $decoded->data->user_code;
 
-        $tokenController = new TokenController();
-        $stmt            = $tokenController->getRefreshToken($usercode, $refresh_token);
-        $result_count    = $stmt->rowCount();
+        $tokenController  = new TokenController();
+        $stmt             = $tokenController->getRefreshToken($usercode);
+        $refresh_token_db = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result_count > 0) {
+        $validate_token = password_verify($refresh_token_cookie, $refresh_token_db['token']);
+
+        if ($validate_token === true) {
 
             $issued_at = time();
             $expire    = $issued_at + (60 * 15); // 15 นาที
@@ -69,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             http_response_code(200);
             echo json_encode([
-                'code' => 200,
-                'status' => 'success',
+                'code'         => 200,
+                'status'       => 'success',
                 'message'      => 'Token refreshed',
                 'access_token' => $access_token,
                 'expires_in'   => $expire,
@@ -94,6 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'error'   => $e->getMessage(),
         ]);
     }
-
+} else {
+    http_response_code(405);
+    echo json_encode([
+        'code'    => 405,
+        'status'  => 'error',
+        'message' => 'Method not allowed.',
+    ]);
 }
-// ob_end_clean();

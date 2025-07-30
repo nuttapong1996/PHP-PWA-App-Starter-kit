@@ -1,9 +1,8 @@
 <?php
-use Dotenv\Dotenv;
-use Firebase\JWT\JWT;
 use App\Controllers\Auth\AuthController;
 use App\Controllers\Token\TokenController;
-
+use Dotenv\Dotenv;
+use Firebase\JWT\JWT;
 
 header('Content-Type: application/json');
 
@@ -54,8 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
 
             // Encoded or create  Access Token and Refresh Token
-            $access_token  = JWT::encode($access_token_payload, $secret_key, 'HS256');
-            $refresh_token = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
+            $access_token       = JWT::encode($access_token_payload, $secret_key, 'HS256');
+            $refresh_token      = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
+            $refresh_token_hash = password_hash($refresh_token, PASSWORD_ARGON2I);
 
             // Store Access token in cookie HttpOnly with secure
             setcookie('myapp_access_token', $access_token, [
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Store Refresh token in DB
             if ($stmt_token->rowCount() == 0) {
-                $TokenController->insertRefreshToken($result['user_code'], $refresh_token, $refresh_token_expire);
+                $TokenController->insertRefreshToken($result['user_code'], $refresh_token_hash, date('Y-m-d H:i:s', $refresh_token_expire));
             }
 
         } else {

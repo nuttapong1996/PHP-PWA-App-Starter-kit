@@ -19,13 +19,13 @@ class TokenController extends DBController
         $this->db = $this->connection();
     }
 
-    public function getRefreshToken($usercode, $refresh_token)
+    public function getRefreshToken($usercode)
     {
         $this->result = null;
 
         try {
             $TokenModel   = new TokenModel($this->db);
-            $this->result = $TokenModel->getRefreshToken($usercode, $refresh_token);
+            $this->result = $TokenModel->getRefreshToken($usercode);
         } catch (PDOException $e) {
             $this->result = false;
         }

@@ -13,18 +13,30 @@ class TokenModel
         $this->conn = $db;
     }
 
-    public function getRefreshToken($usercode, $refresh_token)
+    public function getRefreshToken($usercode)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token = :token LIMIT 1');
+            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND revoked = 0 AND expires_at > NOW() ORDER BY id DESC LIMIT 1');
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
-            $stmt->BindParam(':token', $refresh_token, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
             return false;
         }
     }
+
+    // public function getRefreshToken($usercode, $refresh_token)
+    // {
+    //     try {
+    //         $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token = :token LIMIT 1');
+    //         $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+    //         $stmt->BindParam(':token', $refresh_token, PDO::PARAM_STR);
+    //         $stmt->execute();
+    //         return $stmt;
+    //     } catch (PDOException $e) {
+    //         return false;
+    //     }
+    // }
 
     public function insertRefreshToken($usercode, $refresh_token, $expires)
     {
@@ -40,12 +52,12 @@ class TokenModel
         }
     }
 
-    public function deleteRefreshToken()
+    public function RevokeRefreshToken()
     {
-        
+
     }
 
-    public function deleteExpiresRefreshToken()
+    public function deleteRevokeRefreshToken()
     {
 
     }
