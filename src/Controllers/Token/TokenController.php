@@ -30,7 +30,34 @@ class TokenController extends DBController
             $this->result = false;
         }
         return $this->result;
+    }
 
+    public function getExpiresToken($usercode)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->getExpiresToken($usercode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+
+        return $this->result;
+    }
+
+    public function getRevokeToken($usercode)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->getRevokeToken($usercode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+
+        return $this->result;
     }
 
     public function insertRefreshToken($usercode, $refresh_token, $expires)
@@ -40,6 +67,19 @@ class TokenController extends DBController
         try {
             $TokenModel   = new TokenModel($this->db);
             $this->result = $TokenModel->insertRefreshToken($usercode, $refresh_token, $expires);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function updateRevokeToken($usercode, $revoke_reason)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->updateRevokeToken($usercode, $revoke_reason);
         } catch (PDOException $e) {
             $this->result = false;
         }

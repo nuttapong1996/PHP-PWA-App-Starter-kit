@@ -21,7 +21,7 @@ $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 $refresh_token_cookie = trim($_COOKIE['myapp_refresh_token']);
 
 if (! $refresh_token_cookie) {
-    http_response_code(400);
+    http_response_code(401);
     echo json_encode(['error' => 'No refresh token']);
     exit;
 }
@@ -79,18 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
 
         } else {
-            http_response_code(401);
+            http_response_code(400);
             echo json_encode([
-                'code'    => 401,
+                'code'    => 4010,
                 'status'  => 'error',
                 'message' => 'Invalid or expired refresh token',
             ]);
         }
 
     } catch (PDOException $e) {
-        http_response_code(403);
+        http_response_code(400);
         echo json_encode([
-            'code'    => 403,
+            'code'    => 400,
             'status'  => 'error',
             'message' => 'Token decode error',
             'error'   => $e->getMessage(),

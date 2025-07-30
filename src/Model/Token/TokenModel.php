@@ -25,18 +25,29 @@ class TokenModel
         }
     }
 
-    // public function getRefreshToken($usercode, $refresh_token)
-    // {
-    //     try {
-    //         $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token = :token LIMIT 1');
-    //         $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
-    //         $stmt->BindParam(':token', $refresh_token, PDO::PARAM_STR);
-    //         $stmt->execute();
-    //         return $stmt;
-    //     } catch (PDOException $e) {
-    //         return false;
-    //     }
-    // }
+    public function getExpiresToken($usercode)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode  AND expires_at < NOW()');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getRevokeToken($usercode)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode  AND revoked = 1 OR expires_at < NOW() - INTERVAL 7 DAY');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
     public function insertRefreshToken($usercode, $refresh_token, $expires)
     {
@@ -52,9 +63,17 @@ class TokenModel
         }
     }
 
-    public function RevokeRefreshToken()
+    public function updateRevokeToken($usercode, $revoke_reason)
     {
-
+        try {
+            $stmt = $this->conn->prepare('UPDATE refresh_tokens SET revoked = 1 , revoked_at = NOW(), revoked_reason = :token_remark WHERE user_code = :usercode AND revoked = 0 AND expires_at < NOW()');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':token_remark',$revoke_reason, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function deleteRevokeRefreshToken()
