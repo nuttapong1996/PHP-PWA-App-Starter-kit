@@ -21,13 +21,13 @@ $secret_key          = $_ENV['SECRET_KEY'];
 $issued_at           = time();
 $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 
-$refresh_token_cookie = trim($_COOKIE['myapp_refresh_token']);
+$refresh_token_cookie = trim($_COOKIE['myapp_refresh_token']  ?? '');
 
 $tokenController = new TokenController();
 
 if (! $refresh_token_cookie) {
     http_response_code(401);
-    echo json_encode(['message' => ' Invalid Token or expired ']);
+    echo json_encode(['error' => ' Invalid or expired Token']);
     exit;
 }
 
