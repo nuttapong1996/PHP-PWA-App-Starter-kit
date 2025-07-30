@@ -5,7 +5,10 @@ use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-header('Content-Type: application/json');
+header('Content-Type: application/json;  charset=utf-8');
+// header('Access-Control-Allow-Origin: https://app.yourdomain.com');
+// header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: POST');
 
 $root = str_replace('api\user', '', __DIR__);
 
@@ -20,9 +23,11 @@ $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 
 $refresh_token_cookie = trim($_COOKIE['myapp_refresh_token']);
 
+$tokenController = new TokenController();
+
 if (! $refresh_token_cookie) {
     http_response_code(401);
-    echo json_encode(['error' => 'No refresh token']);
+    echo json_encode(['message' => ' Invalid Token or expired ']);
     exit;
 }
 
@@ -35,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Set $user_code from data that decoded from Refresh token
         $usercode = $decoded->data->user_code;
 
-        $tokenController  = new TokenController();
         $stmt             = $tokenController->getRefreshToken($usercode);
         $refresh_token_db = $stmt->fetch(PDO::FETCH_ASSOC);
 

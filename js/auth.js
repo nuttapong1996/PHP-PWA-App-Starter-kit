@@ -1,23 +1,32 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    // fetch check access token
-    fetch('auth/refresh', {
-        method: 'POST',
+    // 1) ถ้า access token ยังดี -> เข้า home เลย
+    await fetch('auth/token', {
+        method: 'GET',
         credentials: 'include',
     })
-        .then(res => {
-            if (!res.ok) throw new Error('HTTP error ' + res.status);
-            return res.json();
-        })
-        .then(data => {
-            if (data.access_token) {
+        .then(ac => {
+            if (ac.ok) {
                 window.location.href = "home";
+                return;
+            }
+            // 2) ถ้า access หมดอายุ -> ค่อยลอง refresh
+            if (ac.status === 401) {
+                fetch('auth/refresh', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                    .then(ref => {
+                        if (ref.ok) {
+                            window.location.href = "home";
+                            return;
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Fetch error:', err);
+                    })
             }
         })
-        .catch(err => {
-            console.error('Fetch error:', err);
-        })
-
 
     //fetch Login data
     const loginForm = document.getElementById("loginForm");

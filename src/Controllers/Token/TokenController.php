@@ -73,6 +73,20 @@ class TokenController extends DBController
         return $this->result;
     }
 
+    public function updateExpiredToken($usercode)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->updateExpiredToken($usercode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+
+        return $this->result;
+    }
+
     public function updateRevokeToken($usercode, $revoke_reason)
     {
         $this->result = null;

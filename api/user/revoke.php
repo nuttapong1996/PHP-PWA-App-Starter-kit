@@ -28,19 +28,25 @@ $token_decoded = JWT::decode($refresh_token_cookie, new Key($secret_key, 'HS256'
 $usercode      = $token_decoded->data->user_code;
 
 try {
+
     $TokenController = new TokenController();
     $stmt            = $TokenController->getExpiresToken($usercode);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result          = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $expiresAtTs = strtotime($result['expires_at']);
-    $remark = 'Expires';
-    
+    if ($result) {
+        $expiresAtTs = strtotime($result['expires_at']);
+        $remark      = 'Expires';
 
-    if ($expiresAtTs <= time()) {
-       $update = $TokenController->updateRevokeToken($usercode,$remark);
-        if($update)
-        {
-            echo 'updated!';
+        if ($expiresAtTs <= time()) {
+            $update = $TokenController->updateRevokeToken($usercode, $remark);
+            if ($update) {
+                http_response_code(200);
+                echo json_encode([
+                    'code'    => 200,
+                    'status'  => 'success',
+                    'message' => 'Token revoked',
+                ]);
+            }
         }
     }
 

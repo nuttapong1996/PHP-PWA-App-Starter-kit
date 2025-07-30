@@ -18,6 +18,10 @@ $router->map('GET', '/', function () {
     require __DIR__ . '/view/login.html';
 });
 
+$router->map('GET', '/login', function () {
+    require __DIR__ . '/view/login.html';
+});
+
 $router->map('GET', '/offline', function () {
     require __DIR__ . '/view/offline.html';
 });
@@ -28,6 +32,10 @@ $router->map('POST', '/auth/login', function () {
 
 $router->map('POST', '/auth/refresh', function () {
     require __DIR__ . '/api/user/refresh.php';
+});
+
+$router->map('GET', '/auth/token', function () {
+    require __DIR__ . '/api/user/get_token.php';
 });
 
 $router->map('GET', '/auth/logout', function () {
