@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (data.status === "success") {
                 window.location.href = "home";
             } else {
-                window.location.href = "./";
+                window.location.href = "login";
                 alert("Login failed");
             }
         } catch (err) {

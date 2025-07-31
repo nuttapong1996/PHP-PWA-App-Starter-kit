@@ -61,4 +61,47 @@ class UserController extends DBController
         return $this->result;
     }
 
+    public function getUserIP()
+    {
+        if (! empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        if (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return trim($ipList[0]);
+        }
+        return $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+    }
+
+    public function getUserDeviceType()
+    {
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $ua        = strtolower($userAgent);
+        if (strpos($ua, 'iphone') !== false) {
+            return 'iPhone';
+        }
+
+        if (strpos($ua, 'ipad') !== false) {
+            return 'iPad';
+        }
+
+        if (strpos($ua, 'android') !== false) {
+            return 'Android';
+        }
+
+        if (strpos($ua, 'windows') !== false) {
+            return 'Windows PC';
+        }
+
+        if (strpos($ua, 'macintosh') !== false) {
+            return 'Mac';
+        }
+
+        if (strpos($ua, 'linux') !== false) {
+            return 'Linux PC';
+        }
+
+        return 'Unknown';
+    }
+
 }

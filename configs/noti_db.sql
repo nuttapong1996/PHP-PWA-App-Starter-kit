@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : Local
+ Source Server         : local
  Source Server Type    : MySQL
  Source Server Version : 100432 (10.4.32-MariaDB)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 100432 (10.4.32-MariaDB)
  File Encoding         : 65001
 
- Date: 30/07/2025 23:29:19
+ Date: 31/07/2025 16:16:18
 */
 
 SET NAMES utf8mb4;
@@ -41,6 +41,7 @@ DROP TABLE IF EXISTS `refresh_tokens`;
 CREATE TABLE `refresh_tokens`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `token_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT current_timestamp,
   `device_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -50,13 +51,13 @@ CREATE TABLE `refresh_tokens`  (
   `revoked_at` datetime NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of refresh_tokens
 -- ----------------------------
-INSERT INTO `refresh_tokens` VALUES (15, '2630065', '$argon2i$v=19$m=65536,t=4,p=1$Rkl0T2Excm9jSGROWjVYRw$JSMeavl5ue6K5E0MSnm3jQyYdtkIi+CPj8eiHABk180', '2025-07-30 20:42:00', NULL, NULL, '2025-08-06 15:42:00', 0, NULL, NULL);
-INSERT INTO `refresh_tokens` VALUES (16, '2630065', '$argon2i$v=19$m=65536,t=4,p=1$Rkl0T2Excm9jSGROWjVYRw$JSMeavl5ue6K5E0MSnm3jQyYdtkIi+CPj8eiHABk180', '2025-07-30 20:42:00', NULL, NULL, '2025-08-06 15:42:00', 1, '2025-07-30 21:18:12', NULL);
+INSERT INTO `refresh_tokens` VALUES (22, '2630065', 'TK688b32353cc5a0.80955118', '$argon2i$v=19$m=65536,t=4,p=1$dExSR0pxNlFVamY5VTJNaA$SO/1sSUAHvKnfYaGg4BegerwcZEvXTid/0VAfJCaMvM', '2025-07-31 16:07:01', 'Windows PC', '::1', '2025-08-07 11:07:01', 1, '2025-07-31 16:08:23', 'Logout');
+INSERT INTO `refresh_tokens` VALUES (23, '2630065', 'TK688b32922a6544.27329403', '$argon2i$v=19$m=65536,t=4,p=1$VUNiaGJ5LlZiMU9jcFlpbQ$WIPebPggqNUZe2ENIJjagjPdifm4J8fTneeUwR6a+F8', '2025-07-31 16:08:34', 'Windows PC', '::1', '2025-08-07 11:08:34', 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tbl_login

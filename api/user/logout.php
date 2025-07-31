@@ -1,23 +1,73 @@
 <?php
+use App\Controllers\Token\TokenController;
 use Dotenv\Dotenv;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+
 $root = str_replace('api\user', '', __DIR__);
 require_once $root . 'vendor\autoload.php';
-require_once $root . 'configs\connect_db.php';
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
-$refresh_token = trim($_COOKIE['refresh_token'] ?? '');
+$secret_key = $_ENV['SECRET_KEY'];
+
+$refresh_token = trim($_COOKIE['myapp_refresh_token'] ?? '');
+
+$TokenController = new TokenController();
 
 if ($refresh_token) {
-    $stmt = $conn->prepare("DELETE FROM refresh_tokens WHERE token = :token");
-    $stmt->execute([':token' => $refresh_token]);
 
-    setcookie('access_token', '', time() - 3600, '/', '', true, true); 
+    $token_decode = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
+    $usercode     = $token_decode->data->user_code;
+    $tokenid = $token_decode->data->token_id;
+    $remark       = 'Logout';
 
-    setcookie('refresh_token', '', time() - 3600, '/', '', true, true); 
-    echo "<script> window.location.href = '../'; </script>";
+    $stmt         = $TokenController->getRefreshToken($usercode);
+    $token_result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (password_verify($refresh_token, $token_result['token'])) {
+
+        try {
+
+            $update = $TokenController->updateRevokeToken($usercode,$tokenid, $remark);
+
+            if ($update) {
+                http_response_code(200);
+                // echo json_encode([
+                //     'code'    => 200,
+                //     'status'  => 'success',
+                //     'title'   => 'Logout',
+                //     'message' => 'Logout , please login again.',
+                // ]);
+
+                setcookie('myapp_access_token', '', time() - 3600, '/', '', true, true);
+                setcookie('myapp_refresh_token', '', time() - 3600, '/', '', true, true);
+
+                echo "<script> window.location.href = '../'; </script>";
+            }
+        } catch (PDOException $e) {
+            http_response_code(400);
+            echo json_encode([
+                'code'   => 400,
+                'status' => 'error',
+                'error'  => $e->getMessage(),
+            ]);
+        }
+    } else {
+        http_response_code(401);
+        echo json_encode([
+            'code'   => 401,
+            'status' => 'error',
+            'error'  => 'Invalid or expired token',
+        ]);
+    }
 } else {
-    http_response_code(400);
-    echo json_encode(['error' => 'No refresh token']);
+    http_response_code(401);
+    echo json_encode([
+        'code'   => 401,
+        'status' => 'error',
+        'error'  => 'No refresh token',
+    ]);
 }
