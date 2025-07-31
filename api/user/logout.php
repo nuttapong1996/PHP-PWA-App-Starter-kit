@@ -34,17 +34,10 @@ if ($refresh_token) {
             $update = $TokenController->updateRevokeToken($usercode,$tokenid, $remark);
 
             if ($update) {
-                http_response_code(200);
-                // echo json_encode([
-                //     'code'    => 200,
-                //     'status'  => 'success',
-                //     'title'   => 'Logout',
-                //     'message' => 'Logout , please login again.',
-                // ]);
 
                 setcookie('myapp_access_token', '', time() - 3600, '/', '', true, true);
                 setcookie('myapp_refresh_token', '', time() - 3600, '/', '', true, true);
-
+                
                 echo "<script> window.location.href = '../'; </script>";
             }
         } catch (PDOException $e) {
