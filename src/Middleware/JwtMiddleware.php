@@ -8,13 +8,16 @@ use Firebase\JWT\Key;
 $root = str_replace('src\Middleware','',__DIR__);
 require_once $root . 'vendor\autoload.php';
 
+
 class JwtMiddleware
 {
     private $secret_key;
+    private $base_path;
 
-    public function __construct($secret_key)
+    public function __construct($base_path,$secret_key)
     {
         $this->secret_key = $secret_key;
+        $this->base_path = $base_path;
     }
 
     public function handle($callback)
@@ -24,7 +27,7 @@ class JwtMiddleware
 
         if (! $access_token) {
             // กลับไป หน้า login
-            header('Location: login');
+            header('Location:'. $this->base_path);
         }
 
         try {

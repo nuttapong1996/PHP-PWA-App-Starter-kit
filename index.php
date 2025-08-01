@@ -8,11 +8,12 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 $router = new Router();
-$router->setBasePath('/PHP-PWA-App-Starter-kit');
+$router->setBasePath($_ENV['BASE_PATH']);
 
-// กำหนด secret key จาก .env
+$basepath = $_ENV['BASE_PATH'];
 $secret = $_ENV['SECRET_KEY'];
-$jwt    = new JwtMiddleware($secret);
+
+$jwt    = new JwtMiddleware($basepath, $secret);
 
 $router->map('GET', '/', function () {
     require __DIR__ . '/view/login.html';
