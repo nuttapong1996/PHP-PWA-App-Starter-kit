@@ -38,7 +38,8 @@ if ($refresh_token) {
                 setcookie('myapp_access_token', '', time() - 3600, '/', '', true, true);
                 setcookie('myapp_refresh_token', '', time() - 3600, '/', '', true, true);
                 
-                echo "<script> window.location.href = '../'; </script>";
+                header('Location: login');
+                
             }
         } catch (PDOException $e) {
             http_response_code(400);
