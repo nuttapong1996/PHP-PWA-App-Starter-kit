@@ -24,7 +24,7 @@ class JwtMiddleware
 
         if (! $access_token) {
             // กลับไป หน้า login
-            header('Location: /login');
+            header('Location: login');
         }
 
         try {
@@ -42,7 +42,7 @@ class JwtMiddleware
                 'status'  => 'error',
                 'message' => 'Invalid or expired token',
                 'error'   => $e->getMessage()]);
-             header('Location: /login');
+             header('Location: login');
             exit;
         }
     }
