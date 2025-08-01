@@ -32,6 +32,19 @@ class TokenController extends DBController
         return $this->result;
     }
 
+    public function getRefreshTokenByID($usercode, $tokenid)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->getRefreshTokenByID($usercode, $tokenid);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
     public function getExpiresToken($usercode)
     {
         $this->result = null;
@@ -67,6 +80,20 @@ class TokenController extends DBController
         try {
             $TokenModel   = new TokenModel($this->db);
             $this->result = $TokenModel->insertRefreshToken($usercode, $token_id, $refresh_token, $device, $ip, $expires);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function updateToken($usercode, $token_id, $refresh_token, $device, $ip, $expires)
+    {
+        $this->result = null;
+
+        try {
+            $TokenModel   = new TokenModel($this->db);
+            $this->result = $TokenModel->updateToken($usercode, $token_id, $refresh_token, $device, $ip, $expires);
+            return $this->result;
         } catch (PDOException $e) {
             $this->result = false;
         }

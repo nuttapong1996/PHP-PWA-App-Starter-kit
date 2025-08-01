@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         })
 
-    //fetch Login data
+    // fetch Login data
     const loginForm = document.getElementById("loginForm");
 
     loginForm.addEventListener("submit", async (e) => {

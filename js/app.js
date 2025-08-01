@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     refreshAccessToken();
   }, 14 * 60 * 1000);
+  // },1000);
 });
 
-function refreshAccessToken() {
+async function refreshAccessToken() {
   // fetch('api/user/refresh.php', {
   fetch('auth/refresh', {
     method: 'POST',
@@ -29,4 +30,16 @@ function refreshAccessToken() {
       // ตัวอย่าง: redirect ไปหน้า login
       window.location.href = './';
     });
+
+   await fetch('auth/renew',{
+      method: 'POST',
+      credentials: 'include',
+   })
+   .then(renew =>{
+      console.log('Refresg token renewed!');
+   })
+   .catch(err_renew => {
+      console.error('Fetch error:', err_renew);
+   });
+
 }

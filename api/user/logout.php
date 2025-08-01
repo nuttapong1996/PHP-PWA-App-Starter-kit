@@ -24,7 +24,7 @@ if ($refresh_token) {
     $tokenid = $token_decode->data->token_id;
     $remark       = 'Logout';
 
-    $stmt         = $TokenController->getRefreshToken($usercode);
+    $stmt         = $TokenController->getRefreshTokenByID($usercode , $tokenid);
     $token_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (password_verify($refresh_token, $token_result['token'])) {

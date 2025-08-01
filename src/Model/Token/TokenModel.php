@@ -25,6 +25,19 @@ class TokenModel
         }
     }
 
+    public function getRefreshTokenByID($usercode ,$token_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token_id = :tokenid AND revoked = 0 AND expires_at > NOW() ORDER BY id DESC LIMIT 1');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':tokenid', $token_id, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function getExpiresToken($usercode)
     {
         try {
@@ -66,6 +79,23 @@ class TokenModel
         }
     }
 
+    public function updateToken($usercode,$token_id, $refresh_token, $device, $ip, $expires)
+    {
+        try {
+            $stmt = $this->conn->prepare('UPDATE refresh_tokens SET token = :token, device_name =:device ,ip_address=:ip,created_at=NOW(),expires_at=:expires WHERE user_code = :usercode AND token_id = :tokenid');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':tokenid', $token_id, PDO::PARAM_STR);
+            $stmt->BindParam(':token', $refresh_token, PDO::PARAM_STR);
+            $stmt->BindParam(':device', $device, PDO::PARAM_STR);
+            $stmt->BindParam(':ip', $ip, PDO::PARAM_STR);
+            $stmt->BindParam(':expires', $expires, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false; 
+        }
+    }
+
     public function updateExpiredToken($usercode)
     {
         try {
@@ -95,7 +125,7 @@ class TokenModel
     public function deleteToken($usercode)
     {
         try{
-            $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode AND expires_at < NOW() - INTERVAL 7 DAY');
+            $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode AND revoked = 1 OR expires_at < NOW() - INTERVAL 7 DAY'); // Delete in 7 day
             $stmt->BindParam(':usercode' , $usercode, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
