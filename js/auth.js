@@ -1,6 +1,8 @@
+// This is Login page 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // 1) ถ้า access token ยังดี -> เข้า home เลย
+    // fetch check Access Token .
+    // 1) If User have Access Token -> go to Home.
     await fetch('auth/token', {
         method: 'GET',
         credentials: 'include',
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.location.href = "home";
                 return;
             }
-            // 2) ถ้า access หมดอายุ -> ค่อยลอง refresh
+            // 2) If Access Token expires -> create new Access Token IF user's Refresh Token still active or login to get the new one.
             if (ac.status === 401) {
                 fetch('auth/refresh', {
                     method: 'POST',
@@ -28,9 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         })
 
-    // fetch Login data
+    // fetch Login data.
     const loginForm = document.getElementById("loginForm");
 
+    // On submit Login form 
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -38,7 +41,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const password = document.getElementById("userPass").value;
 
         try {
-            // const res = await fetch("api/user/login.php", {
             const res = await fetch("auth/login", {
                 method: "POST",
                 headers: {

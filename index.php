@@ -52,6 +52,8 @@ $router->map('GET', '/home', function () use ($jwt) {
     });
 });
 
+
+
 // เรียกใช้งาน user จาก usercode jwt
 $router->map('GET', '/api/profile', function () use ($jwt) {
     return $jwt->handle(function () {
@@ -64,6 +66,12 @@ $router->map('GET', '/api/profile/[i:usercode]', function ($usercode) use ($jwt)
     return $jwt->handle(function () use ($usercode) {
         $_GET['usercode'] = $usercode;
         return require __DIR__ . '/api/user/profile_id.php';
+    });
+});
+
+$router->map('POST' , 'api/push/getsub' , function() use ($jwt){
+    return $jwt->handle(function(){
+        return require __DIR__ . '/api/push/get-sub.php';
     });
 });
 

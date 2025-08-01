@@ -1,16 +1,20 @@
-// Function ตรวจสอบการสมัครสมาชิก
+// Function Check user subscription to Notification.
 export async function checksub() {
-    // ดึง subscription ปัจจุบันจาก Service Worker
+
+    // Create variable (registration) and assign subscription's value from recurent Service Worker.
     const registration = await navigator.serviceWorker.ready;
-    //  ดึงค่า endpoint จาก subscription
+
+    // Create variable (subscription) and assign value from variable (registration) .
     const subscription = await registration.pushManager.getSubscription();
 
-    //  ถ้าไม่มี subscription ในเครื่อง ให้ return false
+    // If there is no subscription return false .
     if (!subscription) {
         return false;
     }
 
-    const response = await fetch('api/push/get-sub.php', {
+    // Fetch to send Subscription to Server for validation
+    await fetch()
+    const response = await fetch('api/push/sub', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

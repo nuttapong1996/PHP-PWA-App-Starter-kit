@@ -1,33 +1,38 @@
-import {enableNotif} from './subscription.js';
-import {checksub} from './subscription.js';
-import {get_current_profile} from './user_profile.js';
+// This is Home page .
+import { enableNotif } from './subscription.js';
+import { checksub } from './subscription.js';
+import { get_current_profile } from './user_profile.js';
 
-document.addEventListener('DOMContentLoaded',async ()=>{
+document.addEventListener('DOMContentLoaded', async () => {
 
-    //ลงทะเบียน Service Worker กับ Browser
+    //Register Service Worker to browser.
     navigator.serviceWorker.register("./service-worker.js");
 
-    // ปุ่ม Subscribe
+    // Subscribe button.
     const SubBtn = document.getElementById('BtnSub');
-    // ปุ่ม Unsubscribe
+    // Unsubscribe button.
     const UnsubBtn = document.getElementById('BtnUnsub');
 
-    UnsubBtn.style.display="none"
+    // Hide Unsubscribe button on start.
+    UnsubBtn.style.display = "none"
 
+    // Add function to Subscribe button.
     SubBtn.addEventListener('click', enableNotif);
 
+    // Define subscribe variable for checksub function.
     const subscribe = await checksub();
 
-        if(subscribe !== true) {
-              console.warn('not subscribe to notification yet.');
-        }else{
-            console.info('Subscribed');
-        }
+    // Check subscribtion status from subscribe variable.
+    if (subscribe !== true) {
+        console.warn('not subscribe to notification yet.');
+    } else {
+        console.info('Subscribed');
+    }
 
-       get_current_profile()
-       .then(profile =>{
-            document.getElementById('txUsername').innerText = profile.response[0].name;
-       });
+    // Assign value to element txUsername for display username.
+    get_current_profile().then(profile => {
+        document.getElementById('txUsername').innerText = profile.response[0].name;
+    });
 
 });
 

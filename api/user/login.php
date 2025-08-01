@@ -17,7 +17,7 @@ $dotenv->load();
 // JWT attibute
 $secret_key           = $_ENV['SECRET_KEY'];
 $issued_at            = time();
-$refresh_token_id = uniqid('TK', true);
+$refresh_token_id     = uniqid('TK', true);
 $access_token_expire  = $issued_at + (60 * 15);          // 15 นาที
 $refresh_token_expire = $issued_at + (60 * 60 * 24 * 7); // 7 วัน
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'exp'  => $refresh_token_expire,
                 'data' => [
                     'user_code' => $result['user_code'],
-                    'token_id' =>$refresh_token_id,
+                    'token_id'  => $refresh_token_id,
                 ],
             ];
 
@@ -79,29 +79,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Check Refresh token in DB
             $TokenController = new TokenController();
-            $stmt_token      = $TokenController->getRefreshToken($result['user_code'], $refresh_token);
 
             $UserController = new UserController();
             $user_ip        = $UserController->getUserIP();
             $user_device    = $UserController->getUserDeviceType();
 
             // Store Refresh token in DB
-            if ($stmt_token->rowCount() == 0) {
-                $TokenController->insertRefreshToken($result['user_code'],$refresh_token_id ,$refresh_token_hash, $user_device, $user_ip, date('Y-m-d H:i:s', $refresh_token_expire));
-            }
+            $TokenController->insertRefreshToken($result['user_code'], $refresh_token_id, $refresh_token_hash, $user_device, $user_ip, date('Y-m-d H:i:s', $refresh_token_expire));
 
-            // Check and remark expired token 
+            // Check and remark expired token
             $stmt_expired = $TokenController->getExpiresToken($result['user_code']);
-            if($stmt_expired->rowCount() > 0){
-               $TokenController->updateExpiredToken($result['user_code']);
+            if ($stmt_expired->rowCount() > 0) {
+                $TokenController->updateExpiredToken($result['user_code']);
             }
 
             // Check and remove Revoke token or expired token that more than 7 days
             $stmt_revoke = $TokenController->getRevokeToken($result['user_code']);
-            if($stmt_revoke->rowCount() > 0){
+            if ($stmt_revoke->rowCount() > 0) {
                 $TokenController->deleteToken($result['user_code']);
             }
-            
+
         } else {
             http_response_code(401);
             http_response_code(401);

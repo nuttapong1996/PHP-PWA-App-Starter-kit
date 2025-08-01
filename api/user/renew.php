@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $refresh_token_hash = password_hash($refresh_token, PASSWORD_ARGON2I);
 
             // Update refresh token in DB
-            $TokenController->updateToken($usercode, $decoded_token_id, $refresh_token_hash, $user_device, $user_ip,$refresh_token_expire);
+            $TokenController->updateToken($usercode, $decoded_token_id, $refresh_token_hash, $user_device, $user_ip,date('Y-m-d H:i:s', $refresh_token_expire));
 
             // Store Refresh token in cookie HttpOnly with secure
             setcookie('myapp_refresh_token', $refresh_token, [
