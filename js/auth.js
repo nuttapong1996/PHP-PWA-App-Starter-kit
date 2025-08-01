@@ -40,11 +40,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         })
         .catch(err => {
+            document.body.style.display = "block";
             console.error('Access token error:', err);
         });
-
-
-    document.body.style.display = "block";
 
     // Login
     loginForm.addEventListener("submit", async (e) => {
