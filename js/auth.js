@@ -1,6 +1,8 @@
 // This is Login page 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    const loginForm = document.getElementById("loginForm");
+
     // fetch check Access Token .
     // 1) If User have Access Token -> go to Home.
     await fetch('auth/token', {
@@ -22,18 +24,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                         if (ref.ok) {
                             window.location.href = "home";
                             return;
+                        } else if (ref.status === 401) {
+                            document.body.style.display = "block";
+                            console.info("Refresh token is invalid or expired , please log in.");
+                        } else {
+                            console.warn("Unexpected error from /auth/refresh:", refreshRes.status);
                         }
                     })
                     .catch(err => {
-                        console.error('Fetch error:', err);
+                        console.error('Refresh error:', err);
+                        document.body.style.display = "block";
                     })
+            } else {
+                console.warn("Unexpected response from /auth/token:", accessRes.status);
             }
         })
+        .catch(err => {
+            console.error('Access token error:', err);
+        });
 
-    // fetch Login data.
-    const loginForm = document.getElementById("loginForm");
 
-    // On submit Login form 
+    document.body.style.display = "block";
+
+    // Login
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -62,8 +75,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (err) {
             console.error("Login error:", err);
+            alert("Network error, please try again.");
         }
     });
 });
+
+
+
+
+
 
 
