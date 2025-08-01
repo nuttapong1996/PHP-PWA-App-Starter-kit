@@ -24,7 +24,7 @@ class JwtMiddleware
 
         if (! $access_token) {
             // กลับไป หน้า login
-            echo '<script>window.location.href = "login";</script>';
+            echo '<script>window.location.href = "../";</script>';
         }
 
         try {

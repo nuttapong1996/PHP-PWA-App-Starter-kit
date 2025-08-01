@@ -2,7 +2,6 @@
 use App\Controllers\User\UserController;
 
 header('Content-Type: application/json;  charset=utf-8');
-header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
 $root = str_replace('api\user', '', __DIR__);
