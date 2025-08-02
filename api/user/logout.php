@@ -12,6 +12,8 @@ $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
 $secret_key = $_ENV['SECRET_KEY'];
+$basepath   = $_ENV['BASE_PATH'];
+
 
 $refresh_token = trim($_COOKIE['myapp_refresh_token'] ?? '');
 
@@ -38,7 +40,7 @@ if ($refresh_token) {
                 setcookie('myapp_access_token', '', time() - 3600, '/', '', true, true);
                 setcookie('myapp_refresh_token', '', time() - 3600, '/', '', true, true);
                 
-                header('Location: login');
+                header('Location: '.$basepath);
                 
             }
         } catch (PDOException $e) {

@@ -1,3 +1,22 @@
+export async function getToken() {
+    try {
+        const res = await fetch('auth/token',{
+            method: 'GET',
+            credentials: 'include'
+        });
+        if(res.ok){
+            const data = await res.json();
+            return data;
+        }else{
+             throw new Error('HTTP Error:'+res.status);
+        }
+    } catch (error) {
+        console.error('Unexpected response : ',error)
+        return null;
+    }
+}
+
+
 export async function refreshAccessToken() {
     await fetch('auth/refresh', {
         method: 'POST',
@@ -12,12 +31,11 @@ export async function refreshAccessToken() {
                 console.log('Access token refreshed!');
             } else {
                 console.error('Failed to refresh token:', data.error);
-                window.location.href = 'login';
             }
         })
         .catch(err => {
             console.error('Fetch error:', err);
-            window.location.href = 'login';
+            return null;
         });
 }
 
