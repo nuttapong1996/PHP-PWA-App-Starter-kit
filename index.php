@@ -1,6 +1,7 @@
 <?php
 use AltoRouter as Router;
 use App\Middleware\JwtMiddleware;
+
 use Dotenv\Dotenv;
 require_once 'vendor/autoload.php';
 
@@ -10,79 +11,20 @@ $dotenv->load();
 $router = new Router();
 $router->setBasePath($_ENV['BASE_PATH']);
 
+$access_token_name = $_ENV['APP_NAME'].'_access_token';
 $basepath = $_ENV['BASE_PATH'];
 $secret = $_ENV['SECRET_KEY'];
 
-$jwt    = new JwtMiddleware($basepath, $secret);
 
-$router->map('GET', '/', function () {
-    require __DIR__ . '/view/login.html';
-});
-
-$router->map('GET', '/login', function () {
-    require __DIR__ . '/view/login.html';
-});
-
-$router->map('GET', '/offline', function () {
-    require __DIR__ . '/view/offline.html';
-});
-
-$router->map('POST', '/auth/login', function () {
-    require __DIR__ . '/api/user/login.php';
-});
-
-$router->map('POST', '/auth/refresh', function () {
-    require __DIR__ . '/api/user/refresh.php';
-});
-
-$router->map('POST', '/auth/renew', function () {
-    require __DIR__ . '/api/user/renew.php';
-});
-
-$router->map('GET', '/auth/token', function () {
-    require __DIR__ . '/api/user/get_token.php';
-});
-
-$router->map('GET', '/auth/logout', function () {
-    require __DIR__ . '/api/user/logout.php';
-});
-
-$router->map('GET', '/home', function () use ($jwt) {
-    return $jwt->handle(function () {
-        require __DIR__ . '/view/main.html';
-    });
-});
+$jwt    = new JwtMiddleware($access_token_name , $basepath, $secret);
 
 
+// ✅ แยก route เป็นกลุ่ม
+require_once __DIR__ . '/routes/auth.php';
+require_once __DIR__ . '/routes/user.php';
+require_once __DIR__ . '/routes/web.php';
+require_once __DIR__ . '/routes/push.php';
 
-// เรียกใช้งาน user จาก usercode jwt
-$router->map('GET', '/api/profile', function () use ($jwt) {
-    return $jwt->handle(function () {
-        return require __DIR__ . '/api/user/profile.php';
-    });
-});
-
-// เรียกใช้งาน user จาก usercode
-$router->map('GET', '/api/profile/[i:usercode]', function ($usercode) use ($jwt) {
-    return $jwt->handle(function () use ($usercode) {
-        $_GET['usercode'] = $usercode;
-        return require __DIR__ . '/api/user/profile_id.php';
-    });
-});
-
-$router->map('POST' , 'api/push/getsub' , function() use ($jwt){
-    return $jwt->handle(function(){
-        return require __DIR__ . '/api/push/get-sub.php';
-    });
-});
-
-$router->map('POST', '/api/push', function () {
-    require __DIR__ . '/api/push/push.php';
-});
-
-$router->map('POST', '/api/push-all', function () {
-    require __DIR__ . '/api/push/push-many.php';
-});
 
 // ตรวจสอบและรัน route
 $match = $router->match();

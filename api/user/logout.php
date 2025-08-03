@@ -13,9 +13,12 @@ $dotenv->load();
 
 $secret_key = $_ENV['SECRET_KEY'];
 $basepath   = $_ENV['BASE_PATH'];
+$app_name             = $_ENV['APP_NAME'];
 
+$access_token_name  = $app_name.'_access_token';
+$refresh_token_name  = $app_name.'_refresh_token';
 
-$refresh_token = trim($_COOKIE['myapp_refresh_token'] ?? '');
+$refresh_token = trim($_COOKIE[$refresh_token_name ] ?? '');
 
 $TokenController = new TokenController();
 
@@ -37,8 +40,8 @@ if ($refresh_token) {
 
             if ($update) {
 
-                setcookie('myapp_access_token', '', time() - 3600, '/', '', true, true);
-                setcookie('myapp_refresh_token', '', time() - 3600, '/', '', true, true);
+                setcookie($access_token_name , '', time() - 3600, '/', '', true, true);
+                setcookie($refresh_token_name, '', time() - 3600, '/', '', true, true);
                 
                 header('Location: '.$basepath);
                 

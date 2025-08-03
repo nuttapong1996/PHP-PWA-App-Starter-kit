@@ -13,17 +13,19 @@ class JwtMiddleware
 {
     private $secret_key;
     private $base_path;
+    private $access_token_name;
 
-    public function __construct($base_path,$secret_key)
+    public function __construct($access_token_name,$base_path,$secret_key)
     {
         $this->secret_key = $secret_key;
         $this->base_path = $base_path;
+        $this->access_token_name = $access_token_name;
     }
 
     public function handle($callback)
     {
         //ดึง token จาก cookie
-        $access_token = $_COOKIE['myapp_access_token'] ?? '';
+        $access_token = $_COOKIE[$this->access_token_name] ?? '';
 
         if (! $access_token) {
             // กลับไป หน้า login

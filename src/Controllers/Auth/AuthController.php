@@ -19,11 +19,6 @@ class AuthController extends DBController
         $this->db = $this->connection();
     }
 
-    public function getDb()
-    {
-        return $this->db;
-    }
-
     public function login($username, $password)
     {
         $this->result = null;
@@ -41,10 +36,4 @@ class AuthController extends DBController
     {
 
     }
-
-    public function logout()
-    {
-
-    }
-
 }

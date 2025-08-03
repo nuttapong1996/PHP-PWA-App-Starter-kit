@@ -16,6 +16,10 @@ $dotenv->load();
 
 // JWT attibute
 $secret_key           = $_ENV['SECRET_KEY'];
+$domain               = $_ENV['APP_DOMAIN'];
+$app_name             = $_ENV['APP_NAME'];
+$refresh_token_name  = $app_name.'_refresh_token';
+$access_token_name  = $app_name.'_access_token';
 $issued_at            = time();
 $refresh_token_id     = uniqid('TK', true);
 $access_token_expire  = $issued_at + (60 * 15);          // 15 นาที
@@ -36,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Set Access token payload
             $access_token_payload = [
-                'iss'  => 'yourdomain.com',
-                'aud'  => 'yourdomain.com',
+                'iss'  => $domain,
+                'aud'  => $domain,
                 'iat'  => $issued_at,
                 'exp'  => $access_token_expire,
                 'data' => [
@@ -47,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Set Refresh token payload
             $refesh_token_payload = [
+                'iss'  => $domain,
+                'aud'  => $domain,
                 'iat'  => $issued_at,
                 'exp'  => $refresh_token_expire,
                 'data' => [
@@ -61,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $refresh_token_hash = password_hash($refresh_token, PASSWORD_ARGON2I);
 
             // Store Access token in cookie HttpOnly with secure
-            setcookie('myapp_access_token', $access_token, [
+            setcookie($access_token_name, $access_token, [
                 'expires'  => $access_token_expire,
                 'path'     => '/',
                 'httponly' => true,
@@ -69,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'samesite' => 'Strict',
             ]);
             // Store Refresh token in cookie HttpOnly with secure
-            setcookie('myapp_refresh_token', $refresh_token, [
+            setcookie($refresh_token_name, $refresh_token, [
                 'expires'  => $refresh_token_expire,
                 'path'     => '/',
                 'httponly' => true,
