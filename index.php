@@ -1,7 +1,7 @@
 <?php
 use AltoRouter as Router;
 use App\Middleware\JwtMiddleware;
-use App\Middleware\PersonalMiddleware;
+
 
 use Dotenv\Dotenv;
 require_once 'vendor/autoload.php';
@@ -18,6 +18,7 @@ $secret = $_ENV['SECRET_KEY'];
 
 
 $jwt    = new JwtMiddleware($access_token_name , $basepath, $secret);
+
 
 
 // ✅ แยก route เป็นกลุ่ม

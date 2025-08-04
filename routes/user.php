@@ -1,6 +1,6 @@
 <?php
 /** @var AltoRouter $router */
-// use App\Controllers\UnlockController;
+use App\Controllers\UnlockController;
 
 $router->map('GET', '/user/profile', function () use ($jwt) {
     return $jwt->handle(function () {
@@ -16,13 +16,25 @@ $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt
     });
 });
 
-
-$router->map('GET', '/unlock/[**:section]', function($section) {
-    include __DIR__ ."/../view/unlock.php";
-    
+// route สำหรับแสดงฟอร์มปลดล็อก
+$router->map('GET', '/unlock/[a:section]', function($section) {
+    $controller = new UnlockController();
+    $controller->showForm($section);
 });
 
-// $router->map('POST', '/unlock/[**:section]', function($section) {
-//     $controller = new UnlockController();
-//     $controller->unlockSection($section);
+// route สำหรับ submit ฟอร์มปลดล็อก
+$router->map('POST', '/unlock/[a:section]', function($section) {
+    $controller = new UnlockController();
+    $controller->unlockSection($section);
+});
+
+// $router->map('GET|POST', '/unlock/[**:section]', function($section) use ($personal) {
+//     $personal->handle($section, function () use ($section) {
+//         header("Location: /" . $section); // ไปหน้าเดิมหลังปลดล็อก
+//         exit;
+//     });
+
+//     require __DIR__ . '/../view/unlock.html'; // หน้ากรอกรหัสผ่าน
 // });
+
+

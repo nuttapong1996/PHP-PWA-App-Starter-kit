@@ -5,6 +5,7 @@ use App\Controllers\DBController;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PDO;
+use PDOException;
 
 class PersonalMiddleware extends DBController
 {
@@ -31,48 +32,48 @@ class PersonalMiddleware extends DBController
 
     public function handle($section, $callback)
     {
+
         if (! isset($_COOKIE[$this->access_token_name])) {
             header('Location: ' . $this->basepath . '/login');
             exit;
         }
-
+        
         try {
             $decode         = JWT::decode($_COOKIE[$this->access_token_name], new Key($this->secret_key, 'HS256'));
             $this->usercode = $decode->data->user_code;
-        } catch (\Exception $e) {
+        } catch (PDOException $e) {
             header('Location: ' . $this->basepath);
             exit;
         }
 
-        // ✅ ถ้ามีการ submit รหัสผ่าน
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['input_lock'])) {
-            $this->password = $_POST['input_lock'];
+        try {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['input_lock'])) {
 
-            $stmt = $this->db->prepare('SELECT password FROM tbl_login WHERE user_code = :usercode');
-            $stmt->bindParam(':usercode', $this->usercode, PDO::PARAM_STR);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $stmt = $this->db->prepare('SELECT password FROM tbl_login WHERE user_code = :usercode');
+                $stmt->BindParam(':usercode', $this->usercode, PDO::PARAM_STR);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (! $user) {
-                echo "ไม่พบผู้ใช้";
-                return;
+                if (! $user) {
+                    return false;
+                }
+
+                // if ($user || password_verify($this->password, $user['password'])) {
+                if ($this->password === $user['password']) {
+                    $callback();
+                    return true;
+                } else {
+                    echo "รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่";
+                    return;
+                }
+
+                // ถ้ายังไม่ submit password ก็ redirect ไปหน้า unlock
+                header("Location: /unlock/" . $section);
+                exit;
             }
-
-            if ($this->password === $user['password']) {
-                $callback(); // ✅ สำเร็จ
-                return;
-            } else {
-                echo "รหัสผ่านไม่ถูกต้อง";
-                return;
-            }
+        } catch (PDOException $e) {
+            error_log("DB Error: " . $e->getMessage());
+            return false;
         }
-
-        // ✅ ห้าม redirect ถ้าหน้านี้คือ /unlock/:section
-        $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if ($currentPath !== "/unlock/{$section}") {
-            header("Location: ".$this->basepath ."/unlock/" . $section);
-            exit;
-        }
-
     }
 }
