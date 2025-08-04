@@ -1,6 +1,7 @@
 <?php
 use AltoRouter as Router;
 use App\Middleware\JwtMiddleware;
+use App\Middleware\PersonalMiddleware;
 
 use Dotenv\Dotenv;
 require_once 'vendor/autoload.php';

@@ -15,3 +15,9 @@ $router->map('GET', '/home', function () use ($jwt) {
     });
 });
 
+$router->map('GET', '/salary', function () use ($jwt) {
+    return $jwt->handle(function (){
+        require __DIR__ . '/../view/salary.html';
+    });
+});
+

@@ -1,11 +1,3 @@
-<?php
-    use Dotenv\Dotenv;
-    $root = str_replace('view', '', __DIR__);
-    require_once $root . 'vendor\autoload.php';
-    $dotenv = Dotenv::createImmutable($root);
-    $dotenv->load();
-    $basepath = $_ENV['BASE_PATH'];
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +19,7 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-sm-12 col-md-8 col-lg-6">
-                <form method="POST" action="<?php  $basepath .'/unlock' ?>" class="card">
-                    <input type="hidden" name="section" value="<?php echo $section ?>">
+                <form method="POST"  action="<?php echo $section;  ?>" class="card">
                     <div class="card-title">
                         <h4 class="text-center mt-3 mb-0">Unlock to view</h4>
                     </div>
