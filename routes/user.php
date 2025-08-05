@@ -1,6 +1,9 @@
 <?php
 /** @var AltoRouter $router */
-use App\Controllers\UnlockController;
+
+use App\Controllers\User\UnlockController;
+
+
 
 $router->map('GET', '/user/profile', function () use ($jwt) {
     return $jwt->handle(function () {
@@ -17,15 +20,41 @@ $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt
 });
 
 // route สำหรับแสดงฟอร์มปลดล็อก
-$router->map('GET', '/unlock/[a:section]', function($section) {
-    $controller = new UnlockController();
-    $controller->showForm($section);
+$router->map('GET', '/unlock/[a:section]', function($section) use ($jwt) {
+    return $jwt->handle(function () use ($section){
+        $_GET['section'] = $section ;
+        require __DIR__ . '/../view/unlock.html';
+        // ได้ค่า get section มาละ 
+    });
+    // $controller = new UnlockController();
+    // $controller->showForm($section);
 });
 
+
+
+
 // route สำหรับ submit ฟอร์มปลดล็อก
-$router->map('POST', '/unlock/[a:section]', function($section) {
-    $controller = new UnlockController();
-    $controller->unlockSection($section);
+$router->map('POST', '/unlock/[a:section]', function($section) use ($jwt) {
+    return $jwt->handle(function () use ($section){
+
+        $_POST['section'] = $section;
+
+        // echo $_POST['input_lock'];
+
+        $unlock = new UnlockController;
+
+        $validate = $unlock->unlockSection($_POST['input_lock']);
+
+        if($validate === true){
+            echo 'inva';
+        }else{
+            echo 'invalid';
+        }
+
+
+        // header('Location' . '/'.$_POST['section']);
+        // header('Location' . 'salary');
+    });
 });
 
 // $router->map('GET|POST', '/unlock/[**:section]', function($section) use ($personal) {

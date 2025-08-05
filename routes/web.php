@@ -15,8 +15,10 @@ $router->map('GET', '/home', function () use ($jwt) {
     });
 });
 
-// $router->map('GET|POST', '/salary', function () use ($jwt, $personal) {
-//     $personal->handle('salary', function () {
-//         require __DIR__ . '/../view/salary.html';
-//     });
-// });
+$router->map('GET', '/salary', function () use ($jwt) {
+    // if Unlockcontroller false or not enter password yet go unlock/salaty
+    // else include or reqire salary.html
+    return $jwt->handle(function(){
+       header('Location: unlock/salary');
+    });
+});

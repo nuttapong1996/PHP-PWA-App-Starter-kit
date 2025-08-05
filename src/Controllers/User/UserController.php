@@ -19,11 +19,6 @@ class UserController extends DBController
         $this->db = $this->connection();
     }
 
-    public function getDb()
-    {
-        return $this->db;
-    }
-
     public function getUserAll()
     {
         $this->result = null;
