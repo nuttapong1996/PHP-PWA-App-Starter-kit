@@ -46,7 +46,8 @@ $router->map('POST', '/unlock/[a:section]', function($section) use ($jwt) {
         $validate = $unlock->unlockSection($_POST['input_lock']);
 
         if($validate === true){
-            echo 'inva';
+            // echo 'valid';
+            header('Location:'.$_POST['section']);
         }else{
             echo 'invalid';
         }
