@@ -23,10 +23,8 @@ class UnlockModel
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // if(password_verify($password,$user['password']))
             
             if($password === $user['password']){
-                // return $user['name'];
                 return true;
             }else{
                 return false;

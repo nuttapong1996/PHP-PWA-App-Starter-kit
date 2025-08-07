@@ -1,6 +1,6 @@
 <?php 
 /** @var AltoRouter $router */
-
+use App\Controllers\User\UnlockController;
 $router->map('GET', '/', function () {
     require __DIR__ . '/../view/login.html';
 });
@@ -15,10 +15,13 @@ $router->map('GET', '/home', function () use ($jwt) {
     });
 });
 
-$router->map('GET', '/salary', function () use ($jwt) {
-    // if Unlockcontroller false or not enter password yet go unlock/salaty
-    // else include or reqire salary.html
-    return $jwt->handle(function(){
-       header('Location: unlock/salary');
+
+
+$router->map('GET|POST', '/salary', function () use ($jwt) {
+    return $jwt->handle(function () {
+        $unlock = new UnlockController;
+        $unlock->handle('salary', function () {
+            require __DIR__ . '/../view/salary.html';
+        });
     });
 });

@@ -19,13 +19,28 @@ class UnlockController extends DBController
         parent::__construct();
         $this->db = $this->connection();
     }
+    public function Unlocked ($section){
+        $this->result = $section;
+        return; $this->result;
+    }
 
-    // public function showForm($section)
-    // {
-    //     $section = htmlspecialchars($section); 
-    //     //  header('Location: ' .$this->basepath.'/unlock'.'/'. $section);
-    //     include $this->root . 'view/unlock.php';
-    // }
+
+     public function handle($section, $callback) {
+        // เช็กว่า unlock form ถูก submit และถูกต้องรึยัง
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['input_lock'])) {
+            if ($this->unlockSection($_POST['input_lock'] ,$section)) {
+                // ปลดล็อกสำเร็จ
+                call_user_func($callback);
+            } else {
+                echo 'Invalid password';
+            }
+        } else {
+            // ยังไม่ปลดล็อก
+            header('Location: unlock/' . $section);
+            exit;
+        }
+    }
+
 
     public function unlockSection($password)
     {
