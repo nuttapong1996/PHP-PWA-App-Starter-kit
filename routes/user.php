@@ -19,6 +19,9 @@ $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt
     });
 });
 
+
+
+
 // route สำหรับแสดงฟอร์มปลดล็อก
 $router->map('GET', '/unlock/[a:section]', function($section) use ($jwt) {
     return $jwt->handle(function () use ($section){
@@ -27,16 +30,15 @@ $router->map('GET', '/unlock/[a:section]', function($section) use ($jwt) {
     });
 });
 
-
+// Route Submit ปลดล็อก
 $router->map('POST', '/unlock/[a:section]', function($section) use ($jwt) {
     return $jwt->handle(function () use ($section){
 
         $unlock = new UnlockController;
-        $controller = new SectionController;
         $validate = $unlock->unlockSection($_POST['input_lock']);
 
         if ($validate === true) {
-           $controller->handle($section);
+              require __DIR__ . "/../view/{$section}.html";
             exit;
         } else {
             echo 'Invalid password';

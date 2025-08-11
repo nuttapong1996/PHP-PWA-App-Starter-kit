@@ -17,7 +17,7 @@ $router->map('GET', '/home', function () use ($jwt) {
 
 
 
-$router->map('GET|POST', '/salary', function () use ($jwt) {
+$router->map('GET', '/salary', function () use ($jwt) {
     return $jwt->handle(function () {
         $unlock = new UnlockController;
         $unlock->handle('salary', function () {

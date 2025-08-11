@@ -38,6 +38,7 @@ class UnlockController extends DBController
             // ยังไม่ปลดล็อก
             header('Location: unlock/' . $section);
             exit;
+            
         }
     }
 
