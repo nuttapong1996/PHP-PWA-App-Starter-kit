@@ -25,22 +25,26 @@ class UnlockController extends DBController
     }
 
 
-     public function handle($section, $callback) {
-        // เช็กว่า unlock form ถูก submit และถูกต้องรึยัง
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['input_lock'])) {
-            if ($this->unlockSection($_POST['input_lock'] ,$section)) {
-                // ปลดล็อกสำเร็จ
-                call_user_func($callback);
-            } else {
-                echo 'Invalid password';
-            }
-        } else {
-            // ยังไม่ปลดล็อก
-            header('Location: unlock/' . $section);
-            exit;
-            
-        }
-    }
+    //  public function handle($section, $callback) {
+    //  public function handle($section) {
+    //     // เช็กว่า unlock form ถูก submit และถูกต้องรึยัง
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['input_lock'])) {
+    //         if ($this->unlockSection($_POST['input_lock'] ,$section)) {
+    //             // ปลดล็อกสำเร็จ
+    //             // call_user_func($callback);
+    //             // require __DIR__ . "/../view/{$section}.html";
+    //             echo "pass";
+    //             exit;
+    //         } else {
+    //             echo 'Invalid password';
+    //         }
+    //     } else {
+    //         // ยังไม่ปลดล็อก
+    //         header('Location: unlock/' . $section);
+    //         exit;
+
+    //     }
+    // }
 
 
     public function unlockSection($password)
