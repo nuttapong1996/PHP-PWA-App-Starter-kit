@@ -1,10 +1,10 @@
 <?php
-namespace App\Model\User;
+namespace App\Model\Sections;
 
 use PDO;
 use PDOException;
 
-class UnlockModel
+class SectionsModel
 {
     private $conn;
 
@@ -13,7 +13,7 @@ class UnlockModel
         $this->conn = $db;
     }
 
-    public function validateUnlock($password)
+    public function validate($password)
     {
         $auth_user = $_SERVER['jwt_payload'] ?? null;
         $usercode  = $auth_user['user_code'] ?? null;
@@ -22,14 +22,13 @@ class UnlockModel
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            
-            if($password === $user['password']){
+            // Add hash comparison for password if use in production
+            if ($password === $user['password']) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-            
+
         } catch (PDOException $e) {
             return false;
         }
