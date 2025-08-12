@@ -4,7 +4,6 @@ use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-
 $root = str_replace('api\user', '', __DIR__);
 require_once $root . 'vendor\autoload.php';
 
@@ -13,12 +12,12 @@ $dotenv->load();
 
 $secret_key = $_ENV['SECRET_KEY'];
 $basepath   = $_ENV['BASE_PATH'];
-$app_name             = $_ENV['APP_NAME'];
+$app_name   = $_ENV['APP_NAME'];
 
-$access_token_name  = $app_name.'_access_token';
-$refresh_token_name  = $app_name.'_refresh_token';
+$access_token_name  = $app_name . '_access_token';
+$refresh_token_name = $app_name . '_refresh_token';
 
-$refresh_token = trim($_COOKIE[$refresh_token_name ] ?? '');
+$refresh_token = trim($_COOKIE[$refresh_token_name] ?? '');
 
 $TokenController = new TokenController();
 
@@ -26,25 +25,39 @@ if ($refresh_token) {
 
     $token_decode = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
     $usercode     = $token_decode->data->user_code;
-    $tokenid = $token_decode->data->token_id;
+    $tokenid      = $token_decode->data->token_id;
     $remark       = 'Logout';
 
-    $stmt         = $TokenController->getRefreshTokenByID($usercode , $tokenid);
+    $stmt         = $TokenController->getRefreshTokenByID($usercode, $tokenid);
     $token_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (password_verify($refresh_token, $token_result['token'])) {
 
         try {
 
-            $update = $TokenController->updateRevokeToken($usercode,$tokenid, $remark);
+            $update = $TokenController->updateRevokeToken($usercode, $tokenid, $remark);
 
             if ($update) {
 
-                setcookie($access_token_name , '', time() - 3600, '/', '', true, true);
+                setcookie($access_token_name, '', time() - 3600, '/', '', true, true);
                 setcookie($refresh_token_name, '', time() - 3600, '/', '', true, true);
-                
-                header('Location: '.$basepath);
-                
+                session_start();
+                // if (ini_get("session.use_cookies")) {
+                //     $params = session_get_cookie_params();
+                //     setcookie(
+                //         session_name(),
+                //         '',
+                //         time() - 3600,
+                //         $params["path"],
+                //         $params["domain"],
+                //         $params["secure"],
+                //         $params["httponly"]
+                //     );
+                // }
+                $_SESSION = [];
+                session_destroy();
+                header('Location: ' . $basepath);
+
             }
         } catch (PDOException $e) {
             http_response_code(400);
