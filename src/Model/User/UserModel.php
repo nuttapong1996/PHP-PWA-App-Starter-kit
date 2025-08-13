@@ -50,4 +50,16 @@ class UserModel
             return false;
         }
     }
+    
+    public function getEmailByEmail($email)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT email FROM tbl_login WHERE email = :email");
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

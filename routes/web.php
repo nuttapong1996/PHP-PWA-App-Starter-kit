@@ -1,6 +1,14 @@
 <?php
-ini_set('session.cookie_lifetime', 0);
 ini_set('session.gc_maxlifetime', 1440);
+ini_set('session.cookie_httponly', 1);
+session_set_cookie_params([
+    'lifetime' => 0,          // 0 = session cookie (ปิด browser แล้วหาย)
+    'path'     => '/',
+    'domain'   => '', // หรือปล่อยว่างให้ใช้ domain ปัจจุบัน
+    'secure'   => true,       // true = ส่ง cookie เฉพาะผ่าน HTTPS
+    'httponly' => true,       // ปิดการเข้าถึงจาก JS
+    'samesite' => 'Strict',   // ป้องกัน CSRF จาก cross-site
+]);
 session_start();
 
 /** @var AltoRouter $router */
@@ -13,6 +21,10 @@ $router->map('GET', '/', function () {
 
 $router->map('GET', '/login', function () {
     require __DIR__ . '/../view/login.html';
+});
+
+$router->map('GET' , '/register' , function(){
+    require __DIR__ .'/../view/regis.html';
 });
 
 $router->map('GET', '/home', function () use ($jwt) {

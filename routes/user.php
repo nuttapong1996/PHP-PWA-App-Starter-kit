@@ -1,8 +1,6 @@
 <?php
 /** @var AltoRouter $router */
 
-
-
 $router->map('GET', '/user/profile', function () use ($jwt) {
     return $jwt->handle(function () {
         return require __DIR__ . '/../api/user/profile.php';
@@ -17,3 +15,5 @@ $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt
     });
 });
 
+
+// $router->map('GET', )
