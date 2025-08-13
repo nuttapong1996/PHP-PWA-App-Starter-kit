@@ -7,9 +7,7 @@
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
-        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body class="ibm-plex-sans-thai-regular">
@@ -17,7 +15,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-sm-12 col-md-8 col-lg-6">
                 <div class="row">
-                    <div class="col-12 text-center">
+                    <div class="col-12">
                         <h1 class="text-center">NOMAD-12 PHP Framework</h1>
                     </div>
                 </div>
@@ -47,16 +45,45 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6 col-lg-6">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="userPass" id="userPass"
-                                                    required placeholder="Password">
-                                                <button class="btn btn-outline-secondary" type="button" id="showPass">
+                                            <div class="input-group mb-3">
+                                                <input class="form-control form-control-lg fs-6" type="text"
+                                                    name="userPass" id="userPass" required placeholder="Password">
+                                                <button class="btn btn-outline-secondary border-secondary-subtle"
+                                                    type="button" id="BtnPass">
                                                     <i class="bi bi-eye-slash"></i>
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6 col-lg-6">
-
+                                            <div class="input-group mb-3">
+                                                <input class="form-control form-control-lg fs-6" type="password"
+                                                    name="cfPass" id="cfPass" required placeholder="Confirm Password">
+                                                <button class="btn btn-outline-secondary border-secondary-subtle"
+                                                    type="button" id="BtnCfPass">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" type="text" name="userEmail" id="userEmail"
+                                                    required placeholder="">
+                                                <label for="userEmail">Email</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-6 ">
+                                            <button class="btn btn-primary w-100 p-2" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            Already have an account? &nbsp;
+                                            <a href="login">Login</a>
                                         </div>
                                     </div>
                                 </form>
@@ -69,28 +96,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/js/all.min.js"
-        integrity="sha512-gBYquPLlR76UWqCwD06/xwal4so02RjIR0oyG1TIhSGwmBTRrIkQbaPehPF8iwuY9jFikDHMGEelt0DtY7jtvQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>
-
-<script>
-    document.getElementById('showPass').addEventListener('click', function () {
-        const passwordField = document.getElementById('userPass');
-        const icon = this.querySelector('i');
-
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            icon.classList.remove('bi-eye-slash');
-            icon.classList.add('bi-eye');
-        } else {
-            passwordField.type = 'password';
-            icon.classList.remove('bi-eye');
-            icon.classList.add('bi-eye-slash');
-        }
-    });
-</script>
+<script type="module" src="js/regis.js" defer></script>

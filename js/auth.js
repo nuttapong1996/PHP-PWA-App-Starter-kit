@@ -1,17 +1,20 @@
 // This ONLY belong to login page.
 import { renewRefreshToken } from "./tokenControl.js";
+import { togglePassword } from './module/ui.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
     const loginForm = document.getElementById("loginForm");
 
+    document.getElementById('BtnPass').addEventListener('click', () => { togglePassword('BtnPass', 'userPass'); });
+
     // Check Access Token
     const validate_token = await renewRefreshToken();
 
-    if (validate_token ==='success' ) {
+    if (validate_token === 'success') {
         window.location.href = "home";
         return;
-    } 
+    }
     else {
         document.body.style.display = "block";
     }

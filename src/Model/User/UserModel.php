@@ -50,7 +50,7 @@ class UserModel
             return false;
         }
     }
-    
+
     public function getEmailByEmail($email)
     {
         try {

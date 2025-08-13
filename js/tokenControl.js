@@ -14,21 +14,6 @@ export async function refreshAccessToken() {
     }
 }
 
-//     await fetch('auth/refresh', {
-//         method: 'POST',
-//         credentials: 'include',
-//     })
-//         .then(res => {
-//             if (res.ok) {
-//                 console.log('Access token refreshed!');
-//             }
-//         })
-//         .catch(err => {
-//             console.error('Fetch error:', err);
-//             return null;
-//         });
-// }
-
 export async function renewRefreshToken() {
     try {
         const response = await fetch('auth/renew', {
