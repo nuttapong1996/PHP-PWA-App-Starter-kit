@@ -4,7 +4,6 @@ namespace App\Controllers\User;
 use App\Controllers\DBController;
 use App\Model\User\UserModel;
 use PDOException;
-use PDO;
 
 $root = str_replace('src\Controllers\User', '', __DIR__);
 require_once $root . 'vendor\autoload.php';
@@ -22,9 +21,9 @@ class UserController extends DBController
 
     public function createUserId()
     {
-        $y = (date('Y') + 543) % 100;
-        $usercode = '2'.$y.rand(1000, 9999);
-        return $usercode ;
+        $y        = (date('Y') + 543) % 100;
+        $usercode = '2' . $y . rand(1000, 9999);
+        return $usercode;
     }
 
     public function getUserAll()
@@ -63,6 +62,19 @@ class UserController extends DBController
         }
         return $this->result;
     }
+
+    public function getUserByUsername($username)
+    {
+        $this->result = null;
+        try {
+            $userModel    = new UserModel($this->db);
+            $this->result = $userModel->getUserByUsername($username);
+        } catch (PDOException $e) {
+            return false;
+        }
+        return $this->result;
+    }
+
     public function getEmailByEmail($email)
     {
         $this->result = null;
@@ -119,3 +131,26 @@ class UserController extends DBController
     }
 
 }
+// $UserController = new UserController();
+
+// $usercode         = '2630065';
+// $username         = 'nomad';
+// $email            = 'nuttapong.th@sahakol.com';
+// $existingUserCode = $UserController->getUserProfileByCode($usercode);
+// $existingUserName = $UserController->getUserByUsername($username);
+// $existingEmail    = $UserController->getEmailByEmail($email);
+
+// $countUserCode = $existingUserCode->rowCount();
+// $countUserName = $existingUserName->rowCount();
+// $countEmail    = $existingEmail->rowCount();
+
+// if ($countUserCode > 0) {
+//     echo $countUserCode . ' usercode found' . '<br>';
+// }
+// if ($countUserName > 0) {
+//     echo $countUserName . ' username found' . '<br>';
+// }
+
+// if ($countEmail > 0) {
+//      echo $countEmail . ' email found' . '<br>';
+// }

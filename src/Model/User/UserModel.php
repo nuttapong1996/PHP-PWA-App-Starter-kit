@@ -51,6 +51,18 @@ class UserModel
         }
     }
 
+    public function getUserByUsername($username)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM tbl_login WHERE username = :username");
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function getEmailByEmail($email)
     {
         try {

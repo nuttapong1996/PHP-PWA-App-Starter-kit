@@ -1,7 +1,7 @@
 // This is Home page .
-import { enableNotif } from './subscription.js';
-import { checksub } from './subscription.js';
-import { get_current_profile } from './user_profile.js';
+import { enableNotif } from './module/subscription.js';
+import { checksub } from './module/subscription.js';
+import { get_current_profile } from './module/user_profile.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 

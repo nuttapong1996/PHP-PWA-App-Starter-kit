@@ -11,38 +11,51 @@ header('Access-Control-Allow-Methods: POST');
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (! empty($input['usercode']) && ! empty($input['name']) && ! empty($input['username']) && ! empty($input['password']) && ! empty($input['email'])) {
+    if (! empty($input['fName']) && ! empty($input['userName']) && ! empty($input['userPass']) && ! empty($input['userEmail'])) {
 
         $AuthController = new AuthController();
         $UserController = new UserController();
 
         $usercode = $UserController->createUserId();
-        $name     = $input['name'];
-        $username = $input['username'];
-        $password = $input['password'];
-        $email    = $input['email'];
+        $name     = $input['fName'];
+        $username = $input['userName'];
+        $password = $input['userPass'];
+        $email    = $input['userEmail'];
 
         $password = password_hash($password, PASSWORD_BCRYPT);
 
-        $existingUser  = $UserController->getUserProfileByCode($usercode);
-        $existingEmail = $UserController->getEmailByEmail($email);
+        $existingUserCode = $UserController->getUserProfileByCode($usercode);
+        $existingUserName = $UserController->getUserByUsername($username);
+        $existingEmail    = $UserController->getEmailByEmail($email);
 
         // Check if usercode already exists
-        if ($existingUser->rowCount() > 0) {
+        if ($existingUserCode->rowCount() > 0) {
             echo json_encode([
                 'code'    => 200,
                 'status'  => 'error',
-                'title'   => 'error',
+                'title'   => 'usercode exists',
                 'message' => 'User code already exists',
             ]);
             exit;
         }
+
+        // Check if username already exists
+        if ($existingUserName->rowCount() > 0) {
+            echo json_encode([
+                'code'    => 200,
+                'status'  => 'error',
+                'title'   => 'username exists',
+                'message' => 'Username already exists',
+            ]);
+            exit;
+        }
+
         // Check if email already exists
         if ($existingEmail->rowCount() > 0) {
             echo json_encode([
                 'code'    => 200,
                 'status'  => 'error',
-                'title'   => 'error',
+                'title'   => 'email exists',
                 'message' => 'Email already exists',
             ]);
             exit;

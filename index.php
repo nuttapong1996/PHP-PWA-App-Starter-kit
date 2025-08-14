@@ -1,8 +1,6 @@
 <?php
 use AltoRouter as Router;
 use App\Middleware\JwtMiddleware;
-
-
 use Dotenv\Dotenv;
 require_once 'vendor/autoload.php';
 
@@ -12,21 +10,16 @@ $dotenv->load();
 $router = new Router();
 $router->setBasePath($_ENV['BASE_PATH']);
 
-$access_token_name = $_ENV['APP_NAME'].'_access_token';
-$basepath = $_ENV['BASE_PATH'];
-$secret = $_ENV['SECRET_KEY'];
+$access_token_name = $_ENV['APP_NAME'] . '_access_token';
+$basepath          = $_ENV['BASE_PATH'];
+$secret            = $_ENV['SECRET_KEY'];
 
+$jwt = new JwtMiddleware($access_token_name, $basepath, $secret);
 
-$jwt    = new JwtMiddleware($access_token_name , $basepath, $secret);
-
-
-
-// ✅ แยก route เป็นกลุ่ม
 require_once __DIR__ . '/routes/auth.php';
 require_once __DIR__ . '/routes/user.php';
 require_once __DIR__ . '/routes/web.php';
 require_once __DIR__ . '/routes/push.php';
-
 
 // ตรวจสอบและรัน route
 $match = $router->match();

@@ -18,8 +18,8 @@ $dotenv->load();
 $secret_key           = $_ENV['SECRET_KEY'];
 $domain               = $_ENV['APP_DOMAIN'];
 $app_name             = $_ENV['APP_NAME'];
-$refresh_token_name  = $app_name.'_refresh_token';
-$access_token_name  = $app_name.'_access_token';
+$refresh_token_name   = $app_name . '_refresh_token';
+$access_token_name    = $app_name . '_access_token';
 $issued_at            = time();
 $refresh_token_id     = uniqid('TK', true);
 $access_token_expire  = $issued_at + (60 * 15);          // 15 นาที
@@ -33,99 +33,109 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = $input['password'];
 
         $AuthController = new AuthController();
-        $stmt           = $AuthController->login($username, $password);
+        $stmt           = $AuthController->login($username);
 
         if ($stmt->rowCount() > 0) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Set Access token payload
-            $access_token_payload = [
-                'iss'  => $domain,
-                'aud'  => $domain,
-                'iat'  => $issued_at,
-                'exp'  => $access_token_expire,
-                'data' => [
-                    'user_code' => $result['user_code'],
-                ],
-            ];
+            if (password_verify($password, $result['password'])) {
 
-            // Set Refresh token payload
-            $refesh_token_payload = [
-                'iss'  => $domain,
-                'aud'  => $domain,
-                'iat'  => $issued_at,
-                'exp'  => $refresh_token_expire,
-                'data' => [
-                    'user_code' => $result['user_code'],
-                    'token_id'  => $refresh_token_id,
-                ],
-            ];
+                // Set Access token payload
+                $access_token_payload = [
+                    'iss'  => $domain,
+                    'aud'  => $domain,
+                    'iat'  => $issued_at,
+                    'exp'  => $access_token_expire,
+                    'data' => [
+                        'user_code' => $result['user_code'],
+                    ],
+                ];
 
-            // Encoded or create  Access Token and Refresh Token
-            $access_token       = JWT::encode($access_token_payload, $secret_key, 'HS256');
-            $refresh_token      = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
-            $refresh_token_hash = password_hash($refresh_token, PASSWORD_ARGON2I);
+                // Set Refresh token payload
+                $refesh_token_payload = [
+                    'iss'  => $domain,
+                    'aud'  => $domain,
+                    'iat'  => $issued_at,
+                    'exp'  => $refresh_token_expire,
+                    'data' => [
+                        'user_code' => $result['user_code'],
+                        'token_id'  => $refresh_token_id,
+                    ],
+                ];
 
-            // Store Access token in cookie HttpOnly with secure
-            setcookie($access_token_name, $access_token, [
-                'expires'  => $access_token_expire,
-                'path'     => '/',
-                'httponly' => true,
-                'secure'   => true,
-                'samesite' => 'Strict',
-            ]);
-            // Store Refresh token in cookie HttpOnly with secure
-            setcookie($refresh_token_name, $refresh_token, [
-                'expires'  => $refresh_token_expire,
-                'path'     => '/',
-                'httponly' => true,
-                'secure'   => true,
-                'samesite' => 'Strict',
-            ]);
+                // Encoded or create  Access Token and Refresh Token
+                $access_token       = JWT::encode($access_token_payload, $secret_key, 'HS256');
+                $refresh_token      = JWT::encode($refesh_token_payload, $secret_key, 'HS256');
+                $refresh_token_hash = password_hash($refresh_token, PASSWORD_ARGON2I);
 
-            // Check Refresh token in DB
-            $TokenController = new TokenController();
+                // Store Access token in cookie HttpOnly with secure
+                setcookie($access_token_name, $access_token, [
+                    'expires'  => $access_token_expire,
+                    'path'     => '/',
+                    'httponly' => true,
+                    'secure'   => true,
+                    'samesite' => 'Strict',
+                ]);
+                // Store Refresh token in cookie HttpOnly with secure
+                setcookie($refresh_token_name, $refresh_token, [
+                    'expires'  => $refresh_token_expire,
+                    'path'     => '/',
+                    'httponly' => true,
+                    'secure'   => true,
+                    'samesite' => 'Strict',
+                ]);
 
-            $UserController = new UserController();
-            $user_ip        = $UserController->getUserIP();
-            $user_device    = $UserController->getUserDeviceType();
+                // Check Refresh token in DB
+                $TokenController = new TokenController();
 
-            // Store Refresh token in DB
-            $TokenController->insertRefreshToken($result['user_code'], $refresh_token_id, $refresh_token_hash, $user_device, $user_ip, date('Y-m-d H:i:s', $refresh_token_expire));
+                $UserController = new UserController();
+                $user_ip        = $UserController->getUserIP();
+                $user_device    = $UserController->getUserDeviceType();
 
-            // Check and remark expired token
-            $stmt_expired = $TokenController->getExpiresToken($result['user_code']);
-            if ($stmt_expired->rowCount() > 0) {
-                $TokenController->updateExpiredToken($result['user_code']);
+                // Store Refresh token in DB
+                $TokenController->insertRefreshToken($result['user_code'], $refresh_token_id, $refresh_token_hash, $user_device, $user_ip, date('Y-m-d H:i:s', $refresh_token_expire));
+
+                // Check and remark expired token
+                $stmt_expired = $TokenController->getExpiresToken($result['user_code']);
+                if ($stmt_expired->rowCount() > 0) {
+                    $TokenController->updateExpiredToken($result['user_code']);
+                }
+
+                // Check and remove Revoke token or expired token that more than 7 days
+                $stmt_revoke = $TokenController->getRevokeToken($result['user_code']);
+                if ($stmt_revoke->rowCount() > 0) {
+                    $TokenController->deleteToken($result['user_code']);
+                }
+                http_response_code(200);
+                echo json_encode([
+                    'code'    => 200,
+                    'status'  => 'success',
+                    'title'   => 'Success',
+                    'message' => 'Login success',
+                ]);
+
+            } else {
+                http_response_code(401);
+                echo json_encode([
+                    'code'    => 401,
+                    'status'  => 'error',
+                    'title'   => 'Wrong Credentials',
+                    'message' => 'Invalid username or password',
+                ]);
             }
-
-            // Check and remove Revoke token or expired token that more than 7 days
-            $stmt_revoke = $TokenController->getRevokeToken($result['user_code']);
-            if ($stmt_revoke->rowCount() > 0) {
-                $TokenController->deleteToken($result['user_code']);
-            }
-
         } else {
-            http_response_code(401);
             http_response_code(401);
             echo json_encode([
                 'code'    => 401,
                 'status'  => 'error',
-                'title'   => 'Error',
-                'message' => 'Invalid credentials',
+                'title'   => 'Wrong Credentials',
+                'message' => 'Invalid username or password',
             ]);
         }
-        http_response_code(200);
-        echo json_encode([
-            'code'    => 200,
-            'status'  => 'success',
-            'title'   => 'Success',
-            'message' => 'Login success',
-        ]);
     } else {
-        http_response_code(401);
+        http_response_code(400);
         echo json_encode([
-            'code'    => 401,
+            'code'    => 400,
             'status'  => 'error',
             'title'   => 'Unauthorized Access',
             'message' => 'Uername and password required',

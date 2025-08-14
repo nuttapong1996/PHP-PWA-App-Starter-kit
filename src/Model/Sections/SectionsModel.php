@@ -22,8 +22,8 @@ class SectionsModel
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            // Add hash comparison for password if use in production
-            if ($password === $user['password']) {
+
+            if (password_verify($password , $user['password'])) {
                 return true;
             } else {
                 return false;

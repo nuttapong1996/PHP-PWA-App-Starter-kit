@@ -1,6 +1,6 @@
 // This file MUST be in every page EXCEPT Log in page 
-import { refreshAccessToken } from './tokenControl.js';
-import { renewRefreshToken } from './tokenControl.js';
+import { refreshAccessToken } from './module/tokenControl.js';
+import { renewRefreshToken } from './module/tokenControl.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // If user still active (while using an Appplication) then 

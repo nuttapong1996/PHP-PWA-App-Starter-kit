@@ -13,12 +13,12 @@ class AuthModel
         $this->conn = $db;
     }
 
-    public function login($username, $password)
+    public function login($username)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT user_code,username ,name FROM tbl_login WHERE username  = :username AND password = :password');
+            $stmt = $this->conn->prepare('SELECT user_code,username ,name ,password FROM tbl_login WHERE username  = :username');
             $stmt->BindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->BindParam(':password', $password, PDO::PARAM_STR);
+            // $stmt->BindParam(':password', $password, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {

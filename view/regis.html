@@ -26,57 +26,77 @@
                                 <h4>Register</h4>
                             </div>
                             <div class="card-body">
-                                <form action="auth/register">
+                                <form id="registerForm" method="POST" class="needs-validation" novalidate>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6 col-lg-6">
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" type="text" name="fName" id="fName" required
-                                                    placeholder="">
-                                                <label for="userCode">Name</label>
+                                            <div class=" form-floating mb-3  has-validation">
+                                                <input type="text" name="fName" id="fName" required placeholder=""
+                                                    class="form-control ">
+                                                <label for="fName">Name</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide your name.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6 col-lg-6">
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" type="text" name="userName" id="userName"
-                                                    required placeholder="">
+                                                <input type="text" name="userName" id="userName" required placeholder=""
+                                                    class="form-control ">
                                                 <label for="userName">Username</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide a username.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
+
                                         <div class="col-sm-12 col-md-6 col-lg-6">
-                                            <div class="input-group mb-3">
-                                                <input class="form-control form-control-lg fs-6" type="text"
-                                                    name="userPass" id="userPass" required placeholder="Password">
-                                                <button class="btn btn-outline-secondary border-secondary-subtle"
-                                                    type="button" id="BtnPass">
+                                            <div class="input-group has-validation mb-3">
+                                                <input type="password" name="userPass" id="userPass" required
+                                                    placeholder="Password" class="form-control form-control-lg fs-6 ">
+                                                <button type="button" id="BtnPass"
+                                                    class="btn btn-outline-secondary border-secondary-subtle">
                                                     <i class="bi bi-eye-slash"></i>
                                                 </button>
+                                                <div class="invalid-feedback">
+                                                    Please provide a password.
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-sm-12 col-md-6 col-lg-6">
-                                            <div class="input-group mb-3">
-                                                <input class="form-control form-control-lg fs-6" type="password"
-                                                    name="cfPass" id="cfPass" required placeholder="Confirm Password">
-                                                <button class="btn btn-outline-secondary border-secondary-subtle"
-                                                    type="button" id="BtnCfPass">
+                                            <div class="input-group has-validation mb-3">
+                                                <input type="password" name="cfPass" id="cfPass" required
+                                                    placeholder="Confirm Password"
+                                                    class="form-control form-control-lg fs-6 ">
+                                                <button type="button" id="BtnCfPass"
+                                                    class="btn btn-outline-secondary border-secondary-subtle">
                                                     <i class="bi bi-eye-slash"></i>
                                                 </button>
+                                                <div class="invalid-feedback">
+                                                    Please confirm your password.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
+
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" type="text" name="userEmail" id="userEmail"
-                                                    required placeholder="">
-                                                <label for="userEmail">Email</label>
+                                                <input type="email" name="userEmail" id="userEmail" required
+                                                    placeholder="" class="form-control ">
+                                                <label for="userEmail">Email : user@example.com</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid email address.
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="row justify-content-center">
                                         <div class="col-6 ">
-                                            <button class="btn btn-primary w-100 p-2" type="submit">Submit</button>
+                                            <button type="submit" class="btn btn-primary w-100 p-2">Submit</button>
                                         </div>
                                     </div>
                                     <hr>
@@ -92,13 +112,13 @@
                     </div>
                 </div>
             </div>
+        </div>
     </main>
-
-
+    <script type="module" src="assets/js/regis.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
         </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
-<script type="module" src="js/regis.js" defer></script>

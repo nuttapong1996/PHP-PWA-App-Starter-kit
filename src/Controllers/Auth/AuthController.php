@@ -19,12 +19,12 @@ class AuthController extends DBController
         $this->db = $this->connection();
     }
 
-    public function login($username, $password)
+    public function login($username)
     {
         $this->result = null;
         try {
             $AuthModel    = new AuthModel($this->db);
-            $this->result = $AuthModel->login($username, $password);
+            $this->result = $AuthModel->login($username);
             return $this->result;
         } catch (PDOException $e) {
             $this->result = false;
@@ -44,3 +44,5 @@ class AuthController extends DBController
         }
     }
 }
+
+
