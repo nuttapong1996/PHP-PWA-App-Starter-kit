@@ -13,8 +13,7 @@ export async function checksub() {
     }
 
     // Fetch to send Subscription to Server for validation
-    await fetch()
-    const response = await fetch('api/push/sub', {
+    const response = await fetch('api/push/getsub', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,6 +1,6 @@
 export async function refreshAccessToken() {
     try {
-        const ref = await fetch('auth/renew', {
+        const ref = await fetch('auth/refresh', {
             method: 'POST',
             credentials: 'include',
         });

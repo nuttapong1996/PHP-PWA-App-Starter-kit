@@ -16,4 +16,3 @@ $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt
 });
 
 
-// $router->map('GET', )

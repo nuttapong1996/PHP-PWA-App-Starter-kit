@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Date of copyright
     const cpYear = new Date().getFullYear();
 
-    // Check Access Token
+    // Check Access Token and renew Refresh Token
     const validate_token = await renewRefreshToken();
 
     if (validate_token === 'success') {
@@ -62,22 +62,40 @@ document.addEventListener("DOMContentLoaded", async () => {
                     if (data.status === 'error') {
                         if (data.title == 'Wrong Credentials') {
                             window.location.href = "login";
+
                             alert(data.message);
                         } else if (data.title == 'Unauthorized Access') {
                             window.location.href = "login";
                             alert(data.message);
                         }
                     } else if (data.status === 'success') {
-                        window.location.href = "home";
+                        Swal.fire({
+                            title: "Login Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            text: "Redirecting to home page...",
+                            showConfirmButton: false,
+                        })
+                            .then((result) => {
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    window.location.href = "home";
+                                }
+                            });
                     }
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
-                    alert("Login failed, please try again.");
+                    Swal.fire({
+                        title : "Invalid Username or Password",
+                        icon : "error",
+                        text: "Please try again.",
+                        confirmButtonColor : '#3085d6'
+                    });
                 });
         } else {
             event.stopPropagation();
-            form.classList.add('was-validated');
+            loginForm.classList.add('was-validated');
         }
     });
     // End of form submission handler

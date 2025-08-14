@@ -16,18 +16,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Hide Unsubscribe button on start.
     UnsubBtn.style.display = "none"
 
-    //// Add function to Subscribe button.
-    // SubBtn.addEventListener('click', enableNotif);
+    // Add function to Subscribe button.
+    SubBtn.addEventListener('click', enableNotif);
 
-    //// Define subscribe variable for checksub function.
-    // const subscribe = await checksub();
+    // Define subscribe variable for checksub function.
+    const subscribe = await checksub();
 
-    //// Check subscribtion status from subscribe variable.
-    // if (subscribe !== true) {
-    //     console.warn('not subscribe to notification yet.');
-    // } else {
-    //     console.info('Subscribed');
-    // }
+    // Check subscribtion status from subscribe variable.
+    if (subscribe !== true) {
+        console.warn('not subscribe to notification yet.');
+    } else {
+        console.info('Subscribed');
+    }
 
     // Assign value to element txUsername for display username.
     get_current_profile().then(profile => {
