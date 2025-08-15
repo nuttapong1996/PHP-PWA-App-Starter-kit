@@ -2,8 +2,8 @@
 
 use Dotenv\Dotenv;
 
-$root = str_replace("configs", "", __DIR__);
-require_once $root . "vendor/autoload.php";
+$root = str_replace("api\push", "", __DIR__);
+require_once $root . "vendor\autoload.php";
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();

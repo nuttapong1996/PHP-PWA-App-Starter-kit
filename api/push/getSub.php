@@ -25,7 +25,6 @@ $input = json_decode(file_get_contents('php://input'), true);
 $access_token_name  = $app_name . '_access_token';
 $access_token = $_COOKIE[$access_token_name] ?? null;
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($access_token) && isset($input['endpoint'])) {
@@ -70,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
     }
 } else {
-    http_response_code(400);
+    http_response_code(405);
     echo json_encode([
-        'code'    => '400',
-        'status'  => 'Bad request',
-        'title'   => 'Bad request',
-        'message' => 'Invalid request',
+        'code'    => '405',
+        'status'  => 'error',
+        'title'   => 'Method Not Allowed',
+        'message' => 'This method is not allowed',
     ]);
 }

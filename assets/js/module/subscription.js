@@ -1,3 +1,5 @@
+import Swal from './sweetalert2.all.min+esm.js';
+
 // Function Check user subscription to Notification.
 export async function checksub() {
 
@@ -32,12 +34,11 @@ export async function checksub() {
     }
 }
 
-
 // Function สมัครการแจ้งเตือน
 export async function enableNotif() {
     // ทำการ fetch เพื่อดึงเอา public key สำหรับใช้ในการสร้าง subscription
-    const response = await fetch('configs/get-pk.php');
-    const applicationServerKey = await response.json();
+    const pub = await fetch('push/getpub');
+    const applicationServerKey = await pub.json();
 
     // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
     Notification.requestPermission().then((permission) => {
@@ -51,21 +52,37 @@ export async function enableNotif() {
                     applicationServerKey: applicationServerKey['publicKey']
                 }).then(async (subscription) => {
 
-                    const response = await fetch('api/push/sub.php', {
+                    await fetch('api/push/sub', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(subscription)
                     })
-                    const data = await response.json();
-
-                    if (data['status'] === 'success') {
-                        alert('Subscribed');
-                        window.location.reload();
-                    } else if (data['status'] === 'error') {
-                        alert('Not Subscribed');
-                    }
+                        .then(sub => {
+                            if (!sub.ok) {
+                                throw new Error('HTTP error ' + sub.status)
+                            }
+                            return sub.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire({
+                                    title: data.title,
+                                    text: data.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                })
+                                    .then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.reload();
+                                        }
+                                    });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                        });
                 });
             });
         }

@@ -1,9 +1,22 @@
 <?php
 /** @var AltoRouter $router */
 
+
+$router->map('GET','/push/getpub',function() use ($jwt){
+    return $jwt->handle(function(){
+        require __DIR__ .'/../api/push/getPub.php';
+    });
+});
+
 $router->map('POST', '/api/push/getsub', function () use ($jwt) {
     return $jwt->handle(function () {
-        return require __DIR__ . '/../api/push/getSub.php';
+         require __DIR__ . '/../api/push/getSub.php';
+    });
+});
+
+$router->map('POST', '/api/push/sub', function () use ($jwt) {
+    return $jwt->handle(function () {
+         require __DIR__ . '/../api/push/sub.php';
     });
 });
 
