@@ -34,6 +34,12 @@ $router->map('GET', '/home', function () use ($jwt) {
     });
 });
 
+$router->map('GET', '/settings', function () use ($jwt) {
+    return $jwt->handle(function () {
+        require __DIR__ . '/../view/settings.html';
+    });
+});
+
 // ปลดล็อก section ต่างๆ
 $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
     return $jwt->handle(function () use ($section) {
@@ -43,7 +49,7 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
 
         if ($validate === true) {
             $_SESSION['unlocked_sections'][$section] = true;
-            require __DIR__ . "/../view/{$section}.html";
+            require __DIR__ . "/../view/sections/{$section}/{$section}.html";
             exit;
         } else {
             echo '<script>
@@ -54,11 +60,11 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
     });
 });
 
-// section salary
-$router->map('GET', '/salary', function () use ($jwt) {
+// section 
+$router->map('GET', '/sec1', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['salary'])) {
-            require __DIR__ . '/../view/salary.html';
+        if (!empty($_SESSION['unlocked_sections']['sec1'])) {
+            require __DIR__ . '/../view/sections/sec1/sec1.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
             exit;
@@ -67,10 +73,10 @@ $router->map('GET', '/salary', function () use ($jwt) {
     });
 });
 
-$router->map('GET', '/salary_now', function () use ($jwt) {
+$router->map('GET', '/sec1_sub', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['salary'])) {
-            require __DIR__ . '/../view/salary_now.html';
+        if (!empty($_SESSION['unlocked_sections']['sec1'])) {
+            require __DIR__ . '/../view/sections/sec1/sec1_sub.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
             exit;
@@ -79,13 +85,26 @@ $router->map('GET', '/salary_now', function () use ($jwt) {
     });
 });
 
-$router->map('GET' ,'/score',function() use ($jwt){
-    return $jwt->handle(function(){
-        if (!empty($_SESSION['unlocked_sections']['score'])) {
-            require __DIR__ . '/../view/score.html';
+$router->map('GET', '/sec2', function () use ($jwt) {
+    return $jwt->handle(function () {
+        if (!empty($_SESSION['unlocked_sections']['sec2'])) {
+            require __DIR__ . '/../view/sections/sec2/sec2.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
             exit;
         }
+
+    });
+});
+
+$router->map('GET', '/sec3', function () use ($jwt) {
+    return $jwt->handle(function () {
+        if (!empty($_SESSION['unlocked_sections']['sec3'])) {
+            require __DIR__ . '/../view/sections/sec3/sec3.html';
+        } else {
+            require __DIR__ . '/../view/unlock.html';
+            exit;
+        }
+
     });
 });
