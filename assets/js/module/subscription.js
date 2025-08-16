@@ -37,7 +37,7 @@ export async function checksub() {
 // Function สมัครการแจ้งเตือน
 export async function enableNotif() {
     // ทำการ fetch เพื่อดึงเอา public key สำหรับใช้ในการสร้าง subscription
-    const pub = await fetch('push/getpub');
+    const pub = await fetch('pub');
     const applicationServerKey = await pub.json();
 
     // ทำการร้องขอการอนุญาตจาก Browser ให้แสดง Notification
@@ -87,4 +87,32 @@ export async function enableNotif() {
             });
         }
     });
+}
+
+
+// Function Unsubscription 
+export async function disableNotif($endpoint) {
+    await fetch('api/push/unsub', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            endpoint: $endpoint
+        })
+    })
+        .then(unsub => {
+            if(!unsub.ok){
+                throw new Error('HTTP error ' + unsub.status);
+            }
+            return unsub.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                 return true
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
 }

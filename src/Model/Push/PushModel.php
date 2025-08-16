@@ -26,6 +26,17 @@ class PushModel
         }
     }
 
+    public function getSubAll($userCode){
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM push_subscribers WHERE user_code =:usercode');
+            $stmt->BindParam(':usercode', $userCode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function insertSub($userCode, $userDevice,$userIp, $endPoint, $publicKey, $authKey)
     {
         try {

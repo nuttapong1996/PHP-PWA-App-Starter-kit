@@ -40,6 +40,12 @@ $router->map('GET', '/settings', function () use ($jwt) {
     });
 });
 
+$router->map('GET' , '/manage-sub',function() use ($jwt){
+    return $jwt->handle(function(){
+        require __DIR__ . '/../view/user_settings/sub_list.html';
+    });
+});
+
 // ปลดล็อก section ต่างๆ
 $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
     return $jwt->handle(function () use ($section) {

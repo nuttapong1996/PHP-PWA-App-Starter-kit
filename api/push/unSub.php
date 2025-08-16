@@ -2,6 +2,8 @@
 
 use App\Controllers\Push\PushController;
 use Dotenv\Dotenv;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 header('Content-Type: application/json charset=utf-8');
 header('Access-Control-Allow-Methods: POST');
@@ -9,56 +11,64 @@ header('Access-Control-Allow-Methods: POST');
 $root = str_replace('api\push', '', __DIR__);
 require_once $root . 'vendor\autoload.php';
 
-$dotenv= Dotenv::createImmutable($root);
+$dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
 
 $secret_key = $_ENV['SECRET_KEY'];
 $app_name   = $_ENV['APP_NAME'];
 
-
 $PushController = new PushController();
 
-// ตรวจเช็ค session ของผู้ใช้
-if(isset($_SESSION['username'])) {
-    // เรียกใช้ไฟล์ connect_db.php เชื่อมต่อฐานข้อมูล
-    require '../includes/connect_db.php';
+$input = json_decode(file_get_contents('php://input'), true);
 
-    // ประกาศตัวแปร username เพื่อเก็บชื่อผู้ใช้จาก session
-    $username = $_SESSION['username'];
-    
-    // ตรวจสอบว่า session ของผู้ใช้มีข้อมูลหรือไม่
-    if($username == null) {
-        echo json_encode(['status' => 'error' , 'message' => 'no data found']);
-        exit;
-    }
+$access_token_name = $app_name . '_access_token';
+$access_token      = $_COOKIE[$access_token_name] ?? null;
 
-    // คําสั่ง SQL เพื่อลบข้อมูลจาก push_subscribers ของผู้ใช้โดยอิงจาก username
-    $sql = "DELETE FROM push_subscribers WHERE username =:username";
-    // เตรียมคําสั่ง SQL
-    $stmt = $conn->prepare($sql);
-    // ทำการผูกต่อพารามิเตอร์ในคําสั่ง SQL กับตัวแปร username
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-    // ส่งคําสั่ง SQL ไปยังฐานข้อมูล
-    $stmt->execute();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($access_token) && isset($input['endpoint'])) {
 
-    // ตรวจสอบว่ามีการลบข้อมูลหรือไม่
-    if($stmt->rowCount() > 0) {
-        echo "<script>
-                alert('ยกเลิกการแจ้งตือนแล้ว');
-                setTimeout(()=>{
-                    window.location.href = '../main.php';
-                },0);
-            </script>";
-    }else{
-        header('Content-Type: application/json; charset=utf-8');
+        $decoded = JWT::decode($access_token, new Key($secret_key, 'HS256'));
+
+        $usercode = $decoded->data->user_code;
+        $endPoint = $input['endpoint'];
+
+        $stmt = $PushController->deleteSub($usercode, $endPoint);
+
+        http_response_code(200);
         echo json_encode([
-            'status' => 'error',
-            'message' => 'something went wrong'
+            'code'    => 200,
+            'status'  => 'success',
+            'title'   => 'Unsubscribed',
+            'message' => 'You have successfully unsubscribed to notifications',
         ]);
-        exit;
+        if ($stmt) {
+
+        }
+        else{
+            http_response_code(400);
+            echo json_encode([
+                'code' =>400,
+                'status' => 'error',
+                'title' => 'Failed to unsubscribe',
+                'message' => 'Failed to unsubscribe to notifications',
+            ]);
+        }
     }
-}else{
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['status' => 'error']);
-    exit;
+    else {
+        http_response_code(400);
+        echo json_encode([
+            'code'    => 400,
+            'status'  => 'error',
+            'title'   => 'Invalid request',
+            'message' => 'Missing required parameters',
+        ]);
+    }
+} else {
+    http_response_code(405);
+    echo json_encode([
+        'code'    => 405,
+        'status'  => 'error',
+        'title'   => 'Method Not Allowed',
+        'message' => 'This method is not allowed',
+    ]);
 }

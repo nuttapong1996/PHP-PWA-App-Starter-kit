@@ -1,6 +1,7 @@
 // This file MUST be in every page EXCEPT Log in page 
 import { refreshAccessToken } from './module/tokenControl.js';
 import { renewRefreshToken } from './module/tokenControl.js';
+import { get_current_profile } from './module/user_profile.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // If user still active (while using an Appplication) then 
@@ -12,4 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(async () => {
     await renewRefreshToken();
   }, 30 * 60 * 1000);
+
+      get_current_profile().then(profile => {
+          const txUsername = document.getElementById('txUsername');
+
+          if(txUsername){
+            txUsername.innerText = profile.response[0].name;
+          }
+      });
 });

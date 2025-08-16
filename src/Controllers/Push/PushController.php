@@ -33,6 +33,17 @@ class PushController extends DBController
         }
         return $this->result;
     }
+    // Function get all Push subscription from Database.
+    public function getSubAll($userCode)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->PushModel->getSubAll($userCode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
 
     // Function insert or create subscription in Database.
     public function insertSub($userCode, $userDevice, $userIp, $endPoint, $publicKey, $authKey)
