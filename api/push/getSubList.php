@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $localIP = $UserController->getUserIP();
 
-        $stmt        = $PushController->getSubAll($usercode);
+        $stmt        = $PushController->getAllSubByUserID($usercode);
         $resultCount = $stmt->rowCount();
 
         if ($resultCount > 0) {

@@ -21,24 +21,36 @@ class PushController extends DBController
         $this->PushModel = new PushModel($this->db);
     }
 
-    // Function get Push subscription from Database.
-    public function getSub($userCode, $endPoint)
+    // Function get Push subscription by User ID from Database.
+    public function getSubByUserID($userCode, $endPoint)
     {
         $this->result = null;
 
         try {
-            $this->result = $this->PushModel->getSub($userCode, $endPoint);
+            $this->result = $this->PushModel->getSubByUserID($userCode, $endPoint);
         } catch (PDOException $e) {
             $this->result = false;
         }
         return $this->result;
     }
+
     // Function get all Push subscription from Database.
-    public function getSubAll($userCode)
+    public function getAllSub(){
+        $this->result = null;
+        try {
+            $this->result = $this->PushModel->getAllSub();
+        } catch (PDOException $e) {
+           $this->result = false;
+        }
+        return $this->result;
+    }
+
+    // Function get all Push subscription by User ID from Database.
+    public function getAllSubByUserID($userCode)
     {
         $this->result = null;
         try {
-            $this->result = $this->PushModel->getSubAll($userCode);
+            $this->result = $this->PushModel->getAllSubByUserID($userCode);
         } catch (PDOException $e) {
             $this->result = false;
         }

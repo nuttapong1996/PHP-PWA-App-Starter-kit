@@ -32,7 +32,7 @@ $router->map('POST', '/api/push/sub', function () use ($jwt) {
     });
 });
 
-$router->map('POST', '/api/push', function () {
+$router->map('POST', '/api/push-one', function () {
     require __DIR__ . '/../api/push/push.php';
 });
 

@@ -13,7 +13,7 @@ class PushModel
         $this->conn = $db;
     }
 
-    public function getSub($userCode, $endPoint)
+    public function getSubByUserID($userCode, $endPoint)
     {
         try {
             $stmt = $this->conn->prepare('SELECT endpoint , p256dh , authKey FROM push_subscribers WHERE user_code = :usercode AND endpoint = :endpoint');
@@ -26,7 +26,19 @@ class PushModel
         }
     }
 
-    public function getSubAll($userCode){
+    public function getAllSub()
+    {
+        try{
+            $stmt = $this->conn->prepare('SELECT endpoint , p256dh , authKey FROM push_subscribers');
+            $stmt->execute();
+            return $stmt;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+
+    public function getAllSubByUserID($userCode)
+    {
         try {
             $stmt = $this->conn->prepare('SELECT * FROM push_subscribers WHERE user_code =:usercode');
             $stmt->BindParam(':usercode', $userCode, PDO::PARAM_STR);
@@ -37,7 +49,7 @@ class PushModel
         }
     }
 
-    public function insertSub($userCode, $userDevice,$userIp, $endPoint, $publicKey, $authKey)
+    public function insertSub($userCode, $userDevice, $userIp, $endPoint, $publicKey, $authKey)
     {
         try {
             $stmt = $this->conn->prepare('INSERT INTO push_subscribers(user_code, device_name , ip_address , endpoint,p256dh,authKey) VALUES (:usercode,:device,:ip,:endpoint,:pub_key,:auth_key)');

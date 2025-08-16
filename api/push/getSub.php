@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $endpoint = $input['endpoint'];
 
         // ทำการเรียก function getSub จาก PushController
-        $stmt = $PushController->getSub($usercode , $endpoint);
+        $stmt = $PushController->getSubByUserID($usercode , $endpoint);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // ตรวจสอบข้อมูลที่ถูกดึงมาว่ามีหรือไม่

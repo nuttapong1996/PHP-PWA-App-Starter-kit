@@ -1,15 +1,16 @@
 <?php
 
+use App\Controllers\Push\PushController;
 use Dotenv\Dotenv;
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
 
 header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Methods: POST');
 
 $root = str_replace("api\push", "", __DIR__);
 
-require $root . "vendor/autoload.php";
-require_once $root . "configs/connect_db.php";
+require $root . "vendor\autoload.php";
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
@@ -19,17 +20,17 @@ $input = json_decode(file_get_contents("php://input"), true);
 $publicKey  = $_ENV['VAPID_PUBLIC_KEY'];
 $privateKey = $_ENV['VAPID_PRIVATE_KEY'];
 
+$PushController = new PushController();
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if (isset($input['title']) && isset($input['body']) && isset($input['url'])) {
 
-        $title    = $input['title'];
-        $body     = $input['body'];
-        $url      = $input['url'];
+        $title = $input['title'];
+        $body  = $input['body'];
+        $url   = $input['url'];
 
-        $sql  = "SELECT endpoint , p256dh , authKey FROM push_subscribers";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $stmt      = $PushController->getAllSub();
         $endpoints = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // กำหนดตัวแปร auth สำหรับใช้ในการ ส่งแจ้งเตือน
@@ -69,15 +70,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // วนลูปเพื่อส่งแจ้งเตือน
         foreach ($webPush->flush() as $report) {
             if ($report->isSuccess()) {
+                http_response_code(200);
                 echo json_encode([
+                    'code'    => 200,
                     'status'  => 'success',
-                    'message' => 'sent notification successfully',
+                    'title'   => 'Notification sent',
+                    'message' => 'Sent notification successfully',
                 ]);
             } else {
-                echo json_encode(['status' => 'error', 'message' => $report->getReason()]);
+                http_response_code(400);
+                echo json_encode([
+                    'code'    => 400,
+                    'status'  => 'error',
+                    'title'   => 'Failed to send notification',
+                    'message' => $report->getReason(),
+                ]);
             }
         }
     } else {
-        echo json_encode(['status' => 'user not found']);
+        http_response_code(400);
+        echo json_encode([
+            'code'    => 400,
+            'status'  => 'error',
+            'title'   => 'Invalid request',
+            'message' => 'User not found',
+        ]);
     }
 }
