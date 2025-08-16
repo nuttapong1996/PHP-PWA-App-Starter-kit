@@ -5,6 +5,7 @@ import {
     validateInput,
     validateForm,
 } from './module/ui.js';
+import Swal from './module/sweetalert2.all.min+esm.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
