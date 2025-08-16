@@ -12,11 +12,13 @@ class UserController extends DBController
 {
     private $db;
     private $result;
+    private $userModel;
 
     public function __construct()
     {
         parent::__construct();
-        $this->db = $this->connection();
+        $this->db        = $this->connection();
+        $this->userModel = new UserModel($this->db);
     }
 
     public function createUserId()
@@ -31,8 +33,7 @@ class UserController extends DBController
         $this->result = null;
 
         try {
-            $userModel    = new UserModel($this->db);
-            $this->result = $userModel->getAll();
+            $this->result = $this->userModel->getAll();
         } catch (PDOException $e) {
             $this->result = false;
         }
@@ -43,8 +44,7 @@ class UserController extends DBController
     {
         $this->result = null;
         try {
-            $userModel    = new UserModel($this->db);
-            $this->result = $userModel->getProfile();
+            $this->result = $this->userModel->getProfile();
         } catch (PDOException $e) {
             $this->result = false;
         }
@@ -55,8 +55,7 @@ class UserController extends DBController
     {
         $this->result = null;
         try {
-            $userModel    = new UserModel($this->db);
-            $this->result = $userModel->getProfileByCode($usercode);
+            $this->result = $this->userModel->getProfileByCode($usercode);
         } catch (PDOException $e) {
             return false;
         }
@@ -67,8 +66,7 @@ class UserController extends DBController
     {
         $this->result = null;
         try {
-            $userModel    = new UserModel($this->db);
-            $this->result = $userModel->getUserByUsername($username);
+            $this->result = $this->userModel->getUserByUsername($username);
         } catch (PDOException $e) {
             return false;
         }
@@ -79,10 +77,20 @@ class UserController extends DBController
     {
         $this->result = null;
         try {
-            $userModel    = new UserModel($this->db);
-            $this->result = $userModel->getEmailByEmail($email);
+            $this->result = $this->userModel->getEmailByEmail($email);
         } catch (PDOException $e) {
             return false;
+        }
+        return $this->result;
+    }
+
+    public function getIdCardByIdCard($IdenCode)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->userModel->getIdCardByIdCard($IdenCode);
+        } catch (PDOException $e) {
+            $this->result = false;
         }
         return $this->result;
     }
@@ -131,26 +139,3 @@ class UserController extends DBController
     }
 
 }
-// $UserController = new UserController();
-
-// $usercode         = '2630065';
-// $username         = 'nomad';
-// $email            = 'nuttapong.th@sahakol.com';
-// $existingUserCode = $UserController->getUserProfileByCode($usercode);
-// $existingUserName = $UserController->getUserByUsername($username);
-// $existingEmail    = $UserController->getEmailByEmail($email);
-
-// $countUserCode = $existingUserCode->rowCount();
-// $countUserName = $existingUserName->rowCount();
-// $countEmail    = $existingEmail->rowCount();
-
-// if ($countUserCode > 0) {
-//     echo $countUserCode . ' usercode found' . '<br>';
-// }
-// if ($countUserName > 0) {
-//     echo $countUserName . ' username found' . '<br>';
-// }
-
-// if ($countEmail > 0) {
-//      echo $countEmail . ' email found' . '<br>';
-// }

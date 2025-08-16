@@ -5,9 +5,6 @@ import { get_current_profile } from './module/user_profile.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-    //Register Service Worker to browser.
-    navigator.serviceWorker.register("./service-worker.js");
-
     // Subscription Handdling 
     const SubBtn = document.getElementById('BtnSub');
     const UnsubBtn = document.getElementById('BtnUnsub');

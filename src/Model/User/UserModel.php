@@ -74,4 +74,15 @@ class UserModel
             return false;
         }
     }
+
+    public function getIdCardByIdCard($IdenCode){
+        try {
+            $stmt =$this->conn->prepare("SELECT user_id AS iden FROM tbl_login WHERE iden_code =:IdCode");
+            $stmt->bindParam(':IdCode', $IdenCode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+           return false;
+        }
+    }
 }

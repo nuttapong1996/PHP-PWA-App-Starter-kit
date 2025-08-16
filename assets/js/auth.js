@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             timerProgressBar: true,
                             text: "Redirecting to home page...",
                             showConfirmButton: false,
+                            allowOutsideClick: false
                         })
                             .then((result) => {
                                 if (result.dismiss === Swal.DismissReason.timer) {
@@ -90,7 +91,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         title : "Invalid Username or Password",
                         icon : "error",
                         text: "Please try again.",
-                        confirmButtonColor : '#3085d6'
+                        confirmButtonColor : '#3085d6',
+                        allowOutsideClick: false
                     });
                 });
         } else {

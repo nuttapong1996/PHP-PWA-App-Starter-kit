@@ -26,18 +26,21 @@ class AuthModel
         }
     }
 
-    public function register($usercode, $name, $username, $password, $email)
+    public function register($usercode, $name, $username, $password, $email ,$idenCode)
     {
         try {
-            $stmt = $this->conn->prepare('INSERT INTO tbl_login (user_code, name, username, password, email) VALUES (:user_code, :name, :username, :password, :email)');
+            $stmt = $this->conn->prepare('INSERT INTO tbl_login (user_code, name, username, password, email ,iden_code) VALUES (:user_code, :name, :username, :password, :email ,:idenCode)');
             $stmt->bindParam(':user_code', $usercode);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':password', $password);
             $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':idenCode', $idenCode);
             return $stmt->execute();
         } catch (PDOException $e) {
             return false;
         }
     }
+
+    // public function forgot
 }

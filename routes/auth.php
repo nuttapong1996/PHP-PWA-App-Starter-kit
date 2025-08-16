@@ -6,6 +6,23 @@ use Firebase\JWT\Key;
 
 /** @var AltoRouter $router */
 
+// Frontend Route
+$router->map('GET', '/', function () {
+    require __DIR__ . '/../view/login.html';
+});
+
+$router->map('GET', '/login', function () {
+    require __DIR__ . '/../view/login.html';
+});
+
+$router->map('GET' , '/register' , function(){
+    require __DIR__ .'/../view/regis.html';
+});
+
+
+
+
+// Backend Route
 $router->map('POST', '/auth/login', function () {
     require __DIR__ . '/../api/auth/login.php';
 });
@@ -25,5 +42,6 @@ $router->map('GET', '/auth/logout', function () {
 $router->map('POST','/auth/register', function(){
     require __DIR__ . '/../api/auth/register.php';
 });
+
 
 

@@ -32,12 +32,12 @@ class AuthController extends DBController
         return $this->result;
     }
 
-    public function register($usercode, $name, $username, $password, $email)
+    public function register($usercode, $name, $username, $password, $email ,$idenCode)
     {
         $this->result = null;
         try {
             $AuthModel = new AuthModel($this->db);
-            $this->result = $AuthModel->register($usercode, $name, $username, $password, $email);
+            $this->result = $AuthModel->register($usercode, $name, $username, $password, $email ,$idenCode);
             return $this->result;
         } catch (PDOException $e) {
             $this->result = false;

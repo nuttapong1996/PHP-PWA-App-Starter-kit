@@ -1,3 +1,4 @@
+import Swal from './module/sweetalert2.all.min+esm.js';
 import {
     togglePassword,
     validatePassword,
@@ -15,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const userPass = document.getElementById('userPass');
     const cfPass = document.getElementById('cfPass');
     const userEmail = document.getElementById('userEmail');
+    const userIdenCode = document.getElementById('userIdenCode');
+
     const BtnPass = document.getElementById('BtnPass');
     const BtnCfPass = document.getElementById('BtnCfPass');
 
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Form submission
     form.addEventListener('submit', (event) => {
-        
+
         event.preventDefault(); // Prevent default form submission
 
         if (validateForm(form)) {
@@ -53,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     userName: userName.value,
                     userPass: userPass.value,
                     userEmail: userEmail.value,
+                    userIdenCode: userIdenCode.value,
                 }),
             })
                 .then(response => {
@@ -64,15 +68,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.status === 'error') {
                         if (data.title === 'usercode exists') {
-                            alert('User code already exists. Please choose a different one.');
-                        }else if(data.title === 'username exists'){
-                            alert('Username already exists. Please choose a different one.');
-                        }else if(data.title === 'email exists'){
-                            alert('Email already exists. Please choose a different one.');
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'User code is already exists',
+                                text: 'Please choose a different one.',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            });
+                        } else if (data.title === 'username exists') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Username is already exists',
+                                text: 'Please choose a different one.',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            });
+                        } else if (data.title === 'email exists') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Email is already exists',
+                                text: 'Please choose a different one.',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            });
+                        } else if (data.title === 'ID card exists') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'ID card is already exists',
+                                text: 'Please choose a different one.',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            });
                         }
                     } else if (data.status === 'success') {
-                        alert('Registration successful!'); // Show success message
-                        window.location.href = 'login'; // Redirect to login page on success
+                        Swal.fire({
+                            icon: "success",
+                            title: "Registration successfully",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            text: "Redirecting to Login page...",
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                        })
+                            .then((result) => {
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    window.location.href = "login";
+                                }
+                            });
                     }
                 })
                 .catch(error => {

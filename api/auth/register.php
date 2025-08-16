@@ -11,7 +11,7 @@ header('Access-Control-Allow-Methods: POST');
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (! empty($input['fName']) && ! empty($input['userName']) && ! empty($input['userPass']) && ! empty($input['userEmail'])) {
+    if (! empty($input['fName']) && ! empty($input['userName']) && ! empty($input['userPass']) && ! empty($input['userEmail']) && ! empty($input['userIdenCode'])) {
 
         $AuthController = new AuthController();
         $UserController = new UserController();
@@ -21,12 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $username = $input['userName'];
         $password = $input['userPass'];
         $email    = $input['userEmail'];
+        $idenCode = $input['userIdenCode'];
+
 
         $password = password_hash($password, PASSWORD_BCRYPT);
 
         $existingUserCode = $UserController->getUserProfileByCode($usercode);
         $existingUserName = $UserController->getUserByUsername($username);
         $existingEmail    = $UserController->getEmailByEmail($email);
+        $existingIDcard   = $UserController->getIdCardByIdCard($idenCode);
+
 
         // Check if usercode already exists
         if ($existingUserCode->rowCount() > 0) {
@@ -61,8 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
+        // Check if ID card already exists
+        if ($existingIDcard->rowCount() > 0) {
+            echo json_encode([
+                'code'    => 200,
+                'status'  => 'error',
+                'title'   => 'ID card exists',
+                'message' => 'ID card already exists',
+            ]);
+            exit;
+        }
+
         // If usercode and email are unique, proceed with registration
-        $result = $AuthController->register($usercode, $name, $username, $password, $email);
+        $result = $AuthController->register($usercode, $name, $username, $password, $email ,$idenCode);
         if ($result) {
             echo json_encode([
                 'code'    => 201,
