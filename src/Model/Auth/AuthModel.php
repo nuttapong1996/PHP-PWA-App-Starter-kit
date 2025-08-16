@@ -26,7 +26,7 @@ class AuthModel
         }
     }
 
-    public function register($usercode, $name, $username, $password, $email ,$idenCode)
+    public function register($usercode, $name, $username, $password, $email, $idenCode)
     {
         try {
             $stmt = $this->conn->prepare('INSERT INTO tbl_login (user_code, name, username, password, email ,iden_code) VALUES (:user_code, :name, :username, :password, :email ,:idenCode)');
@@ -42,5 +42,55 @@ class AuthModel
         }
     }
 
-    // public function forgot
+    public function forgot($usercode, $idenCode)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT user_code FROM tbl_login WHERE user_code =:usercode AND iden_code =:idencode');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':idencode', $idenCode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function insertResetToken($usercode, $resetToken, $expr)
+    {
+        try {
+            $stmt = $this->conn->prepare('UPDATE tbl_login SET reset_token =:resetToken , reset_expires = :expr WHERE user_code =:usercode');
+            $stmt->bindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->bindParam(':resetToken', $resetToken, PDO::PARAM_STR);
+            $stmt->bindParam(':expr', $expr, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getResetToken($usercode)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT reset_token , reset_expires FROM tbl_login WHERE user_code =:usercode');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function reset($usercode, $password)
+    {
+        try {
+            $stmt = $this->conn->prepare('UPDATE tbl_login SET password = :password , reset_date = NOW(); WHERE user_code = :usercode');
+            $stmt->bindParam(':usercode', $usercode);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

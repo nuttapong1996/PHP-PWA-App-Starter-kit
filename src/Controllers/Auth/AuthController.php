@@ -12,19 +12,20 @@ class AuthController extends DBController
 {
     private $db;
     private $result;
+    private $AuthModel;
 
     public function __construct()
     {
         parent::__construct();
-        $this->db = $this->connection();
+        $this->db        = $this->connection();
+        $this->AuthModel = new AuthModel($this->db);
     }
 
     public function login($username)
     {
         $this->result = null;
         try {
-            $AuthModel    = new AuthModel($this->db);
-            $this->result = $AuthModel->login($username);
+            $this->result = $this->AuthModel->login($username);
             return $this->result;
         } catch (PDOException $e) {
             $this->result = false;
@@ -32,17 +33,58 @@ class AuthController extends DBController
         return $this->result;
     }
 
-    public function register($usercode, $name, $username, $password, $email ,$idenCode)
+    public function register($usercode, $name, $username, $password, $email, $idenCode)
     {
         $this->result = null;
         try {
-            $AuthModel = new AuthModel($this->db);
-            $this->result = $AuthModel->register($usercode, $name, $username, $password, $email ,$idenCode);
+            $this->result = $this->AuthModel->register($usercode, $name, $username, $password, $email, $idenCode);
             return $this->result;
         } catch (PDOException $e) {
             $this->result = false;
         }
     }
+
+    public function forgot($usercode, $idenCode)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->AuthModel->forgot($usercode, $idenCode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function insertResetToken($usercode, $resetToken, $expr)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->AuthModel->insertResetToken($usercode, $resetToken, $expr);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function getResetToken($usercode)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->AuthModel->getResetToken($usercode);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function reset($usercode, $password)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->AuthModel->reset($usercode, $password);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
 }
-
-

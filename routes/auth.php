@@ -19,8 +19,14 @@ $router->map('GET' , '/register' , function(){
     require __DIR__ .'/../view/regis.html';
 });
 
+$router->map('GET' ,'/forgot',function(){
+    require __DIR__ .'/../view/forgot.html';
+});
 
-
+$router->map('GET' ,'/reset/[a:resetToken]',function($resetToken){
+    $_GET['resetToken'] = $resetToken;
+    require __DIR__ .'/../view/reset.html';
+});
 
 // Backend Route
 $router->map('POST', '/auth/login', function () {
@@ -41,6 +47,10 @@ $router->map('GET', '/auth/logout', function () {
 
 $router->map('POST','/auth/register', function(){
     require __DIR__ . '/../api/auth/register.php';
+});
+
+$router->map('POST','/auth/forgot', function(){
+    require __DIR__ . '/../api/auth/forgot.php';
 });
 
 

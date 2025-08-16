@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes'
+                            confirmButtonText: 'Yes',
+                            allowOutsideClick: false
+
                         })
                             .then(async (result) => {
                                 if (result.isConfirmed) {
