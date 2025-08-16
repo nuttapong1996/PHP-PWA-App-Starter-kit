@@ -5,8 +5,8 @@ use App\Controllers\DBController;
 use App\Model\Auth\AuthModel;
 use PDOException;
 
-$root = str_replace('src\Controllers\Auth', '', __DIR__);
-require_once $root . 'vendor\autoload.php';
+$root = dirname(__DIR__, 3);
+require_once $root . '/vendor/autoload.php';
 
 class AuthController extends DBController
 {

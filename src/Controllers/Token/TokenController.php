@@ -5,8 +5,8 @@ use App\Controllers\DBController;
 use App\Model\Token\TokenModel;
 use PDOException;
 
-$root = str_replace('src\Controllers\Token', '', __DIR__);
-require_once $root . 'vendor\autoload.php';
+$root = dirname(__DIR__, 3);
+require_once $root . '/vendor/autoload.php';
 
 class TokenController extends DBController
 {

@@ -7,9 +7,9 @@ use Firebase\JWT\JWT;
 
 header('Content-Type: application/json');
 
-$root = str_replace('api\auth', '', __DIR__);
+$root = dirname(__DIR__,2);
 
-require_once $root . 'vendor\autoload.php';
+require_once $root . '/vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();

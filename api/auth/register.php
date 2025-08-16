@@ -2,8 +2,8 @@
 use App\Controllers\Auth\AuthController;
 use App\Controllers\User\UserController;
 
-$root = str_replace('api\auth', '', __DIR__);
-require_once $root . 'vendor\autoload.php';
+$root = dirname(__DIR__ ,2);
+require_once $root . '/vendor/autoload.php';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');

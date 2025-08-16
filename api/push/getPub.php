@@ -2,8 +2,9 @@
 
 use Dotenv\Dotenv;
 
-$root = str_replace("api\push", "", __DIR__);
-require_once $root . "vendor\autoload.php";
+
+$root = dirname(__DIR__,2);
+require_once $root . "/vendor/autoload.php";
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();

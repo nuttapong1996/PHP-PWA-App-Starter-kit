@@ -5,8 +5,8 @@ use App\Controllers\DBController;
 use App\Model\User\UserModel;
 use PDOException;
 
-$root = str_replace('src\Controllers\User', '', __DIR__);
-require_once $root . 'vendor\autoload.php';
+$root = dirname(__DIR__, 3);
+require_once $root . '/vendor/autoload.php';
 
 class UserController extends DBController
 {

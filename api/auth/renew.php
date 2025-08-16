@@ -10,8 +10,8 @@ use Firebase\JWT\Key;
 header('Content-Type: application/json;  charset=utf-8');
 header('Access-Control-Allow-Methods: POST');
 
-$root = str_replace('api\auth', '', __DIR__);
-require_once $root . 'vendor\autoload.php';
+$root = dirname(__DIR__ ,2);
+require_once $root . '/vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
