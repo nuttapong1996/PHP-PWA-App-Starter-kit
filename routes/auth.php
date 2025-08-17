@@ -53,5 +53,9 @@ $router->map('POST','/auth/forgot', function(){
     require __DIR__ . '/../api/auth/forgot.php';
 });
 
+$router->map('POST','/auth/reset', function(){
+    require __DIR__ . '/../api/auth/reset.php';
+});
+
 
 
