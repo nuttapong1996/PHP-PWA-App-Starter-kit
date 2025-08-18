@@ -6,7 +6,40 @@ use Firebase\JWT\Key;
 
 /** @var AltoRouter $router */
 
-// Frontend Route
+/***************************** Route Backend ************************************* */ 
+
+$router->map('POST', '/auth/login', function () {
+    require __DIR__ . '/../api/auth/login.php';
+});
+
+$router->map('POST', '/auth/refresh', function () {
+    require __DIR__ . '/../api/auth/refresh.php';
+});
+
+$router->map('POST', '/auth/renew', function () {
+    require __DIR__ . '/../api/auth/renew.php';
+});
+
+$router->map('GET', '/auth/logout', function () {
+    require __DIR__ . '/../api/auth/logout.php';
+});
+
+$router->map('POST','/auth/register', function(){
+    require __DIR__ . '/../api/auth/register.php';
+});
+
+$router->map('POST','/auth/forgot', function(){
+    require __DIR__ . '/../api/auth/forgot.php';
+});
+
+$router->map('POST','/auth/reset', function(){
+    require __DIR__ . '/../api/auth/reset.php';
+});
+
+
+
+/***************************** Route Frontend ************************************* */ 
+
 $router->map('GET', '/', function () {
     require __DIR__ .'/../view/layout/header.php';
     require __DIR__ . '/../view/login.html';
@@ -37,35 +70,6 @@ $router->map('GET' ,'/reset/[a:userCode]/[a:resetToken]',function( $userCode,$re
     require __DIR__ .'/../view/layout/header.php';
     require __DIR__ .'/../view/reset.html';
     require __DIR__ . '/../view/layout/footer.php';
-});
-
-// Backend Route
-$router->map('POST', '/auth/login', function () {
-    require __DIR__ . '/../api/auth/login.php';
-});
-
-$router->map('POST', '/auth/refresh', function () {
-    require __DIR__ . '/../api/auth/refresh.php';
-});
-
-$router->map('POST', '/auth/renew', function () {
-    require __DIR__ . '/../api/auth/renew.php';
-});
-
-$router->map('GET', '/auth/logout', function () {
-    require __DIR__ . '/../api/auth/logout.php';
-});
-
-$router->map('POST','/auth/register', function(){
-    require __DIR__ . '/../api/auth/register.php';
-});
-
-$router->map('POST','/auth/forgot', function(){
-    require __DIR__ . '/../api/auth/forgot.php';
-});
-
-$router->map('POST','/auth/reset', function(){
-    require __DIR__ . '/../api/auth/reset.php';
 });
 
 

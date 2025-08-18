@@ -1,6 +1,7 @@
 <?php
 /** @var AltoRouter $router */
 
+/***************************** Route Backend ************************************* */ 
 
 $router->map('GET','/pub',function() use ($jwt){
     return $jwt->handle(function(){

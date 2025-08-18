@@ -2,14 +2,15 @@
 /** @var AltoRouter $router */
 
 
-// Backend
+/***************************** Route Backend ************************************* */ 
+// Route get current user
 $router->map('GET', '/user/profile', function () use ($jwt) {
     return $jwt->handle(function () {
         return require __DIR__ . '/../api/user/profile.php';
     });
 });
 
-// เรียกใช้งาน user จาก usercode
+// Route get user by id
 $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt) {
     return $jwt->handle(function () use ($usercode) {
         $_GET['usercode'] = $usercode;

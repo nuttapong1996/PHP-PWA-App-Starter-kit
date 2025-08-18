@@ -15,6 +15,33 @@ session_start();
 
 use App\Controllers\Sections\SectionsController;
 
+
+/*****************************Route Backend ************************************* */ 
+
+// route section ต่างๆ
+$router->map('POST', '/[a:section]', function ($section) use ($jwt) {
+    return $jwt->handle(function () use ($section) {
+
+        $unlock   = new SectionsController();
+        $validate = $unlock->validate($_POST['input_lock']);
+
+        if ($validate === true) {
+            $_SESSION['unlocked_sections'][$section] = true;
+            require __DIR__ . '/../view/layout/header.php';
+            require __DIR__ . "/../view/sections/{$section}/{$section}.html";
+            require __DIR__ . '/../view/layout/footer.php';
+            exit;
+        } else {
+            echo '<script>
+                    alert("Invalid password");
+                     window.history.back();
+                </script>';
+        }
+    });
+});
+
+/*****************************Route Frontend ************************************* */ 
+
 $router->map('GET', '/home', function () use ($jwt) {
     return $jwt->handle(function () {
         unset($_SESSION['unlocked_sections']);
@@ -40,29 +67,10 @@ $router->map('GET', '/manage-sub', function () use ($jwt) {
     });
 });
 
-// ปลดล็อก section ต่างๆ
-$router->map('POST', '/[a:section]', function ($section) use ($jwt) {
-    return $jwt->handle(function () use ($section) {
 
-        $unlock   = new SectionsController();
-        $validate = $unlock->validate($_POST['input_lock']);
 
-        if ($validate === true) {
-            $_SESSION['unlocked_sections'][$section] = true;
-            require __DIR__ . '/../view/layout/header.php';
-            require __DIR__ . "/../view/sections/{$section}/{$section}.html";
-            require __DIR__ . '/../view/layout/footer.php';
-            exit;
-        } else {
-            echo '<script>
-                    alert("Invalid password");
-                     window.history.back();
-                </script>';
-        }
-    });
-});
+/*********************** Route section ****************************/ 
 
-// section
 $router->map('GET', '/sec1', function () use ($jwt) {
     return $jwt->handle(function () {
         require __DIR__ . '/../view/layout/header.php';
