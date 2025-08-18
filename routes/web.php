@@ -2,12 +2,12 @@
 ini_set('session.gc_maxlifetime', 1440);
 ini_set('session.cookie_httponly', 1);
 session_set_cookie_params([
-    'lifetime' => 0,          // 0 = session cookie (ปิด browser แล้วหาย)
+    'lifetime' => 0, // 0 = session cookie (ปิด browser แล้วหาย)
     'path'     => '/',
-    'domain'   => '', // หรือปล่อยว่างให้ใช้ domain ปัจจุบัน
-    'secure'   => true,       // true = ส่ง cookie เฉพาะผ่าน HTTPS
-    'httponly' => true,       // ปิดการเข้าถึงจาก JS
-    'samesite' => 'Strict',   // ป้องกัน CSRF จาก cross-site
+    'domain'   => '',       // หรือปล่อยว่างให้ใช้ domain ปัจจุบัน
+    'secure'   => true,     // true = ส่ง cookie เฉพาะผ่าน HTTPS
+    'httponly' => true,     // ปิดการเข้าถึงจาก JS
+    'samesite' => 'Strict', // ป้องกัน CSRF จาก cross-site
 ]);
 session_start();
 
@@ -18,18 +18,21 @@ use App\Controllers\Sections\SectionsController;
 $router->map('GET', '/home', function () use ($jwt) {
     return $jwt->handle(function () {
         unset($_SESSION['unlocked_sections']);
+        require __DIR__ . '/../view/layout/header.html';
         require __DIR__ . '/../view/main.html';
     });
 });
 
 $router->map('GET', '/settings', function () use ($jwt) {
     return $jwt->handle(function () {
+        require __DIR__ . '/../view/layout/header.html';
         require __DIR__ . '/../view/settings.html';
     });
 });
 
-$router->map('GET' , '/manage-sub',function() use ($jwt){
-    return $jwt->handle(function(){
+$router->map('GET', '/manage-sub', function () use ($jwt) {
+    return $jwt->handle(function () {
+        require __DIR__ . '/../view/layout/header.html';
         require __DIR__ . '/../view/user_settings/sub_list.html';
     });
 });
@@ -54,10 +57,11 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
     });
 });
 
-// section 
+// section
 $router->map('GET', '/sec1', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['sec1'])) {
+        require __DIR__ . '/../view/layout/header.html';
+        if (! empty($_SESSION['unlocked_sections']['sec1'])) {
             require __DIR__ . '/../view/sections/sec1/sec1.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
@@ -69,7 +73,8 @@ $router->map('GET', '/sec1', function () use ($jwt) {
 
 $router->map('GET', '/sec1_sub', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['sec1'])) {
+        require __DIR__ . '/../view/layout/header.html';
+        if (! empty($_SESSION['unlocked_sections']['sec1'])) {
             require __DIR__ . '/../view/sections/sec1/sec1_sub.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
@@ -81,7 +86,8 @@ $router->map('GET', '/sec1_sub', function () use ($jwt) {
 
 $router->map('GET', '/sec2', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['sec2'])) {
+        require __DIR__ . '/../view/layout/header.html';
+        if (! empty($_SESSION['unlocked_sections']['sec2'])) {
             require __DIR__ . '/../view/sections/sec2/sec2.html';
         } else {
             require __DIR__ . '/../view/unlock.html';
@@ -93,7 +99,8 @@ $router->map('GET', '/sec2', function () use ($jwt) {
 
 $router->map('GET', '/sec3', function () use ($jwt) {
     return $jwt->handle(function () {
-        if (!empty($_SESSION['unlocked_sections']['sec3'])) {
+        require __DIR__ . '/../view/layout/header.html';
+        if (! empty($_SESSION['unlocked_sections']['sec3'])) {
             require __DIR__ . '/../view/sections/sec3/sec3.html';
         } else {
             require __DIR__ . '/../view/unlock.html';

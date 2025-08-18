@@ -16,6 +16,7 @@ $secret            = $_ENV['SECRET_KEY'];
 
 $jwt = new JwtMiddleware($access_token_name, $basepath, $secret);
 
+
 require_once __DIR__ . '/routes/auth.php';
 require_once __DIR__ . '/routes/user.php';
 require_once __DIR__ . '/routes/web.php';

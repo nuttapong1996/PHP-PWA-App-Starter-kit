@@ -8,23 +8,29 @@ use Firebase\JWT\Key;
 
 // Frontend Route
 $router->map('GET', '/', function () {
+    require __DIR__ .'/../view/layout/header.html';
     require __DIR__ . '/../view/login.html';
 });
 
 $router->map('GET', '/login', function () {
+    require __DIR__ .'/../view/layout/header.html';
     require __DIR__ . '/../view/login.html';
 });
 
 $router->map('GET' , '/register' , function(){
+    require __DIR__ .'/../view/layout/header.html';
     require __DIR__ .'/../view/regis.html';
 });
 
 $router->map('GET' ,'/forgot',function(){
+    require __DIR__ .'/../view/layout/header.html';
     require __DIR__ .'/../view/forgot.html';
 });
 
-$router->map('GET' ,'/reset/[a:resetToken]',function($resetToken){
+$router->map('GET' ,'/reset/[a:userCode]/[a:resetToken]',function( $userCode,$resetToken){
+    $_GET['userCode'] = $userCode;
     $_GET['resetToken'] = $resetToken;
+    require __DIR__ .'/../view/layout/header.html';
     require __DIR__ .'/../view/reset.html';
 });
 

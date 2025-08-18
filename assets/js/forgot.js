@@ -1,6 +1,4 @@
-import { validateInput, validateForm } from "./module/ui.js";
 import Swal from "./module/sweetalert2.all.min+esm.js"
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const forgotForm = document.getElementById('forgotForm');
@@ -35,9 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonText: 'OK',
                         allowOutsideClick: false
                     }).then(() => {
-                        window.location.href = `reset/${data.resetToken}`;
+                        window.location.href = `reset/${userCode.value}/${data.resetToken}`;
                     });
-                    
                 } else if (data.status === 'error') {
                     Swal.fire({
                         title: 'Invalid',
@@ -45,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon: 'error',
                         confirmButtonText: 'OK',
                         allowOutsideClick: false
-                    })
+                    });
                 }
             })
     });

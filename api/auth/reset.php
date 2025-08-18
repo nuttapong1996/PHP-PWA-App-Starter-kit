@@ -13,22 +13,45 @@ $input = json_decode(file_get_contents('php://input'), true);
 $AuthController = new AuthController();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($input['userCode']) && !empty($input['resetToken'])){
-        // Check ResetToken 
-        $CheckToken = $AuthController->getResetToken($input['userCode']);
+    if (! empty($input['userCode']) && ! empty($input['resetToken'])) {
+
+        // Check ResetToken
+        $CheckToken       = $AuthController->getResetToken($input['userCode']);
         $resultCheckToken = $CheckToken->fetch(PDO::FETCH_ASSOC);
 
-        // Validate ResetToken from GET request with DB
-        if($resultCheckToken['reset_token'] == $input['resetToken']){
+        if ($resultCheckToken) {
+
+            // Validate ResetToken from GET request with DB
+            if ($resultCheckToken['reset_token'] == $input['resetToken']) {
+                http_response_code(200);
+                echo json_encode([ // Valid return status valid
+                    'code'    => 200,
+                    'status'  => 'valid',
+                    'title'   => 'Valid token',
+                    'message' => 'Reset token is valid.',
+                ]);
+            } else {
+                $AuthController->insertResetToken($input['userCode'], NULL, NULL);
+                http_response_code(200);
+                echo json_encode([ // Valid return status valid
+                    'code'    => 200,
+                    'status'  => 'invalid',
+                    'title'   => 'Invalid token',
+                    'message' => 'Token is invalid or expired.',
+                ]);
+            }
+        } else {
             http_response_code(200);
-            echo json_encode([  // Valid return status valid
-                'code' => 200,
-                'status' => 'valid',
-                'title' => 'Valid token',
-                'message' => 'Reset token is valid.',
-            ]);    
-        }else{
-            echo 'notfound';
+            echo json_encode([ // Valid return status valid
+                'code'    => 200,
+                'status'  => 'invalid',
+                'title'   => 'Invalid token',
+                'message' => 'Token is invalid or expired.',
+            ]);
+        }
+
+        if(isset($input['UserPass'])){
+            $AuthController->reset($input['userCode'], $input['UserPass']);
         }
 
 
@@ -36,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     http_response_code(405);
     echo json_encode([
-        'code' =>405,
-        'status' => 'error',
-        'title' => 'Method not allowed',
+        'code'    => 405,
+        'status'  => 'error',
+        'title'   => 'Method not allowed',
         'message' => 'Method not allowed',
     ]);
 }

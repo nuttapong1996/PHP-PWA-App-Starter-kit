@@ -72,7 +72,7 @@ class AuthModel
     public function getResetToken($usercode)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT reset_token , reset_expires FROM tbl_login WHERE user_code =:usercode');
+            $stmt = $this->conn->prepare('SELECT reset_token, reset_expires FROM tbl_login WHERE user_code = :usercode AND reset_expires > NOW();');
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
