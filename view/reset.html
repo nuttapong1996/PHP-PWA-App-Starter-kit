@@ -25,24 +25,31 @@
                             <form id="resetForm" class="needs-validation" novalidate>
                                 <div class="row justify-content-center mb-3">
                                     <div class="col-sm-12 col-md-9 col-lg-10">
-                                        <div class="input-group">
+                                        <div class="input-group has-validation">
                                             <input type="password" name="UserPass" id="userPass" required
                                                 placeholder="Password" class="form-control">
-                                                
-                                                <div class="invalid-feedback">
-                                                Please provide your user code.
+                                            <button type="button" id="BtnPass"
+                                                class="btn btn-outline-secondary border-secondary-subtle">
+                                                <i class="bi bi-eye-slash"></i>
+                                            </button>
+                                            <div class="invalid-feedback">
+                                                 Please provide a password.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mb-3">
                                     <div class="col-sm-12 col-md-9 col-lg-10">
-                                        <div class="form-floating">
+                                        <div class="input-group has-validation mb-3">
                                             <input type="password" name="cfPass" id="cfPass" required
-                                                placeholder="Confirm Password" class="form-control">
-                                            <label for="userIdenCode">Confirm Password</label>
+                                                placeholder="Confirm Password"
+                                                class="form-control form-control-lg fs-6 ">
+                                            <button type="button" id="BtnCfPass"
+                                                class="btn btn-outline-secondary border-secondary-subtle">
+                                                <i class="bi bi-eye-slash"></i>
+                                            </button>
                                             <div class="invalid-feedback">
-                                                Please provide your ID card number.
+                                                Please confirm your password.
                                             </div>
                                         </div>
                                     </div>

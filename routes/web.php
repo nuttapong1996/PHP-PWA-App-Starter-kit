@@ -18,22 +18,25 @@ use App\Controllers\Sections\SectionsController;
 $router->map('GET', '/home', function () use ($jwt) {
     return $jwt->handle(function () {
         unset($_SESSION['unlocked_sections']);
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
         require __DIR__ . '/../view/main.html';
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
 $router->map('GET', '/settings', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
         require __DIR__ . '/../view/settings.html';
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
 $router->map('GET', '/manage-sub', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
         require __DIR__ . '/../view/user_settings/sub_list.html';
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
@@ -46,7 +49,9 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
 
         if ($validate === true) {
             $_SESSION['unlocked_sections'][$section] = true;
+            require __DIR__ . '/../view/layout/header.php';
             require __DIR__ . "/../view/sections/{$section}/{$section}.html";
+            require __DIR__ . '/../view/layout/footer.php';
             exit;
         } else {
             echo '<script>
@@ -60,7 +65,8 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
 // section
 $router->map('GET', '/sec1', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
+
         if (! empty($_SESSION['unlocked_sections']['sec1'])) {
             require __DIR__ . '/../view/sections/sec1/sec1.html';
         } else {
@@ -68,12 +74,14 @@ $router->map('GET', '/sec1', function () use ($jwt) {
             exit;
         }
 
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
 $router->map('GET', '/sec1_sub', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
+
         if (! empty($_SESSION['unlocked_sections']['sec1'])) {
             require __DIR__ . '/../view/sections/sec1/sec1_sub.html';
         } else {
@@ -81,12 +89,14 @@ $router->map('GET', '/sec1_sub', function () use ($jwt) {
             exit;
         }
 
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
 $router->map('GET', '/sec2', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
+
         if (! empty($_SESSION['unlocked_sections']['sec2'])) {
             require __DIR__ . '/../view/sections/sec2/sec2.html';
         } else {
@@ -94,12 +104,14 @@ $router->map('GET', '/sec2', function () use ($jwt) {
             exit;
         }
 
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
 $router->map('GET', '/sec3', function () use ($jwt) {
     return $jwt->handle(function () {
-        require __DIR__ . '/../view/layout/header.html';
+        require __DIR__ . '/../view/layout/header.php';
+
         if (! empty($_SESSION['unlocked_sections']['sec3'])) {
             require __DIR__ . '/../view/sections/sec3/sec3.html';
         } else {
@@ -107,5 +119,6 @@ $router->map('GET', '/sec3', function () use ($jwt) {
             exit;
         }
 
+        require __DIR__ . '/../view/layout/footer.php';
     });
 });

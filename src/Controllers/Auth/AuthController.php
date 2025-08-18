@@ -66,11 +66,11 @@ class AuthController extends DBController
         return $this->result;
     }
 
-    public function getResetToken($usercode)
+    public function getResetToken($usercode , $resetToken)
     {
         $this->result = null;
         try {
-            $this->result = $this->AuthModel->getResetToken($usercode);
+            $this->result = $this->AuthModel->getResetToken($usercode , $resetToken);
         } catch (PDOException $e) {
             $this->result = false;
         }

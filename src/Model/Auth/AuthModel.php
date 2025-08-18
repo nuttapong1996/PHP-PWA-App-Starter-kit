@@ -69,11 +69,12 @@ class AuthModel
         }
     }
 
-    public function getResetToken($usercode)
+    public function getResetToken($usercode , $resetToken)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT reset_token, reset_expires FROM tbl_login WHERE user_code = :usercode AND reset_expires > NOW();');
+            $stmt = $this->conn->prepare('SELECT reset_token, reset_expires FROM tbl_login WHERE user_code = :usercode AND reset_token = :resetToken AND reset_expires > NOW();');
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':resetToken', $resetToken, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
@@ -84,7 +85,7 @@ class AuthModel
     public function reset($usercode, $password)
     {
         try {
-            $stmt = $this->conn->prepare('UPDATE tbl_login SET password = :password , reset_date = NOW(); WHERE user_code = :usercode');
+            $stmt = $this->conn->prepare('UPDATE tbl_login SET password = :password , reset_date = NOW() ,reset_token = NULL , reset_expires = NULL WHERE user_code = :usercode');
             $stmt->bindParam(':usercode', $usercode);
             $stmt->bindParam(':password', $password);
             $stmt->execute();

@@ -8,30 +8,35 @@ use Firebase\JWT\Key;
 
 // Frontend Route
 $router->map('GET', '/', function () {
-    require __DIR__ .'/../view/layout/header.html';
+    require __DIR__ .'/../view/layout/header.php';
     require __DIR__ . '/../view/login.html';
+    require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET', '/login', function () {
-    require __DIR__ .'/../view/layout/header.html';
+    require __DIR__ .'/../view/layout/header.php';
     require __DIR__ . '/../view/login.html';
+    require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET' , '/register' , function(){
-    require __DIR__ .'/../view/layout/header.html';
+    require __DIR__ .'/../view/layout/header.php';
     require __DIR__ .'/../view/regis.html';
+    require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET' ,'/forgot',function(){
-    require __DIR__ .'/../view/layout/header.html';
+    require __DIR__ .'/../view/layout/header.php';
     require __DIR__ .'/../view/forgot.html';
+    require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET' ,'/reset/[a:userCode]/[a:resetToken]',function( $userCode,$resetToken){
     $_GET['userCode'] = $userCode;
     $_GET['resetToken'] = $resetToken;
-    require __DIR__ .'/../view/layout/header.html';
+    require __DIR__ .'/../view/layout/header.php';
     require __DIR__ .'/../view/reset.html';
+    require __DIR__ . '/../view/layout/footer.php';
 });
 
 // Backend Route
