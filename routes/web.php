@@ -59,7 +59,7 @@ $router->map('GET', '/settings', function () use ($jwt) {
     });
 });
 
-$router->map('GET', '/manage-sub', function () use ($jwt) {
+$router->map('GET', '/settings/sub', function () use ($jwt) {
     return $jwt->handle(function () {
         require __DIR__ . '/../view/layout/header.php';
         require __DIR__ . '/../view/user_settings/sub_list.html';
