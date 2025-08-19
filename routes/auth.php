@@ -36,31 +36,35 @@ $router->map('POST','/auth/reset', function(){
     require __DIR__ . '/../api/auth/reset.php';
 });
 
+$router->map('POST' ,'/auth/checkpass', function(){
+    require __DIR__ . '/../api/auth/checkpass.php';
+});
+
 
 
 /***************************** Route Frontend ************************************* */ 
 
 $router->map('GET', '/', function () {
     require __DIR__ .'/../view/layout/header.php';
-    require __DIR__ . '/../view/login.html';
+    require __DIR__ . '/../view/auth/login.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET', '/login', function () {
     require __DIR__ .'/../view/layout/header.php';
-    require __DIR__ . '/../view/login.html';
+    require __DIR__ . '/../view/auth/login.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET' , '/register' , function(){
     require __DIR__ .'/../view/layout/header.php';
-    require __DIR__ .'/../view/regis.html';
+    require __DIR__ .'/../view/auth/regis.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
 
 $router->map('GET' ,'/forgot',function(){
     require __DIR__ .'/../view/layout/header.php';
-    require __DIR__ .'/../view/forgot.html';
+    require __DIR__ .'/../view/auth/forgot.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
 
@@ -68,7 +72,7 @@ $router->map('GET' ,'/reset/[a:userCode]/[a:resetToken]',function( $userCode,$re
     $_GET['userCode'] = $userCode;
     $_GET['resetToken'] = $resetToken;
     require __DIR__ .'/../view/layout/header.php';
-    require __DIR__ .'/../view/reset.html';
+    require __DIR__ .'/../view/auth/reset.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
 

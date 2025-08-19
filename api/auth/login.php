@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Check and remove Revoke token or expired token that more than 7 days
                 $stmt_revoke = $TokenController->getRevokeToken($result['user_code']);
                 if ($stmt_revoke->rowCount() > 0) {
-                    $TokenController->deleteToken($result['user_code']);
+                    $TokenController->deleteExpiredToken($result['user_code']);
                 }
                 http_response_code(200);
                 echo json_encode([

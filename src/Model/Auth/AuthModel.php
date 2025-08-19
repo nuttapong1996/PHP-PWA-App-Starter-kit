@@ -55,6 +55,7 @@ class AuthModel
         }
     }
 
+    
     public function insertResetToken($usercode, $resetToken, $expr)
     {
         try {

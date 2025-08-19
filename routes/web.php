@@ -15,8 +15,7 @@ session_start();
 
 use App\Controllers\Sections\SectionsController;
 
-
-/*****************************Route Backend ************************************* */ 
+/*****************************Route Backend ************************************* */
 
 // route section ต่างๆ
 $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
@@ -40,7 +39,7 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwt) {
     });
 });
 
-/*****************************Route Frontend ************************************* */ 
+/*****************************Route Frontend ************************************* */
 
 $router->map('GET', '/home', function () use ($jwt) {
     return $jwt->handle(function () {
@@ -62,14 +61,20 @@ $router->map('GET', '/settings', function () use ($jwt) {
 $router->map('GET', '/settings/sub', function () use ($jwt) {
     return $jwt->handle(function () {
         require __DIR__ . '/../view/layout/header.php';
-        require __DIR__ . '/../view/user_settings/sub_list.html';
+        require __DIR__ . '/../view/settings/sub_list.html';
         require __DIR__ . '/../view/layout/footer.php';
     });
 });
 
+$router->map('GET', '/settings/password', function () use ($jwt) {
+    return $jwt->handle(function () {
+        require __DIR__ . '/../view/layout/header.php';
+        require __DIR__ . '/../view/auth/change.html';
+        require __DIR__ . '/../view/layout/footer.php';
+    });
+});
 
-
-/*********************** Route section ****************************/ 
+/*********************** Route section ****************************/
 
 $router->map('GET', '/sec1', function () use ($jwt) {
     return $jwt->handle(function () {

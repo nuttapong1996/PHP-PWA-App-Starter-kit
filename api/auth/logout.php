@@ -44,8 +44,8 @@ if ($refresh_token) {
                 session_start();
                 $_SESSION = [];
                 session_destroy();
+                
                 header('Location: ' . $basepath);
-
             }
         } catch (PDOException $e) {
             http_response_code(400);

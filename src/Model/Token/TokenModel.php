@@ -25,7 +25,7 @@ class TokenModel
         }
     }
 
-    public function getRefreshTokenByID($usercode ,$token_id)
+    public function getRefreshTokenByID($usercode, $token_id)
     {
         try {
             $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode AND token_id = :tokenid AND revoked = 0 AND expires_at > NOW() ORDER BY id DESC LIMIT 1');
@@ -62,7 +62,7 @@ class TokenModel
         }
     }
 
-    public function insertRefreshToken($usercode,$token_id, $refresh_token, $device, $ip, $expires)
+    public function insertRefreshToken($usercode, $token_id, $refresh_token, $device, $ip, $expires)
     {
         try {
             $stmt = $this->conn->prepare('INSERT INTO refresh_tokens (user_code, token_id,token, device_name, ip_address, expires_at) VALUES (:usercode, :token_id, :token, :device , :ip , :expires)');
@@ -79,7 +79,7 @@ class TokenModel
         }
     }
 
-    public function updateToken($usercode,$token_id, $refresh_token, $device, $ip, $expires)
+    public function updateToken($usercode, $token_id, $refresh_token, $device, $ip, $expires)
     {
         try {
             $stmt = $this->conn->prepare('UPDATE refresh_tokens SET token = :token, device_name =:device ,ip_address=:ip,created_at=NOW(),expires_at=:expires WHERE user_code = :usercode AND token_id = :tokenid');
@@ -92,7 +92,7 @@ class TokenModel
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
-            return false; 
+            return false;
         }
     }
 
@@ -108,7 +108,7 @@ class TokenModel
         }
     }
 
-    public function updateRevokeToken($usercode,$tokenid , $remark)
+    public function updateRevokeToken($usercode, $tokenid, $remark)
     {
         try {
             $stmt = $this->conn->prepare('UPDATE refresh_tokens SET revoked = 1 , revoked_at = NOW(), remark = :token_remark WHERE user_code = :usercode AND token_id = :tokenid AND revoked = 0');
@@ -122,14 +122,26 @@ class TokenModel
         }
     }
 
-    public function deleteToken($usercode)
+    public function deleteExpiredToken($usercode)
     {
-        try{
+        try {
             $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode AND revoked = 1 OR expires_at < NOW() - INTERVAL 7 DAY'); // Delete in 7 day
-            $stmt->BindParam(':usercode' , $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteAllToken($usercode)
+    {
+        try {
+            $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
             return false;
         }
     }
