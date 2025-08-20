@@ -74,6 +74,14 @@ $router->map('GET', '/settings/password', function () use ($jwt) {
     });
 });
 
+$router->map('GET', '/settings/token', function () use ($jwt) {
+    return $jwt->handle(function () {
+        require __DIR__ . '/../view/layout/header.php';
+        require __DIR__ . '/../view/auth/token.html';
+        require __DIR__ . '/../view/layout/footer.php';
+    });
+});
+
 /*********************** Route section ****************************/
 
 $router->map('GET', '/sec1', function () use ($jwt) {

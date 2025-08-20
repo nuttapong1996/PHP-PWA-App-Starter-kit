@@ -38,6 +38,17 @@ class TokenModel
         }
     }
 
+    public function getRefreshTokenList($usercode){
+        try{
+            $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode');
+            $stmt->BindParam(':usercode' , $usercode ,PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+
     public function getExpiresToken($usercode)
     {
         try {

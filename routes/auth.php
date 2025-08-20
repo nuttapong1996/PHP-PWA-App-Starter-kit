@@ -50,6 +50,12 @@ $router->map('POST', '/auth/checkpass', function () use ($jwt) {
     });
 });
 
+$router->map('GET', '/auth/token-list', function () use ($jwt) {
+    return $jwt->handle(function () {
+        require __DIR__ . '/../api/auth/getTokenList.php';
+    });
+});
+
 /***************************** Route Frontend ************************************* */
 
 $router->map('GET', '/', function () {
@@ -83,3 +89,5 @@ $router->map('GET', '/reset/[a:userCode]/[a:resetToken]', function ($userCode, $
     require __DIR__ . '/../view/auth/reset.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
+
+

@@ -4,6 +4,7 @@ namespace App\Controllers\Token;
 use App\Controllers\DBController;
 use App\Model\Token\TokenModel;
 use PDOException;
+use PDORow;
 
 $root = dirname(__DIR__, 3);
 require_once $root . '/vendor/autoload.php';
@@ -38,6 +39,16 @@ class TokenController extends DBController
         $this->result = null;
         try {
             $this->result = $this->TokenModel->getRefreshTokenByID($usercode, $tokenid);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+        return $this->result;
+    }
+
+    public function getRefreshTokenList($usercode){
+        $this->result = null;
+        try {
+            $this->result = $this->TokenModel->getRefreshTokenList($usercode);
         } catch (PDOException $e) {
             $this->result = false;
         }
