@@ -65,25 +65,45 @@ export function validateCfPassword(passField) {
     }
 }
 
+// export function validateInput(form) {
+//     const inputs = form.querySelectorAll('input[required]');
+//     let isValid;
+//     inputs.forEach(input => {
+//         input.addEventListener('input', () => {
+//             if (input.checkValidity()) {
+//                 isValid = true
+//                 input.classList.remove('is-invalid');
+//                 input.classList.add('is-valid');
+//             } else {
+//                 isValid = false;
+//                 input.classList.add('is-invalid');
+//                 input.setCustomValidity('');
+//             }
+//             if (isValid) {
+//                 form.querySelector('button[type="submit"]').disabled = false; // Enable submit button
+//             } else {
+//                 form.querySelector('button[type="submit"]').disabled = true; // Disable submit button
+//             }
+//         });
+//     });
+// }
+
 export function validateInput(form) {
     const inputs = form.querySelectorAll('input[required]');
-    let isValid;
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             if (input.checkValidity()) {
-                isValid = true
                 input.classList.remove('is-invalid');
                 input.classList.add('is-valid');
             } else {
-                isValid = false;
                 input.classList.add('is-invalid');
                 input.setCustomValidity('');
             }
-            if (isValid) {
-                form.querySelector('button[type="submit"]').disabled = false; // Enable submit button
-            } else {
-                form.querySelector('button[type="submit"]').disabled = true; // Disable submit button
-            }
+            // ตรวจสอบทุกช่อง
+            const allValid = Array.from(inputs).every(i => i.checkValidity());
+            submitBtn.disabled = !allValid;
         });
     });
 }

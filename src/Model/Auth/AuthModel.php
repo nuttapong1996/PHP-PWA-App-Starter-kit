@@ -18,7 +18,6 @@ class AuthModel
         try {
             $stmt = $this->conn->prepare('SELECT user_code,username ,name ,password FROM tbl_login WHERE username  = :username');
             $stmt->BindParam(':username', $username, PDO::PARAM_STR);
-            // $stmt->BindParam(':password', $password, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
@@ -26,6 +25,7 @@ class AuthModel
         }
     }
 
+    
     public function register($usercode, $name, $username, $password, $email, $idenCode)
     {
         try {
@@ -81,6 +81,10 @@ class AuthModel
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    public function checkPass(){
+        
     }
 
     public function reset($usercode, $password)

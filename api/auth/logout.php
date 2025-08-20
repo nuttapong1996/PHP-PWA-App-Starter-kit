@@ -38,14 +38,12 @@ if ($refresh_token) {
             $update = $TokenController->updateRevokeToken($usercode, $tokenid, $remark);
 
             if ($update) {
-
                 setcookie($access_token_name, '', time() - 3600, '/', '', true, true);
                 setcookie($refresh_token_name, '', time() - 3600, '/', '', true, true);
-                session_start();
+                // session_start();
                 $_SESSION = [];
                 session_destroy();
-                
-                header('Location: ' . $basepath);
+                echo "<script>window.location.href='login'</script>";
             }
         } catch (PDOException $e) {
             http_response_code(400);

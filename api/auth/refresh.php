@@ -6,8 +6,6 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 header('Content-Type: application/json;  charset=utf-8');
-// header('Access-Control-Allow-Origin: https://app.yourdomain.com');
-// header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: POST');
 
 $root = dirname(__DIR__, 2);
@@ -18,9 +16,9 @@ $dotenv->load();
 
 $secret_key          = $_ENV['SECRET_KEY'];
 $domain              = $_ENV['APP_DOMAIN'];
-$app_name             = $_ENV['APP_NAME'];
-$refresh_token_name  = $app_name.'_refresh_token';
-$access_token_name  = $app_name.'_access_token';
+$app_name            = $_ENV['APP_NAME'];
+$refresh_token_name  = $app_name . '_refresh_token';
+$access_token_name   = $app_name . '_access_token';
 $issued_at           = time();
 $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 
@@ -30,7 +28,12 @@ $tokenController = new TokenController();
 
 if (! $refresh_token_cookie) {
     http_response_code(401);
-    echo json_encode(['error' => ' Invalid or expired Token']);
+    echo json_encode([
+        'code'    => 401,
+        'status'  => 'error',
+        'title'   => 'Invalid Token',
+        'message' => 'Invalid or expired Token',
+    ]);
     exit;
 }
 
@@ -56,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Set Access token payload
             $access_token_payload = [
-                'iss'  =>$domain ,
-                'aud'  => $domain ,
+                'iss'  => $domain,
+                'aud'  => $domain,
                 'iat'  => $issued_at,
                 'exp'  => $expire,
                 'data' => [

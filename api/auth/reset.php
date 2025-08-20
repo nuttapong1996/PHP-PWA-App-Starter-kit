@@ -1,5 +1,7 @@
 <?php
 use App\Controllers\Auth\AuthController;
+use App\Controllers\Token\TokenController;
+
 date_default_timezone_set("Asia/Bangkok");
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');
@@ -9,7 +11,8 @@ require_once $root . '/vendor/autoload.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-$AuthController = new AuthController();
+$AuthController  = new AuthController();
+$TokenController = new TokenController();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // เช็คว่ามี UserPass ไหม
@@ -17,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // กรณี reset password
         $hashpass = password_hash($input['UserPass'], PASSWORD_BCRYPT);
         $reset    = $AuthController->reset($input['userCode'], $hashpass);
-        if ($reset) {
+        if ($reset->rowCount() > 0) {
             http_response_code(200);
             echo json_encode([
                 'code'    => 200,
@@ -25,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'title'   => 'success',
                 'message' => 'Reset password successfully',
             ]);
+            $TokenController->deleteAllToken($input['userCode']);
         } else {
             http_response_code(500);
             echo json_encode([
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'message' => 'Reset password failed',
             ]);
         }
-        exit; // หยุดตรงนี้ ไม่ให้ไป echo JSON อื่นเพิ่ม
+        exit;
     }
 
     // ถ้าไม่มี UserPass แสดงว่ามา validate token
@@ -43,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $resultCheckToken = $CheckToken->fetch(PDO::FETCH_ASSOC);
 
         if ($CheckToken->rowCount() > 0) {
-            // if ($resultCheckToken['reset_token'] == $input['resetToken']) {
             http_response_code(200);
             echo json_encode([
                 'code'    => 200,
@@ -51,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'title'   => 'Valid token',
                 'message' => 'Reset token is valid.',
             ]);
-            // }
         } else {
             $AuthController->insertResetToken($input['userCode'], null, null);
             http_response_code(200);

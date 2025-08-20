@@ -10,7 +10,7 @@ $router->map('GET', '/user/profile', function () use ($jwt) {
     });
 });
 
-// Route get user by id
+// Route get user by usercode
 $router->map('GET', '/user/profile/[i:usercode]', function ($usercode) use ($jwt) {
     return $jwt->handle(function () use ($usercode) {
         $_GET['usercode'] = $usercode;

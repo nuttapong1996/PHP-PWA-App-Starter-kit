@@ -11,10 +11,11 @@ $router = new Router();
 $router->setBasePath($_ENV['BASE_PATH']);
 
 $access_token_name = $_ENV['APP_NAME'] . '_access_token';
+$refresh_token_name = $_ENV['APP_NAME'] . '_refresh_token';
 $basepath          = $_ENV['BASE_PATH'];
 $secret            = $_ENV['SECRET_KEY'];
 
-$jwt = new JwtMiddleware($access_token_name, $basepath, $secret);
+$jwt = new JwtMiddleware($access_token_name, $refresh_token_name, $basepath, $secret);
 
 
 require_once __DIR__ . '/routes/auth.php';

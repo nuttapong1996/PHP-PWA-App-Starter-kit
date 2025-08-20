@@ -1,4 +1,4 @@
-import { validateInput, validateForm, validatePassword ,togglePassword} from "./module/ui.js";
+import { validateInput, validateForm, validatePassword ,togglePassword, validateCfPassword} from "./module/ui.js";
 import Swal from './module/sweetalert2.all.min+esm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     cfPass.addEventListener('input',()=>{
-        validatePassword.call(cfPass,userPass);
+        validateCfPassword.call(cfPass,userPass);
     
     });
 
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         title: "Reset password successfully",
                         timer: 2000,
                         timerProgressBar: true,
-                        text: "Redirecting to Login page...",
+                        text: "Logout from all devices , redirecting to Login page...",
                         showConfirmButton: false,
                         allowOutsideClick: false
                     })

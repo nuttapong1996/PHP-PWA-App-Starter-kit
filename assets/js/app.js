@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
- 
+
+
   // Check Subscription status. //
   const subscribe = await checksub();
 
