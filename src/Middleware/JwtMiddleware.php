@@ -25,9 +25,6 @@ class JwtMiddleware
         //ดึง token จาก cookie
         $access_token = $_COOKIE[$this->access_token_name] ?? '';
 
-        if (! $access_token) {
-            header('Location:' . $this->base_path);
-        }
         try {
             $decoded = JWT::decode($access_token, new Key($this->secret_key, 'HS256'));
             // แนบข้อมูล user ไปที่ global เพื่อใช้ใน controller ได้
@@ -53,15 +50,7 @@ class JwtMiddleware
             ]);
             exit;
         } catch (\Exception $e) {
-            http_response_code(401);
-            echo json_encode([
-                'code'    => 401,
-                'status'  => 'error',
-                'message' => 'Invalid or expired token',
-                'error'   => $e->getMessage(),
-            ]);
-             header('Location:' . $this->base_path);
-            exit;
+            header('Location: ./');
         }
     }
 }
