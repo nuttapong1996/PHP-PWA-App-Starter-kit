@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Check Access Token and renew Refresh Token
     const validate_token = await renewRefreshToken();
 
-    if (validate_token === 'success') {
+    if (validate_token === 200) {
         window.location.href = "home";
         return;
     }
@@ -89,10 +89,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                     Swal.fire({
-                        title : "Invalid Username or Password",
-                        icon : "error",
+                        title: "Invalid Username or Password",
+                        icon: "error",
                         text: "Please try again.",
-                        confirmButtonColor : '#3085d6',
+                        confirmButtonColor: '#3085d6',
                         allowOutsideClick: false
                     });
                 });

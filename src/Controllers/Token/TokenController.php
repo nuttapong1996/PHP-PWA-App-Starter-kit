@@ -3,8 +3,8 @@ namespace App\Controllers\Token;
 
 use App\Controllers\DBController;
 use App\Model\Token\TokenModel;
+use Firebase\JWT\JWT;
 use PDOException;
-use PDORow;
 
 $root = dirname(__DIR__, 3);
 require_once $root . '/vendor/autoload.php';
@@ -45,7 +45,8 @@ class TokenController extends DBController
         return $this->result;
     }
 
-    public function getRefreshTokenList($usercode){
+    public function getRefreshTokenList($usercode)
+    {
         $this->result = null;
         try {
             $this->result = $this->TokenModel->getRefreshTokenList($usercode);
@@ -77,6 +78,32 @@ class TokenController extends DBController
         }
 
         return $this->result;
+    }
+
+    public function createAccessToken($access_token_name, $secret_key, $domain, $issued_at, $expires, $usercode)
+    {
+        // Set Access token payload
+        $access_token_payload = [
+            'iss'  => $domain,
+            'aud'  => $domain,
+            'iat'  => $issued_at,
+            'exp'  => $expires,
+            'data' => [
+                'user_code' => $usercode,
+            ],
+        ];
+
+        $access_token = JWT::encode($access_token_payload, $secret_key, 'HS256');
+
+        // Store Access token in cookie HttpOnly with secure
+        setcookie($access_token_name, $access_token, [
+            'expires'  => $expires,
+            'path'     => '/',
+            'httponly' => true,
+            'secure'   => true,
+            'samesite' => 'Strict',
+        ]);
+
     }
 
     public function insertRefreshToken($usercode, $token_id, $refresh_token, $device, $ip, $expires)
@@ -145,6 +172,18 @@ class TokenController extends DBController
         } catch (PDOException $e) {
             $this->result = false;
         }
+        return $this->result;
+    }
+
+    public function deleteTokenByID($usercode, $tokenid)
+    {
+        $this->result = null;
+        try {
+            $this->result = $this->TokenModel->deleteTokenByID($usercode, $tokenid);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+
         return $this->result;
     }
 }

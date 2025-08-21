@@ -4,19 +4,18 @@ namespace App\Middleware;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+
 $root = dirname(__DIR__, 2);
 require_once $root . '/vendor/autoload.php';
 
-class JwtMiddleware
+class JwtMiddlewareAPI
 {
     private $secret_key;
-    private $base_path;
     private $access_token_name;
 
-    public function __construct($access_token_name, $base_path, $secret_key)
+    public function __construct($access_token_name, $secret_key)
     {
         $this->secret_key        = $secret_key;
-        $this->base_path         = $base_path;
         $this->access_token_name = $access_token_name;
     }
 
@@ -26,7 +25,14 @@ class JwtMiddleware
         $access_token = $_COOKIE[$this->access_token_name] ?? '';
 
         if (! $access_token) {
-            header('Location:' . $this->base_path);
+            header('Content-Type: application/json');
+            http_response_code(401);
+            echo json_encode([
+                'code'   => 401,
+                'status' => 'error',
+                'error'  => 'No access token',
+            ]);
+            exit;
         }
         try {
             $decoded = JWT::decode($access_token, new Key($this->secret_key, 'HS256'));
@@ -35,6 +41,7 @@ class JwtMiddleware
             return $callback();
 
         } catch (\Firebase\JWT\ExpiredException $e) {
+            header('Content-Type: application/json');
             http_response_code(401);
             echo json_encode([
                 'code'    => 401,
@@ -44,6 +51,7 @@ class JwtMiddleware
             ]);
             exit;
         } catch (\Firebase\JWT\SignatureInvalidException $e) {
+            header('Content-Type: application/json');
             http_response_code(401);
             echo json_encode([
                 'code'    => 401,
@@ -53,6 +61,7 @@ class JwtMiddleware
             ]);
             exit;
         } catch (\Exception $e) {
+            header('Content-Type: application/json');
             http_response_code(401);
             echo json_encode([
                 'code'    => 401,
@@ -60,7 +69,6 @@ class JwtMiddleware
                 'message' => 'Invalid or expired token',
                 'error'   => $e->getMessage(),
             ]);
-             header('Location:' . $this->base_path);
             exit;
         }
     }

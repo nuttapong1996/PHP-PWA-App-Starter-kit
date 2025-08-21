@@ -10,16 +10,12 @@ $router->map('POST', '/auth/login', function () {
     require __DIR__ . '/../api/auth/login.php';
 });
 
-$router->map('POST', '/auth/refresh', function () use ($jwt) {
-    return $jwt->handle(function () {
-        require __DIR__ . '/../api/auth/refresh.php';
-    });
+$router->map('POST', '/auth/refresh', function () {
+    require __DIR__ . '/../api/auth/refresh.php';
 });
 
-$router->map('POST', '/auth/renew', function () use ($jwt) {
-    return $jwt->handle(function () {
-        require __DIR__ . '/../api/auth/renew.php';
-    });
+$router->map('POST', '/auth/renew', function () {
+    require __DIR__ . '/../api/auth/renew.php';
 });
 
 $router->map('GET', '/auth/logout', function () {
@@ -38,20 +34,26 @@ $router->map('POST', '/auth/reset', function () {
     require __DIR__ . '/../api/auth/reset.php';
 });
 
-$router->map('POST', '/auth/change', function () use ($jwt) {
-    return $jwt->handle(function () {
+$router->map('POST', '/auth/change', function () use ($jwtApi) {
+    return $jwtApi->handle(function () {
         require __DIR__ . '/../api/auth/change.php';
     });
 });
 
-$router->map('POST', '/auth/checkpass', function () use ($jwt) {
-    return $jwt->handle(function () {
+$router->map('POST' , '/auth/rmtoken' , function() use ($jwtApi){
+    return $jwtApi->handle(function(){
+        require __DIR__ .'/../api/auth/deleteToken.php';
+    });
+});
+
+$router->map('POST', '/auth/checkpass', function () use ($jwtApi) {
+    return $jwtApi->handle(function () {
         require __DIR__ . '/../api/auth/checkpass.php';
     });
 });
 
-$router->map('GET', '/auth/token-list', function () use ($jwt) {
-    return $jwt->handle(function () {
+$router->map('GET', '/auth/token-list', function () use ($jwtApi) {
+    return $jwtApi->handle(function () {
         require __DIR__ . '/../api/auth/getTokenList.php';
     });
 });
@@ -89,5 +91,3 @@ $router->map('GET', '/reset/[a:userCode]/[a:resetToken]', function ($userCode, $
     require __DIR__ . '/../view/auth/reset.html';
     require __DIR__ . '/../view/layout/footer.php';
 });
-
-

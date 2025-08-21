@@ -22,20 +22,9 @@ $access_token_name   = $app_name . '_access_token';
 $issued_at           = time();
 $access_token_expire = $issued_at + (60 * 15); // 15 นาที
 
-$refresh_token_cookie = trim($_COOKIE[$refresh_token_name] ?? '');
-
 $tokenController = new TokenController();
 
-if (! $refresh_token_cookie) {
-    http_response_code(401);
-    echo json_encode([
-        'code'    => 401,
-        'status'  => 'error',
-        'title'   => 'Invalid Token',
-        'message' => 'Invalid or expired Token',
-    ]);
-    exit;
-}
+$refresh_token_cookie = trim($_COOKIE[$refresh_token_name] ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -98,7 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
         }
 
-    } catch (PDOException $e) {
+    } catch (\Firebase\JWT\ExpiredException $e) {
+        http_response_code(401);
+        echo json_encode([
+            'code'    => 401,
+            'status'  => 'error',
+            'message' => 'Invalid or expired token',
+            'error'   => $e->getMessage(),
+        ]);
+        exit;
+    } catch (\Exception  $e) {
         http_response_code(400);
         echo json_encode([
             'code'    => 400,

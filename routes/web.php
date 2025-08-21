@@ -18,8 +18,8 @@ use App\Controllers\Sections\SectionsController;
 /*****************************Route Backend ************************************* */
 
 // route section ต่างๆ
-$router->map('POST', '/[a:section]', function ($section) use ($jwt) {
-    return $jwt->handle(function () use ($section) {
+$router->map('POST', '/[a:section]', function ($section) use ($jwtApi) {
+    return $jwtApi->handle(function () use ($section) {
 
         $unlock   = new SectionsController();
         $validate = $unlock->validate($_POST['input_lock']);

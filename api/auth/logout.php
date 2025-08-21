@@ -4,7 +4,10 @@ use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-$root =dirname(__DIR__,2);
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: GET');
+
+$root = dirname(__DIR__, 2);
 require_once $root . '/vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
@@ -21,51 +24,69 @@ $refresh_token = trim($_COOKIE[$refresh_token_name] ?? '');
 
 $TokenController = new TokenController();
 
-if ($refresh_token) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if ($refresh_token) {
 
-    $token_decode = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
-    $usercode     = $token_decode->data->user_code;
-    $tokenid      = $token_decode->data->token_id;
-    $remark       = 'Logout';
+        $token_decode = JWT::decode($refresh_token, new Key($secret_key, 'HS256'));
+        $usercode     = $token_decode->data->user_code;
+        $tokenid      = $token_decode->data->token_id;
+        $remark       = 'Logout';
 
-    $stmt         = $TokenController->getRefreshTokenByID($usercode, $tokenid);
-    $token_result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt         = $TokenController->getRefreshTokenByID($usercode, $tokenid);
+        $token_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (password_verify($refresh_token, $token_result['token'])) {
+        if (password_verify($refresh_token, $token_result['token'])) {
 
-        try {
-
-            $update = $TokenController->updateRevokeToken($usercode, $tokenid, $remark);
-
-            if ($update) {
-                setcookie($access_token_name, '', time() - 3600, '/', '', true, true);
-                setcookie($refresh_token_name, '', time() - 3600, '/', '', true, true);
-                // session_start();
-                $_SESSION = [];
-                session_destroy();
-                echo "<script>window.location.href='login'</script>";
+            try {
+                $update = $TokenController->updateRevokeToken($usercode, $tokenid, $remark);
+                
+                if ($update) {
+                    setcookie($access_token_name, '', time() - 3600, '/', '', true, true);
+                    setcookie($refresh_token_name, '', time() - 3600, '/', '', true, true);
+                    $_SESSION = [];
+                    session_destroy();
+                    http_response_code(200);
+                    echo json_encode([
+                        'code'    => 200,
+                        'status'  => 'success',
+                        'title'   => 'Log out ',
+                        'message' => 'Loged out ,redirecting to login page... ',
+                    ]);
+                    exit;
+                }
+            } catch (PDOException $e) {
+                http_response_code(400);
+                echo json_encode([
+                    'code'   => 400,
+                    'status' => 'error',
+                    'error'  => $e->getMessage(),
+                ]);
+                exit;
             }
-        } catch (PDOException $e) {
-            http_response_code(400);
+        } else {
+            http_response_code(401);
             echo json_encode([
-                'code'   => 400,
+                'code'   => 401,
                 'status' => 'error',
-                'error'  => $e->getMessage(),
+                'error'  => 'Invalid or expired token.',
             ]);
+            exit;
         }
     } else {
         http_response_code(401);
         echo json_encode([
             'code'   => 401,
             'status' => 'error',
-            'error'  => 'Invalid or expired token',
+            'error'  => 'No refresh token.',
         ]);
+        exit;
     }
 } else {
-    http_response_code(401);
+    http_response_code(405);
     echo json_encode([
-        'code'   => 401,
+        'code'   => 405,
         'status' => 'error',
-        'error'  => 'No refresh token',
+        'error'  => 'Method is not allowed.',
     ]);
+    exit;
 }

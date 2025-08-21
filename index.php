@@ -1,6 +1,7 @@
 <?php
 use AltoRouter as Router;
 use App\Middleware\JwtMiddleware;
+use App\Middleware\JwtMiddlewareAPI;
 use Dotenv\Dotenv;
 require_once 'vendor/autoload.php';
 
@@ -15,8 +16,8 @@ $refresh_token_name = $_ENV['APP_NAME'] . '_refresh_token';
 $basepath          = $_ENV['BASE_PATH'];
 $secret            = $_ENV['SECRET_KEY'];
 
-$jwt = new JwtMiddleware($access_token_name, $refresh_token_name, $basepath, $secret);
-
+$jwt = new JwtMiddleware($access_token_name, $basepath, $secret);
+$jwtApi = new JwtMiddlewareAPI($access_token_name,$secret);
 
 require_once __DIR__ . '/routes/auth.php';
 require_once __DIR__ . '/routes/user.php';

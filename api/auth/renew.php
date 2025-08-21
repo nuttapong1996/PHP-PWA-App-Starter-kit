@@ -26,18 +26,8 @@ $refresh_token_expire = $issued_at + (60 * 60 * 24 * 7); // 7 วัน
 $TokenController = new TokenController();
 $UserController  = new UserController();
 
-if (! $_COOKIE[$refresh_token_name]) {
-    http_response_code(401);
-    echo json_encode([
-        'code'    => 401,
-        'status'  => 'error',
-        'title'   => 'Invalid Token',
-        'message' => 'Invalid or expired Token',
-    ]);
-    exit;
-} else {
-    $refresh_token_cookie = trim($_COOKIE[$refresh_token_name]);
-}
+$refresh_token_cookie = trim($_COOKIE[$refresh_token_name]  ?? '');
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $decode   = JWT::decode($refresh_token_cookie, new Key($secret_key, 'HS256'));
@@ -152,7 +142,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'respone' => [],
             ]);
         }
-    } catch (PDOException $e) {
+    } catch (\Firebase\JWT\ExpiredException $e) {
+        http_response_code(401);
+        echo json_encode([
+            'code'    => 401,
+            'status'  => 'error',
+            'message' => 'Invalid or expired token',
+            'error'   => $e->getMessage(),
+        ]);
+        exit;
+    } catch (\Exception $e) {
         http_response_code(400);
         echo json_encode([
             'code'    => 400,
@@ -160,8 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'message' => 'Token decode error',
             'error'   => $e->getMessage(),
         ]);
+        exit;
     }
-
 } else {
     http_response_code(405);
     echo json_encode([

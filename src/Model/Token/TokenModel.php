@@ -38,13 +38,14 @@ class TokenModel
         }
     }
 
-    public function getRefreshTokenList($usercode){
-        try{
+    public function getRefreshTokenList($usercode)
+    {
+        try {
             $stmt = $this->conn->prepare('SELECT * FROM refresh_tokens WHERE user_code = :usercode');
-            $stmt->BindParam(':usercode' , $usercode ,PDO::PARAM_STR);
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             return false;
         }
     }
@@ -150,6 +151,19 @@ class TokenModel
         try {
             $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode');
             $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteTokenByID($usercode , $tokenid)
+    {
+        try {
+            $stmt = $this->conn->prepare('DELETE FROM refresh_tokens WHERE user_code = :usercode AND token_id = :tokenid');
+            $stmt->BindParam(':usercode', $usercode, PDO::PARAM_STR);
+            $stmt->BindParam(':tokenid' , $tokenid ,PDO::PARAM_STR);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
