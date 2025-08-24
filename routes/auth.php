@@ -40,11 +40,6 @@ $router->map('POST', '/auth/change', function () use ($jwtApi) {
     });
 });
 
-$router->map('POST' , '/auth/rmtoken' , function() use ($jwtApi){
-    return $jwtApi->handle(function(){
-        require __DIR__ .'/../api/auth/deleteToken.php';
-    });
-});
 
 $router->map('POST', '/auth/checkpass', function () use ($jwtApi) {
     return $jwtApi->handle(function () {
@@ -55,6 +50,12 @@ $router->map('POST', '/auth/checkpass', function () use ($jwtApi) {
 $router->map('GET', '/auth/token-list', function () use ($jwtApi) {
     return $jwtApi->handle(function () {
         require __DIR__ . '/../api/auth/getTokenList.php';
+    });
+});
+
+$router->map('POST' , '/auth/rmtoken' , function() use ($jwtApi){
+    return $jwtApi->handle(function(){
+        require __DIR__ .'/../api/auth/deleteToken.php';
     });
 });
 

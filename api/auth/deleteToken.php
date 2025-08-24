@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $decode   = JWT::decode($access_token, new Key($secret, 'HS256'));
             $usercode = $decode->data->user_code;
-            $tokenid  = $input['tokenid'];
+            $tokenid  = trim($input['tokenid']);
 
             $stmt = $TokenController->deleteTokenByID($usercode, $tokenid);
 
