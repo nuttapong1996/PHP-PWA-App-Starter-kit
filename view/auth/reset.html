@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+</head>
+
+<body>
+    <main class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-12 col-md-8 col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="text-center">PHP Web App API</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="card border-0 p-2 shadow">
+                        <div class="card-header border-0 bg-white">
+                            <h4 class="text-center">Reset password</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="resetForm" class="needs-validation" novalidate>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <div class="input-group has-validation">
+                                            <input type="password" name="UserPass" id="userPass" required
+                                                placeholder="Password" class="form-control">
+                                            <button type="button" id="BtnPass"
+                                                class="btn btn-outline-secondary border-secondary-subtle">
+                                                <i class="bi bi-eye-slash"></i>
+                                            </button>
+                                            <div class="invalid-feedback">
+                                                 Please provide a password.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <div class="input-group has-validation mb-3">
+                                            <input type="password" name="cfPass" id="cfPass" required
+                                                placeholder="Confirm Password"
+                                                class="form-control form-control-lg fs-6 ">
+                                            <button type="button" id="BtnCfPass"
+                                                class="btn btn-outline-secondary border-secondary-subtle">
+                                                <i class="bi bi-eye-slash"></i>
+                                            </button>
+                                            <div class="invalid-feedback">
+                                                Please confirm your password.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <button class="btn btn-primary w-100" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="assets/js/reset.js" defer></script>
+</body>
+
+</html>

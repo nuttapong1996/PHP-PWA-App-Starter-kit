@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+</head>
+<body>
+    <main class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-12 col-md-8 col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="text-center">PHP Web App API</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="card border-0 p-2 shadow">
+                        <div class="card-header border-0 bg-white">
+                            <h4 class="text-center">Forgot password</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="forgotForm" class="needs-validation" novalidate>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <div class="form-floating">
+                                            <input type="text" name="userCode" id="userCode" required
+                                              autocomplete="none"  placeholder="User Code" class="form-control">
+                                            <label for="userCode">User Code</label>
+                                            <div class="invalid-feedback">
+                                                Please provide your user code.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <div class="form-floating">
+                                            <input type="text" name="userIdenCode" id="userIdenCode" required
+                                              autocomplete="none"  placeholder="ID card number" class="form-control">
+                                            <label for="userIdenCode">ID card number</label>
+                                            <div class="invalid-feedback">
+                                                Please provide your ID card number.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-3">
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <button class="btn btn-primary w-100" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                        <div class="card-footer p-3 border-0 bg-light-subtle text-center">
+                            <div class="row justify-content-center ">
+                                <div class="col-sm-12 col-md-9 col-lg-10">
+                                   Don't have an account ?  &nbsp;
+                                    <a href="register"> Register</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="assets/js/forgot.js" defer></script>
+</body>
+
+</html>

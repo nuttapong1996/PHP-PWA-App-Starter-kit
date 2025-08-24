@@ -1,7 +1,7 @@
 {
-    "name": "PHP PWA Webpush",
-    "short_name": "PHP Webpush",
-    "start_url": "index.php",
+    "name": "PHP Web API",
+    "short_name": "PHP Web API",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",

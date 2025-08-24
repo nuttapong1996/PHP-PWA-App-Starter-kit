@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body class="ibm-plex-sans-thai-regular">
+    <main class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-12 col-md-8 col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="text-center">PHP Web App API</h1>
+                    </div>
+                </div>
+                <div class="row p2 mt-5">
+                    <div class="col-12">
+                        <div class="card border-0 p-2 shadow">
+                            <div class="card-title border-0 text-center">
+                                <h4>Register</h4>
+                            </div>
+                            <div class="card-body">
+                                <form id="registerForm" method="POST" class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class=" form-floating mb-3  has-validation">
+                                                <input type="text" name="fName" id="fName" required placeholder=""
+                                                    autocomplete="none" class="form-control ">
+                                                <label for="fName">Name</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide your name.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" name="userName" id="userName" required placeholder=""
+                                                    autocomplete="none" class="form-control ">
+                                                <label for="userName">Username</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide a username.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class="input-group has-validation mb-3">
+                                                <input type="password" name="userPass" id="userPass" required
+                                                    placeholder="Password" class="form-control form-control-lg fs-6 ">
+                                                <button type="button" id="BtnPass"
+                                                    class="btn btn-outline-secondary border-secondary-subtle">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </button>
+                                                <div class="invalid-feedback">
+                                                    Please provide a password.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class="input-group has-validation mb-3">
+                                                <input type="password" name="cfPass" id="cfPass" required
+                                                    placeholder="Confirm Password"
+                                                    class="form-control form-control-lg fs-6 ">
+                                                <button type="button" id="BtnCfPass"
+                                                    class="btn btn-outline-secondary border-secondary-subtle">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </button>
+                                                <div class="invalid-feedback">
+                                                    Please confirm your password.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" name="userIdenCode" id="userIdenCode" required
+                                                    autocomplete="none" placeholder="" class="form-control ">
+                                                <label for="userEmail">ID card number</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide your ID card number.
+                                                </div>
+                                            </div>
+                                        </div>
+ 
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" name="userEmail" id="userEmail" required
+                                                    autocomplete="none" placeholder="" class="form-control ">
+                                                <label for="userEmail">Email : user@example.com</label>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid email address.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-6 ">
+                                            <button type="submit" class="btn btn-primary w-100 p-2">Submit</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            Already have an account? &nbsp;
+                                            <a href="login">Login</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="assets/js/regis.js" defer></script>
+</body>
+
+</html>
