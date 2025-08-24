@@ -71,12 +71,24 @@ class PushController extends DBController
     }
 
     // Function delete subscription from Database.
-    public function deleteSub($userCode, $endPoint)
+    public function deleteSub($endPoint)
     {
         $this->result = null;
 
         try {
-            $this->result = $this->PushModel->deleteSub($userCode, $endPoint);
+            $this->result = $this->PushModel->deleteSub($endPoint);
+        } catch (PDOException $e) {
+            $this->result = false;
+        }
+    }
+
+    // Function delete subscription from Database.
+    public function deleteSubByUser($userCode, $endPoint)
+    {
+        $this->result = null;
+
+        try {
+            $this->result = $this->PushModel->deleteSubByUser($userCode, $endPoint);
         } catch (PDOException $e) {
             $this->result = false;
         }

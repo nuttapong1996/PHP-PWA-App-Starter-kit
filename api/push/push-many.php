@@ -8,7 +8,7 @@ use Minishlink\WebPush\WebPush;
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Methods: POST');
 
-$root = dirname(__DIR__ ,2);
+$root = dirname(__DIR__, 2);
 require_once $root . '/vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // วนลูปเพื่อส่งแจ้งเตือน
         foreach ($webPush->flush() as $report) {
+            $endpoint = $report->getRequest()->getUri()->__toString();
             if ($report->isSuccess()) {
-                http_response_code(200);
                 echo json_encode([
                     'code'    => 200,
                     'status'  => 'success',
@@ -77,17 +77,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     'message' => 'Sent notification successfully',
                 ]);
             } else {
-                http_response_code(400);
                 echo json_encode([
                     'code'    => 400,
                     'status'  => 'error',
                     'title'   => 'Failed to send notification',
                     'message' => $report->getReason(),
                 ]);
+                // ถ้า subscription หมดอายุ → ลบออกจาก DB
+                if ($report->isSubscriptionExpired()) {
+                    $PushController->deleteSub($endpoint);
+                }
             }
         }
     } else {
-        http_response_code(400);
         echo json_encode([
             'code'    => 400,
             'status'  => 'error',
