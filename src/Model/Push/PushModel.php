@@ -66,7 +66,19 @@ class PushModel
         }
     }
 
-    public function deleteSub($userCode, $endPoint)
+    public function deleteSub($endPoint)
+    {
+        try {
+            $stmt = $this->conn->prepare('DELETE FROM push_subscribers WHERE endpoint =:endpoint');
+            $stmt->BindParam(':endpoint', $endPoint, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteSubByUser($userCode, $endPoint)
     {
         try {
             $stmt = $this->conn->prepare('DELETE FROM push_subscribers WHERE user_code =:usercode AND endpoint =:endpoint');

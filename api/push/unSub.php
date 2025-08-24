@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $usercode = $decoded->data->user_code;
         $endPoint = $input['endpoint'];
 
-        $stmt = $PushController->deleteSub($usercode, $endPoint);
+        $stmt = $PushController->deleteSubByUser($usercode, $endPoint);
 
         http_response_code(200);
         echo json_encode([
