@@ -43,7 +43,22 @@ $router->map('POST', '/[a:section]', function ($section) use ($jwtApi) {
 
 $router->map('GET', '/home', function () use ($jwt) {
     return $jwt->handle(function () {
+
+        // ตรวจสอบว่ามี intended_url เก็บไว้หรือเปล่า กรณที่มีการ push มาจาก Webpush
+        if (! empty($_SESSION['intended_url'])) {
+            // สร้างตัวแปร $url ดึง $_SESSION['intended_url'] มาจาก JwtMiddleware
+            $url = $_SESSION['intended_url'];
+            // ทำการเคีลยร์ session intended url อันเก่า
+            unset($_SESSION['intended_url']);
+            header("Location: $url");
+            exit;
+        }
+
+        // เคลียร์ unlocked sections ถ้าเข้า home ปกติ
         unset($_SESSION['unlocked_sections']);
+        // ทำการเคีลยร์ session intended url อันเก่า
+        unset($_SESSION['intended_url']);
+
         require __DIR__ . '/../view/layout/header.php';
         require __DIR__ . '/../view/main.html';
         require __DIR__ . '/../view/layout/footer.php';
