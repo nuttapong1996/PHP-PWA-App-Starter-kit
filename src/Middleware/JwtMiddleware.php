@@ -50,6 +50,8 @@ class JwtMiddleware
             ]);
             exit;
         } catch (\Exception $e) {
+            // เก็บ Session intend_url จาก
+            $_SESSION['intended_url'] = $_SERVER['REQUEST_URI'];
             header('Location: ./');
         }
     }
